@@ -1,11 +1,21 @@
-function add2Array(n) {
+function modifyArray() {
     const arr = []
-    arr.push(n)
 
-    return ((n) => arr)(n)
     
+    const add = function (n) {
+        arr.push(n)
+        return arr
+    } 
+    const remove = function () {
+        arr.pop()
+        return arr
+    }
+    const edit = function (id, replace) {
+        arr[id] = replace
+        return arr
+    }
+
+    return [add, remove, edit]
 }
 
-const ar = add2Array(2)
-
-console.log(ar)
+const f = modifyArray()
