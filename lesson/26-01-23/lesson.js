@@ -1,11 +1,11 @@
-function add2Array(arr, n) {
+function add2Array(n) {
     const arr = []
     arr.push(n)
-    return arr
+
+    return ((n) => arr)(n)
+    
 }
 
-ar = []
-ar = add2Array(ar, 2)
-ar = add2Array(ar, false)
+const ar = add2Array(2)
 
 console.log(ar)
