@@ -286,7 +286,7 @@ function quad_equation(a = 1, b = 1, c = 1) {
     const d = b ** 2 - 4 * a * c;
     let res = NaN;
 
-    if([a, b, c].some((val) => !Number.isInteger(val))) {
+    if([a, b, c].some((val) => !Number.isFinite(val))) {
         console.warn('Некорректные входные данные')
         console.warn('Ожидаются только числовые значения');
         return res;
