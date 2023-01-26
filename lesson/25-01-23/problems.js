@@ -77,7 +77,7 @@ function sort_array(arr) {
     for(var i = 0; i < arr.length; i++) {
 
       // последний i на месте
-      for(var j = 0; j < ( arr.length - i -1 ); j++) {
+      for(var j = 0; j < ( arr.length - i - 1 ); j++) {
          
         // следующий больше ? -> меняем местам
         if(arr[j] > arr[j+1]) {
