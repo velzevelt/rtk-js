@@ -280,41 +280,59 @@ function factorial(n) {
 
 
 console.log(factorial(6));
-console.log(quad_equation(1, 2, -3))
+console.log(quad_equation(0, 0, 0))
+console.log(sort_array([6, 3, 2, 0, 14]))
 
 function quad_equation(a = 1, b = 1, c = 1) {
-    const d = b ** 2 - 4 * a * c;
-    let res = NaN;
-
+    
     if([a, b, c].some((val) => !Number.isFinite(val))) {
-        console.warn('Некорректные входные данные')
-        console.warn('Ожидаются только числовые значения');
-        return res;
+        console.error('Некорректные входные данные')
+        console.error('Ожидаются только числовые значения');
+        return NaN;
     }
-
+    
+    
+    let res = NaN;
     if([a, b, c].some((val) => val == 0)) {
-        console.warn('Некорректные входные данные')
-        console.warn('0 запрещен');
-        return res;
-    }
-
-
-    if (d <= 0) {
-        if (d == 0 && a != 0) {
-            res = -b / 2 * a;
-        } 
+        
+        if (a != 0 && c != 0 && b == 0) {
+            t = -(c/a);
+            if (t > 0) {
+                t_root = Math.sqrt(t);
+                res = [t_root, -t_root];
+            }
+        } else if (a != 0 && b != 0 && c == 0) {
+            res = [0, -(b/a)];
+        } else if (b == 0 && c == 0 && a != 0) {
+            res = 0;
+        }
+        
     } else {
-        const d_root = Math.sqrt(d);
-        const double_a = 2 * a;
-        if (double_a != 0) {
-            
-            res = [
-                (-b + d_root) / double_a,
-                (-b - d_root) / double_a
-            ]
-
+        
+        const d = b ** 2 - 4 * a * c;
+        if (d <= 0) {
+            if (d == 0 && a != 0) {
+                res = -b / 2 * a;
+            } 
+        } else {
+            const d_root = Math.sqrt(d);
+            const double_a = 2 * a;
+            if (double_a != 0) {
+                res = [
+                    (-b + d_root) / double_a,
+                    (-b - d_root) / double_a
+                ];
+            }
         }
     }
 
+
+
     return res;
+}
+
+function sort_array(array) {
+    array.array.forEach(element => {
+        
+    });
 }
