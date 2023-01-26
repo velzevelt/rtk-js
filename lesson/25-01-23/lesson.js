@@ -279,9 +279,10 @@ function factorial(n) {
 }
 
 
-console.log(factorial(6));
-console.log(quad_equation(0, 0, 0))
-console.log(sort_array([6, 3, 2, 0, 14]))
+// console.log(factorial(6));
+// console.log(quad_equation(0, 0, 0))
+console.log(sort_array([6, 8, 2, 0, 14]))
+
 
 function quad_equation(a = 1, b = 1, c = 1) {
     
@@ -331,8 +332,25 @@ function quad_equation(a = 1, b = 1, c = 1) {
     return res;
 }
 
-function sort_array(array) {
-    array.array.forEach(element => {
-        
-    });
+
+//сравниваем текущий и следующий. следующий больше ? -> меняем местам
+function sort_array(arr) {
+    
+    for(var i = 0; i < arr.length; i++) {
+       
+      // Last i elements are already in place 
+      for(var j = 0; j < ( arr.length - i -1 ); j++) {
+         
+        // Checking if the item at present iteration
+        // is greater than the next iteration
+        if(arr[j] > arr[j+1]){
+           
+          // If the condition is true then swap them
+          var temp = arr[j]
+          arr[j] = arr[j + 1]
+          arr[j+1] = temp
+        }
+      }
+    }
+    return arr;
 }
