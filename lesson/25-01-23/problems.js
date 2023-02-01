@@ -74,16 +74,16 @@ function quad_equation(a = 1, b = 1, c = 1) {
 //сравниваем текущий и следующий. следующий больше ? -> меняем местам
 function sort_array(arr) {
     
-    for(var i = 0; i < arr.length; i++) {
+    for(let i = 0; i < arr.length; i++) {
 
       // последний i на месте
-      for(var j = 0; j < ( arr.length - i - 1 ); j++) {
+      for(let j = 0; j < ( arr.length - i - 1 ); j++) {
          
         // следующий больше ? -> меняем местам
         if(arr[j] > arr[j+1]) {
            
           // замена
-          var temp = arr[j];
+          const temp = arr[j];
           arr[j] = arr[j + 1];
           arr[j+1] = temp;
         }
