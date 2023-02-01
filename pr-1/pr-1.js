@@ -27,7 +27,7 @@ function createArmy(unitsAmount) {
 // const army = createArmy(5)
 // console.log(army)
 // toDoList().makeTask(1, '123', 'active')
-const list = toDoList()[0](1, '123', 'active')
+const list = toDoList()["makeTask"](1, '123', 'active')
 console.log(list)
 
 function toDoList() {
@@ -39,14 +39,14 @@ function toDoList() {
     }
 
     const getStatus = n => {
-        const r = res.filter(obj => {return obj?.n === n})
-        return r[0]?.status
+        const r = res.find(obj => {obj?.n == n})
+        return r?.status
     }
 
     const removeCompletedTask = n => {
-        const r = res.filter(obj => {return obj?.n === n})
-        if (r[0]?.status === "completed") {
-            r[0]?.status = "deleted"
+        let r = res.find(obj => {obj?.n == n})
+        if (r?.status === "completed") {
+            r?.status = "deleted"
         }
     }
 
