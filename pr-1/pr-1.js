@@ -5,16 +5,12 @@ function createArmy(unitsAmount) {
         
         const r = {
             n,
-            hp: randomIntFromInterval(1, 100),
-            armor: randomIntFromInterval(1, 100),
-            attack: randomIntFromInterval(1, 100)
+            hp: Math.floor(Math.random() * 100),
+            armor: Math.floor(Math.random() * 100),
+            attack: Math.floor(Math.random() * 100)
         }
 
         return JSON.stringify(r);
-    }
-
-    function randomIntFromInterval(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min)
     }
 
     for(let i = 0; i < unitsAmount; i++) {
@@ -25,17 +21,17 @@ function createArmy(unitsAmount) {
 }
 
 
-const army = createArmy(5)
-console.log(army)
+// const army = createArmy(5)
+// console.log(army)
 
-// const list = toDoList()
+const list = toDoList()
 
 
 function toDoList() {
     const res = []
 
-    const makeTask = function (n, text, status) {
-        res.push( {n, text, status} )
+    const makeTask = function (n, text) {
+        res.push( {n, text, status: "active" } )
         return res
     }
 
@@ -74,6 +70,7 @@ function toDoList() {
 
     return {
         "makeTask": makeTask,
+        "addTask": makeTask,
         "markTaskAsDeleted": markTaskAsDeleted,
         "markTaskAsCompleted": markTaskAsCompleted,
         "getTaskStatus": getTaskStatus,
