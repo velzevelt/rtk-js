@@ -33,23 +33,56 @@ console.log(list)
 function toDoList() {
     const res = []
 
-    const task = {
-        n: 0,
-        text: "",
-        status: ""
-    }
-
-
     const makeTask = function (n, text, status) {
-        res.push(Object.create(task, n, text, status))
+        res.push( {n, text, status} )
         return res
     }
 
-    const getStatus = function(n) {
-        const r = res.filter(obj => {return obj.n === n})
-        return r[0]
+    const getStatus = n => {
+        const r = res.filter(obj => {return obj?.n === n})
+        return r[0]?.status
     }
 
+    const removeCompletedTask = n => {
+        const r = res.filter(obj => {return obj?.n === n})
+        if (r[0]?.status === "completed") {
+            r[0]?.status = "deleted"
+        }
+    }
 
-    return [makeTask, getStatus]
+    const getActiveTasks = () => {
+        const r = []
+        res.forEach((val) => {
+            if (val?.status === "active") {
+                r.push(val)
+            }
+        })
+        return r
+    }
+
+    const getDeletedTasks = () => {
+        const r = []
+        res.forEach((val) => {
+            if (val?.status === "deleted") {
+                r.push(val)
+            }
+        })
+        return r
+    }
+
+    const getAllTasks = () => {
+        const r = [...res]
+        return r
+    }
+
+    return {
+        "makeTask": makeTask,
+        "getStatus": getStatus,
+        "removeCompletedTask": removeCompletedTask,
+        "getActiveTasks": getActiveTasks,
+        "getDeletedTasks": getDeletedTasks,
+        "getAllTasks": getAllTasks
+
+    }
+    // return [makeTask, getStatus, removeCompletedTask, getActiveTasks]
 }
