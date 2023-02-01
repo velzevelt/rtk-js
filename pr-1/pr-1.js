@@ -1,33 +1,35 @@
 function createArmy(unitsAmount) {
     const res = []
 
-    function makeUnit(n, hp, armor, attack) {
+    function makeUnit(n) {
         
-        return {
+        const r = {
             n,
-            hp,
-            armor,
-            attack
+            hp: randomIntFromInterval(1, 100),
+            armor: randomIntFromInterval(1, 100),
+            attack: randomIntFromInterval(1, 100)
+        }
+
+        function randomIntFromInterval(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
         }
         
+        return JSON.stringify(r);
     }
 
-    function randomIntFromInterval(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min)
-    }
 
     for(let i = 0; i < unitsAmount; i++) {
-        res.push( makeUnit( i, randomIntFromInterval(1, 100), randomIntFromInterval(1, 100), randomIntFromInterval(1, 100) ) )
+        res.push( makeUnit(i) )
     }
 
     return res
 }
 
 
-// const army = createArmy(5)
-// console.log(army)
+const army = createArmy(5)
+console.log(army)
 
-const list = toDoList()
+// const list = toDoList()
 
 
 function toDoList() {
