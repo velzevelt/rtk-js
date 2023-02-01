@@ -26,9 +26,9 @@ function createArmy(unitsAmount) {
 
 // const army = createArmy(5)
 // console.log(army)
-// toDoList().makeTask(1, '123', 'active')
-const list = toDoList()["makeTask"](1, '123', 'active')
-console.log(list)
+
+const list = toDoList()
+
 
 function toDoList() {
     const res = []
@@ -38,15 +38,21 @@ function toDoList() {
         return res
     }
 
-    const getStatus = n => {
-        const r = res.find(obj => {obj?.n == n})
+    const getTaskStatus = n => {
+        const r = res.find(obj => {return obj?.n === n})
         return r?.status
     }
 
-    const removeCompletedTask = n => {
-        let r = res.find(obj => {obj?.n == n})
+    const markTaskAsCompleted = n => {
+        const r = res.find(obj => {return obj?.n === n})
+        r.status = "completed"
+        return r
+    }
+
+    const markTaskAsDeleted = n => {
+        let r = res.find(obj => {obj?.n === n})
         if (r?.status === "completed") {
-            r?.status = "deleted"
+            r.status = "deleted"
         }
     }
 
@@ -71,17 +77,18 @@ function toDoList() {
     }
 
     const getAllTasks = () => {
-        const r = [...res]
-        return r
+        // const r = [...res]
+        return res
     }
 
     return {
         "makeTask": makeTask,
-        "getStatus": getStatus,
-        "removeCompletedTask": removeCompletedTask,
+        "markTaskAsDeleted": markTaskAsDeleted,
+        "markTaskAsCompleted": markTaskAsCompleted,
+        "getTaskStatus": getTaskStatus,
         "getActiveTasks": getActiveTasks,
         "getDeletedTasks": getDeletedTasks,
-        "getAllTasks": getAllTasks
+        "getAllTasks": getAllTasks,
 
     }
     // return [makeTask, getStatus, removeCompletedTask, getActiveTasks]
