@@ -4,6 +4,8 @@
 // const obj4 = new Object(undefined)
 
 
+let x = 5
+
 const user = {
     name: 'Vasya',
     login: 'VasyaLogin',
@@ -13,5 +15,7 @@ const user = {
     getAge: function() { return this.age },
     getInfo: function() { return `user: ${this.name}, age: ${this.age}` },
 
-    getArrowInfo: () => { console.log(this) },
+    getArrowInfo: () => { console.log(x) },
 }
+
+const d = function() { }
