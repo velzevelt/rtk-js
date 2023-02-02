@@ -3,6 +3,15 @@
 // const obj3 = new Object(null)
 // const obj4 = new Object(undefined)
 
+function create(ears, oranges) {
+    return {
+        ears, oranges
+    }
+}
+
+const cheburashka = create(2, 32)
+
+console.log(cheburashka)
 
 let x = 5
 
@@ -21,10 +30,8 @@ const user = {
     ar: [1, 2, 3, 4, 5, 6],
 
     arQuad() { 
-        const self = this
-        return self.ar.map( function(val) {return val ** 2 + self.age} )
+        return this.ar.map( (val) => val ** 2 + this.age )
     }
 }
 
-console.log(user.arQuad())
 
