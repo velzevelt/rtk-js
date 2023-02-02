@@ -39,10 +39,31 @@ function CreateObject() {
     this.name = "Vasya"
     this.age = 50
     this.login = "VasyaLogin"
-
+    
     this.getAge = function() {return this.age}
-    this.getInfo = function() { return `user: ${this.name}`}
+    this.getName = function() { return this.name }
+    this.getInfo = function() {  return `user: ${this.name}, age: ${this.age}`}
+    
+    this.getArrowInfo = () => {console.log('some info')}
+    
+    this.ar = [1, 2, 3]
+    this.arQuad = function() { return this.ar.map( (val) => val ** 2 + this.age ) }
+
+    return {a: 5}
 }
 
 const obj = new CreateObject()
 
+let fruit = 'orange'
+fruit = 'banana'
+
+const cheburashka = {
+    ears: 2,
+    [fruit]: 2
+}
+
+
+
+const obj2 = {}
+
+console.log( Object.keys(obj2).length )
