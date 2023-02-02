@@ -35,18 +35,18 @@ function toDoList() {
         return res
     }
 
-    const getTaskStatus = n => {
+    const getTaskStatus = function() {
         const r = res.find(obj => {return obj?.n === n})
         return r?.status
     }
 
-    const markTaskAsCompleted = n => {
+    const markTaskAsCompleted = function(n) {
         const r = res.find(obj => {return obj?.n === n})
         r.status = "completed"
         return r
     }
 
-    const markTaskAsDeleted = n => {
+    const markTaskAsDeleted = function(n) {
         const r = res.find(obj => {obj?.n === n})
         if (r?.status === "completed") {
             r.status = "deleted"
@@ -54,17 +54,17 @@ function toDoList() {
         return r
     }
 
-    const getActiveTasks = () => {
+    const getActiveTasks = function() {
         const r = res.filter((obj) => obj?.status === "active")
         return r
     }
 
-    const getDeletedTasks = () => {
+    const getDeletedTasks = function() {
         const r = res.filter((obj) => obj?.status === "deleted")
         return r
     }
 
-    const getAllTasks = () => {
+    const getAllTasks = function() {
         return res
     }
 
