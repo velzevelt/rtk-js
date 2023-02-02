@@ -6,16 +6,24 @@
 
 let x = 5
 
+
 const user = {
     name: 'Vasya',
     login: 'VasyaLogin',
     age: 50,
 
-    getName: function() { return this.name },
-    getAge: function() { return this.age },
-    getInfo: function() { return `user: ${this.name}, age: ${this.age}` },
+    getName() { return this.name },
+    getAge() { return this.age },
+    getInfo() { return `user: ${this.name}, age: ${this.age}` },
 
     getArrowInfo: () => { console.log(x) },
+
+    ar: [1, 2, 3],
+
+    arQuad() { 
+        return this.ar.map( (val) => val ** 2 )
+    }
 }
 
-const d = function() { }
+console.log(user.arQuad())
+
