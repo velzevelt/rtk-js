@@ -18,10 +18,11 @@ const user = {
 
     getArrowInfo: () => { console.log(x) },
 
-    ar: [1, 2, 3],
+    ar: [1, 2, 3, 4, 5, 6],
 
     arQuad() { 
-        return this.ar.map( (val) => val ** 2 )
+        const self = this
+        return self.ar.map( function(val) {return val ** 2 + self.age} )
     }
 }
 
