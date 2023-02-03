@@ -41,7 +41,7 @@ function toDoList() {
         return res
     }
 
-    const getTaskStatus = function() {
+    const getTaskStatus = function(n) {
         const r = res.find(obj => {return obj?.n === n})
         return r?.status
     } 
