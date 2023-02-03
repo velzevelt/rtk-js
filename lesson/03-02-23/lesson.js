@@ -87,14 +87,21 @@ function CreateObject() {
         // return res
 
 
+        // return Object
+        //     .entries(this)
+        //     .map( (val) => {
+        //         if (typeof val[1] !== "function") {
+        //             return `${val[0]}: ${val[1]}`
+        //         }
+        //     } )
+        //     .filter( (val) => val !== undefined)
+        //     .join(', ')
+
         return Object
             .entries(this)
-            .map( (val, key, ar) => {
-                if (typeof val[1] !== "function") {
-                    return `${val[0]}: ${val[1]}`
-                }
-            } )
-            .filter( (val) => val !== undefined)
+            .filter( (val) => typeof val[1] !== "function" )
+            .map( (val) => `${val[0]}: ${val[1]}`)
+            .join(', ')
 
      } 
 
