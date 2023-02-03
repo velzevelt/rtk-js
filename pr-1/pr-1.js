@@ -1,5 +1,5 @@
 function createArmy(unitsAmount) {
-    const res = []
+    const tasks = []
 
     function makeUnit(n) {
         
@@ -14,10 +14,10 @@ function createArmy(unitsAmount) {
     }
 
     for(let i = 0; i < unitsAmount; i++) {
-        res.push( makeUnit(i) )
+        tasks.push( makeUnit(i) )
     }
 
-    return res
+    return tasks
 }
 
 
@@ -28,32 +28,32 @@ const list = toDoList()
 
 
 function toDoList() {
-    const res = []
+    const tasks = []
 
     const makeTask = function (n, text) {
-        const r = res.find(obj => {return obj?.n === n})
+        const r = tasks.find(obj => {return obj?.n === n})
         if (r === undefined) {
-            res.push( {n, text, status: "active" } )
+            tasks.push( {n, text, status: "active" } )
         } else {
             console.error("Task with this number already exists!")
         }
 
-        return res
+        return tasks
     }
 
     const getTaskStatus = function(n) {
-        const r = res.find(obj => {return obj?.n === n})
+        const r = tasks.find(obj => {return obj?.n === n})
         return r?.status
     } 
 
     const markTaskAsCompleted = function(n) {
-        const r = res.find(obj => {return obj?.n === n})
+        const r = tasks.find(obj => {return obj?.n === n})
         r.status = "completed"
         return r
     }
 
     const markTaskAsDeleted = function(n) {
-        const r = res.find(obj => {return obj?.n === n})
+        const r = tasks.find(obj => {return obj?.n === n})
         if (r?.status === "completed") {
             r.status = "deleted"
         }
@@ -61,17 +61,17 @@ function toDoList() {
     }
 
     const getActiveTasks = function() {
-        const r = res.filter((obj) => obj?.status === "active")
+        const r = tasks.filter((obj) => obj?.status === "active")
         return r
     }
 
     const getDeletedTasks = function() {
-        const r = res.filter((obj) => obj?.status === "deleted")
+        const r = tasks.filter((obj) => obj?.status === "deleted")
         return r
     }
 
     const getAllTasks = function() {
-        return res
+        return tasks
     }
 
     return {
