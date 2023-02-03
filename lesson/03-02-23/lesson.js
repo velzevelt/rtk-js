@@ -135,3 +135,12 @@ const obj2 = {}
 //     return !Object.keys(obj).length
 // }
 
+
+const time = Date.now()
+const time_off = time + 100
+
+const ar = []
+for(let i = 0; Date.now() < time_off; i++) {
+    ar.push(i)
+}
+console.log(ar)
