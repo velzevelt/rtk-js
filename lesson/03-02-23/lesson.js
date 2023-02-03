@@ -77,14 +77,25 @@ function CreateObject() {
         // }
         // return res
 
-        const entries = Object.entries(this)
-        const res = []
-        for(let i = 0; i < entries.length; i++) {
-            if(typeof entries[i][1] !== "function") {
-                res.push(`${entries[i][0]}: ${entries[i][1]}`)
-            }
-        }
-        return res
+        // const entries = Object.entries(this)
+        // const res = []
+        // for(let i = 0; i < entries.length; i++) {
+        //     if(typeof entries[i][1] !== "function") {
+        //         res.push(`${entries[i][0]}: ${entries[i][1]}`)
+        //     }
+        // }
+        // return res
+
+
+        return Object
+            .entries(this)
+            .map( (val, key, ar) => {
+                if (typeof val[1] !== "function") {
+                    return `${val[0]}: ${val[1]}`
+                }
+            } )
+            .filter( (val) => val !== undefined)
+
      } 
 
 
