@@ -47,7 +47,7 @@ function toDoList() {
     }
 
     const markTaskAsDeleted = function(n) {
-        const r = res.find(obj => {obj?.n === n})
+        const r = res.find(obj => {return obj?.n === n})
         if (r?.status === "completed") {
             r.status = "deleted"
         }
