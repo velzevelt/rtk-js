@@ -32,6 +32,7 @@
 //     arQuad() { 
 //         return this.ar.map( (val) => val ** 2 + this.age )
 //     }
+
 // }
 
 
@@ -49,7 +50,45 @@ function CreateObject() {
     this.ar = [1, 2, 3]
     this.arQuad = function() { return this.ar.map( (val) => val ** 2 + this.age ) }
 
-    return {a: 5}
+    this.getNameValue = function () { 
+        // const keys = Object.keys(this)
+        // const values = Object.values(this)
+        // keys.filter( (val) => val !== Function )
+        // return keys
+        // return Object
+            // .values(this)
+
+            // return r
+            // .forEach( (e1, key) => {
+            //     if(typeof e1 !== "function") {
+            //         console.log(`${Object.keys(this)[key]}: ${e1}`)
+            //     }
+            // } )
+
+
+        // const keys = Object.keys(this)
+        // const values = Object.values(this)
+        // const res = []
+        // for(let i = 0; i < keys.length; i++) {
+        //     const value = values[i]
+        //     if(typeof value !== "function") {
+        //         res.push(`${keys[i]}: ${value}`)
+        //     }
+        // }
+        // return res
+
+        const entries = Object.entries(this)
+        const res = []
+        for(let i = 0; i < entries.length; i++) {
+            if(typeof entries[i][1] !== "function") {
+                res.push(`${entries[i][0]}: ${entries[i][1]}`)
+            }
+        }
+        return res
+     } 
+
+
+    // return {a: 5}
 }
 
 const obj = new CreateObject()
@@ -77,5 +116,4 @@ const obj2 = {}
 // function isEmptyObject(obj) {
 //     return !Object.keys(obj).length
 // }
-
 
