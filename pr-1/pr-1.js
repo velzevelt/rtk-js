@@ -31,14 +31,20 @@ function toDoList() {
     const res = []
 
     const makeTask = function (n, text) {
-        res.push( {n, text, status: "active" } )
+        const r = res.find(obj => {return obj?.n === n})
+        if (r === undefined) {
+            res.push( {n, text, status: "active" } )
+        } else {
+            console.error("Task with this number already exists!")
+        }
+
         return res
     }
 
     const getTaskStatus = function() {
         const r = res.find(obj => {return obj?.n === n})
         return r?.status
-    }
+    } 
 
     const markTaskAsCompleted = function(n) {
         const r = res.find(obj => {return obj?.n === n})
