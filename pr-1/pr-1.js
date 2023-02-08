@@ -7,13 +7,22 @@ function createArmy(unitsAmount) {
     }
 
     function Unit(n) {
-        this.n = n
+        this.n = n + 1
         this.hp = Math.floor(Math.random() * 100)
         this.armor = Math.floor(Math.random() * 100)
         this.attack = Math.floor(Math.random() * 100)
 
         this.getUnitInfo = () => {
-            return JSON.stringify(this)
+            const keys = Object.keys(this)
+            const values = Object.values(this)
+            let res = ''
+            for(let i = 0; i < keys.length; i++) {
+                if(typeof values[i] !== 'function') {
+                    res += `${keys[i]}: ${values[i]}, `
+                }
+            }
+            res = res.trimEnd()
+            return res
         }
     } 
 
