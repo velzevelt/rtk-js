@@ -136,11 +136,47 @@ const obj2 = {}
 // }
 
 
-const time = Date.now()
-const time_off = time + 100
+// const time = Date.now()
+// const time_off = time + 100
 
-const ar = []
-for(let i = 0; Date.now() < time_off; i++) {
-    ar.push(i)
-}
-console.log(ar)
+// const ar = []
+// for(let i = 0; Date.now() < time_off; i++) {
+//     ar.push(i)
+// }
+// console.log(ar)
+
+// const func = () => console.log(Date.now()) 
+
+// console.log(Date.now())
+// setTimeout(() => console.log('1'), 10000)
+// console.log(Date.now())
+
+// const interval = setInterval(func, 1000)
+// const timer = setTimeout(() => {clearInterval(interval), console.log(123)}, 5000)
+
+
+// setInterval( () => {
+//     setTimeout( () => {console.log(123)}, 999)
+// }, 200 )
+
+
+// let timer = setTimeout(function restart() {
+//     console.log(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
+//     timer = setTimeout(restart, 1000)
+// }, 1000);
+
+let calls_counter = 0
+let delay = 1000
+console.log(`time: ${Date.now()}`)
+console.log(`delay: ${delay}`)
+
+let timer = setTimeout(function restart() {
+    calls_counter++
+    console.log("\n")
+    console.log(`calls: ${calls_counter}`)
+    console.log(`time: ${Date.now()}`)
+    console.log(new Date().getHours(), new Date().getMinutes(), new Date().getSeconds())
+    delay += 1000
+    console.log(`delay: ${delay}`)
+    timer = setTimeout(restart, delay)
+}, delay);

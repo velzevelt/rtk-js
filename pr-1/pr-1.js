@@ -1,27 +1,33 @@
 function createArmy(unitsAmount) {
-    const tasks = []
+    const res = []
 
-    function makeUnit(n) {
-        
-        const r = {
-            n,
-            hp: Math.floor(Math.random() * 100),
-            armor: Math.floor(Math.random() * 100),
-            attack: Math.floor(Math.random() * 100)
+    const units = []
+    if (units.length === 0) {
+        for(let i = 0; i < unitsAmount; i++) {
+            units.push(new Unit(i))
         }
+    }
 
-        return JSON.stringify(r);
+    function Unit(n) {
+        this.n = n
+        this.hp = Math.floor(Math.random() * 100)
+        this.armor = Math.floor(Math.random() * 100)
+        this.attack = Math.floor(Math.random() * 100)
+    } 
+
+    function getUnitInfo(id) {
+        return JSON.stringify(units[id])
     }
 
     for(let i = 0; i < unitsAmount; i++) {
-        tasks.push( makeUnit(i) )
+        res.push( getUnitInfo )
     }
 
-    return tasks
+    return res
 }
 
 
-// const army = createArmy(5)
+const army = createArmy(5)
 // console.log(army)
 
 const list = toDoList()
