@@ -13,15 +13,14 @@ function createArmy(unitsAmount) {
         this.attack = Math.floor(Math.random() * 100)
 
         this.getUnitInfo = () => {
-            const keys = Object.keys(this)
-            const values = Object.values(this)
-            let res = ''
-            for(let i = 0; i < keys.length; i++) {
-                if(typeof values[i] !== 'function') {
-                    res += `${keys[i]}: ${values[i]}, `
-                }
-            }
-            res = res.trimEnd()
+
+            const entries = Object.entries(this)
+            const stats = entries.filter( (val) => typeof val[1] !== "function" )
+            let res = ""
+            stats.forEach( (val) => { res += `${val[0]}: ${val[1]}, ` } )
+
+            res = res.slice(0, -2)
+
             return res
         }
     } 
