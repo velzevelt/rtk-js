@@ -15,5 +15,7 @@ function Game(armies) {
     
     for(let i = 1; i <= this.rounds; i++) {
         this.play()
+        this.armies = new 
     }
 }
+
