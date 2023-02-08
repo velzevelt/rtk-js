@@ -13,14 +13,14 @@ function createArmy(unitsAmount) {
         this.hp = Math.floor(Math.random() * 100)
         this.armor = Math.floor(Math.random() * 100)
         this.attack = Math.floor(Math.random() * 100)
+
+        this.getUnitInfo = function() {
+            return JSON.stringify(this)
+        }
     } 
 
-    function getUnitInfo(id) {
-        return JSON.stringify(units[id])
-    }
-
     for(let i = 0; i < unitsAmount; i++) {
-        res.push( getUnitInfo )
+        res.push( units[i].getUnitInfo )
     }
 
     return res
