@@ -39,7 +39,7 @@ function toDoList() {
         if (r === undefined) {
             tasks.push( {n, text, status: "active" } )
         } else {
-            console.error("Task with this number already exists!")
+            console.warn("Task with this number already exists!")
         }
 
         return tasks
