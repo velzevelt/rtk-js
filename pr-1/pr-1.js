@@ -19,6 +19,7 @@ function createArmy(unitsAmount) {
             let res = ""
             stats.forEach( (val) => { res += `${val[0]}: ${val[1]}, ` } )
 
+            // Убрать ", " с конца строки
             res = res.slice(0, -2)
 
             return res
