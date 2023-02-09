@@ -76,13 +76,10 @@ class Game
 
     getRandArmy(exclude) 
     {
-        const len = this.armies.length
-        let randId = Math.floor(Math.random() * len)
-        let randArmy = this.armies[randId]
+        let randArmy = getRandomElement(this.armies)
 
         while (randArmy === exclude) {
-            randId = Math.floor(Math.random() * len)
-            randArmy = this.armies[randId]
+            randArmy = getRandomElement(this.armies)
         }
 
         return randArmy
@@ -147,12 +144,10 @@ class Army
 
     getActiveUnit()
     {
-        let randId = Math.floor(Math.random() * this.units.length)
-        let randUnit = this.units[randId]
+        let randUnit = getRandomElement(this.units)
 
         while (randUnit.destroyed) {
-            randId = Math.floor(Math.random() * this.units.length)
-            randUnit = this.units[randId]
+            randUnit = getRandomElement(this.units)
         }
 
         return randUnit
@@ -209,6 +204,11 @@ function getRandomInt(min, max)
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+}
+
+function getRandomElement(from)
+{
+    return from[Math.floor(Math.random() * from.length)]
 }
 
 
