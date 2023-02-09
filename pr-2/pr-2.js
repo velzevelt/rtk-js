@@ -76,11 +76,12 @@ class Game
 
     getRandArmy(exclude) 
     {
-        let randId = Math.floor(Math.random() * this.armies.length)
+        const len = this.armies.length
+        let randId = Math.floor(Math.random() * len)
         let randArmy = this.armies[randId]
 
-        while (randUnit === exclude) {
-            randId = Math.floor(Math.random() * this.armies.length)
+        while (randArmy === exclude) {
+            randId = Math.floor(Math.random() * len)
             randArmy = this.armies[randId]
         }
 
@@ -187,7 +188,12 @@ class Unit
 
     takeDamage(damage)
     {
-        this.health -= damage 
+        this.health -= damage
+        
+        if (this.health < 1) {
+            this.active = false
+            this.destroyed = true
+        }
     }
 
     attack(target)
@@ -206,20 +212,19 @@ function getRandomInt(min, max)
 }
 
 
-// const armies = []
+const armies = []
 
-// for(let i = 0; i < 3; i++) {
-//     const army = new Army(i + 1, 3)
-//     armies.push(army)
-// }
+for(let i = 0; i < 3; i++) {
+    armies.push(new Army(i + 1, 3))
+}
 
-// const game = new Game(armies)
-// console.log(game)
+const game = new Game(armies)
+console.log(game)
 
-const armies = [
-    new Army("Дружба", 3),
-    new Army("Коррупция", 6),
-    new Army("Деменция", 4)
-]
+// const armies = [
+//     new Army("Дружба", 3),
+//     new Army("Коррупция", 6),
+//     new Army("Деменция", 4)
+// ]
 
-console.log(armies)
+// console.log(armies)
