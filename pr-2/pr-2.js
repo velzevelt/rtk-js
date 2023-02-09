@@ -1,16 +1,3 @@
-
-
-
-
-class Test
-{
-    constructor()
-    {
-        this.test = true
-    }
-}
-
-
 class Game 
 {
     armies = []
@@ -23,7 +10,6 @@ class Game
         for (let i = 1; i <= this.rounds; i++) {
             Game.log("Раунд $i")
             this.play()
-            this.armies = armies
             this.resetUnits()
 
             if (i != this.rounds) {
@@ -43,12 +29,15 @@ class Game
 
         while (this.hasTwoPlayers()) {
             if (currentPlayer.canMove() && currentEnemy.canMove()) {
+                Game.log(`Ход ${move_id}:`)
+                
                 let attacker = currentPlayer.getActiveUnit()
                 let target = currentEnemy.getActiveUnit()
                 currentPlayer.makeMove(currentEnemy, attacker, target)
 
                 if (target.active) {
                     move_id++
+                    Game.log(`Ход ${move_id}: Ответная атака!`)
                     currentEnemy.makeMove(currentPlayer, target, attacker)
                 }
             } else {
@@ -65,7 +54,16 @@ class Game
         }
 
         const winner = this.armies[0]
+        let gameResult = `Победила армия ${winner.name}\n`
+        const dead = winner.countDead()
+        const deadCount = winner.countDead()
+        gameResult += `Выбыло ${deadCount} (${dead})\n`
 
+        const alive = winner.getAlive()
+        const aliveCount = winner.aliveCount()
+        gameResult += `Остались ${aliveCount} (${alive})`
+
+        Game.log(gameResult)
     }
 
     getRandArmy(exclude) 
@@ -122,6 +120,7 @@ class Army
     makeMove(enemyArmy, attacker, target)
     {
         attacker.attack(target)
+        this.attackLog(attacker, target, enemyArmy)
     }
 
     canMove()
@@ -154,6 +153,25 @@ class Army
         const message = `Армия '${this.name}': Юнит '${attacker.name}' атакует (урон ${attacker.damage}) юнита '${target.name}' из Армии '${enemyArmy.name}' у вражеского юнита '${target.name}' осталось ${target.health} здоровья`
         Game.log(message)
     }
+
+    getUnitsHealth()
+    {
+
+    }
+
+    getDead()
+    {
+
+    }
+
+    getAlive()
+    {
+
+    }
+
+    countDead()
+
+    countAlive()
 }
 
 class Unit
