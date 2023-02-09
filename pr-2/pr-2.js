@@ -149,6 +149,11 @@ class Army
         return randUnit
     }
 
+    attackLog(attacker, target, enemyArmy)
+    {
+        const message = `Армия '${this.name}': Юнит '${attacker.name}' атакует (урон ${attacker.damage}) юнита '${target.name}' из Армии '${enemyArmy.name}' у вражеского юнита '${target.name}' осталось ${target.health} здоровья`
+        Game.log(message)
+    }
 }
 
 class Unit
