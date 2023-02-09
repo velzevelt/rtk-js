@@ -9,13 +9,15 @@ const game = new Game(armies)
 console.log(game)
 
 
-function Game(armies) {
-    this.armies = armies
-    this.rounds = 3
-    
-    for(let i = 1; i <= this.rounds; i++) {
-        this.play()
-        this.armies = new 
+class Game {
+    constructor(armies) {
+        this.armies = armies
+        this.rounds = 3
+
+        for (let i = 1; i <= this.rounds; i++) {
+            this.play()
+            this.armies = armies
+        }
     }
 }
 
