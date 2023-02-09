@@ -44,8 +44,10 @@ class Game
                 }
             } else {
                 // Какая-то из армий выбыла, находим и удаляем её
-                const loser = currentPlayer.canMove() ? currentEnemy : currentPlayer
-                this.armies.remove(loser)
+                let loser = currentPlayer.canMove() ? currentEnemy : currentPlayer
+                loser = this.armies.indexOf(loser)
+
+                this.armies.splice(loser, 1)
             }
 
             //* Доп проверка необходима, так как на предыдущем шаге произошло удаление и теперь живых игроков может не хватать для продолжения игры
@@ -68,7 +70,7 @@ class Game
         gameResult += `Выбыло ${deadCount} (${dead})\n`
 
         const alive = winner.getAlive()
-        const aliveCount = winner.aliveCount()
+        const aliveCount = winner.countAlive()
         gameResult += `Остались ${aliveCount} (${alive})`
 
         Game.log(gameResult)
@@ -212,19 +214,19 @@ function getRandomElement(from)
 }
 
 
-const armies = []
+// const armies = []
 
-for(let i = 0; i < 3; i++) {
-    armies.push(new Army(i + 1, 3))
-}
+// for(let i = 0; i < 3; i++) {
+//     armies.push(new Army(i + 1, 3))
+// }
+
+// const game = new Game(armies)
+// console.log(game)
+
+const armies = [
+    new Army("Дружба", 3),
+    new Army("Коррупция", 6),
+    new Army("Деменция", 4)
+]
 
 const game = new Game(armies)
-console.log(game)
-
-// const armies = [
-//     new Army("Дружба", 3),
-//     new Army("Коррупция", 6),
-//     new Army("Деменция", 4)
-// ]
-
-// console.log(armies)
