@@ -47,7 +47,7 @@ class Game
 
             if (this.hasTwoPlayers()) {
                 currentPlayer = this.getRandArmy()
-                currentEnemy = this.getRandArmy([currentPlayer])
+                currentEnemy = this.getRandArmy(currentPlayer)
             }
 
             move_id++
@@ -59,7 +59,14 @@ class Game
 
     getRandArmy(exclude) 
     {
-        
+        let randId = Math.floor(Math.random() * this.armies.length)
+        let randUnit = this.armies[randId]
+
+        while (randUnit === exclude) {
+            randId = Math.floor(Math.random() * this.armies.length)
+            randUnit = this.armies[randId]
+        }
+
     }
 
     hasTwoPlayers() 
@@ -127,6 +134,8 @@ class Unit
 {
     constructor() 
     {
+        this.active = true
+        this.destroyed = false
         this.health = 100
         this.damage = getRandomInt(5, 45)
         this.name = getRandomInt(1, 100)
