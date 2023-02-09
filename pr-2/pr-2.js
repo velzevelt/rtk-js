@@ -13,15 +13,24 @@ class Test
 
 class Game 
 {
+    armies = []
+    rounds = 3
+
     constructor(armies) 
     {
         this.armies = armies
-        this.rounds = 3
 
         for (let i = 1; i <= this.rounds; i++) {
+            Game.log("Раунд $i")
             this.play()
             this.armies = armies
             this.resetUnits()
+
+            if (i != this.rounds) {
+                Game.log("\n\n\n")
+            } else {
+                Game.log("Все раунды были проведены!")
+            }
         }
     }
 
@@ -74,6 +83,16 @@ class Game
     hasTwoPlayers() 
     {
         return this.armies.length >= 2
+    }
+
+    resetUnits()
+    {
+        this.armies.forEach( (val) => {val.resetUnits(val.maxUnits)} )
+    }
+
+    static log(message)
+    {
+        console.log(message)
     }
 }
 
