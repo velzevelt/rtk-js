@@ -1,12 +1,14 @@
 
-const armies = []
 
-for(let i = 0; i < 3; i++) {
-    armies.push(new Army(i + 1, 3))
+
+
+class Test
+{
+    constructor()
+    {
+        this.test = true
+    }
 }
-
-const game = new Game(armies)
-console.log(game)
 
 
 class Game 
@@ -154,10 +156,24 @@ class Unit
 
 
 
-
 function getRandomInt(min, max) 
 {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
+
+
+// const armies = []
+
+// for(let i = 0; i < 3; i++) {
+//     const army = new Army(i + 1, 3)
+//     armies.push(army)
+// }
+
+// const game = new Game(armies)
+// console.log(game)
+
+const army = new Army('aboba', 2)
+
+console.log(army.units)
