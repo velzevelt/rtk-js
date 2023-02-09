@@ -8,7 +8,7 @@ class Game
         this.armies = armies
 
         for (let i = 1; i <= this.rounds; i++) {
-            Game.log("Раунд $i")
+            Game.log(`Раунд ${i}`)
             this.play()
             this.resetUnits()
 
@@ -23,10 +23,11 @@ class Game
     play() 
     {
         let currentPlayer = this.getRandArmy()
-        let currentEnemy = this.getRandArmy([currentPlayer])
+        let currentEnemy = this.getRandArmy(currentPlayer) // get exclude currentPlayer 
         
         let move_id = 1
 
+        // Игра продолжается, пока есть хотя бы две живые армии
         while (this.hasTwoPlayers()) {
             if (currentPlayer.canMove() && currentEnemy.canMove()) {
                 Game.log(`Ход ${move_id}:`)
@@ -35,16 +36,19 @@ class Game
                 let target = currentEnemy.getActiveUnit()
                 currentPlayer.makeMove(currentEnemy, attacker, target)
 
+                // Месть. Смена ролей
                 if (target.active) {
                     move_id++
                     Game.log(`Ход ${move_id}: Ответная атака!`)
                     currentEnemy.makeMove(currentPlayer, target, attacker)
                 }
             } else {
+                // Какая-то из армий выбыла, находим и удаляем её
                 const loser = currentPlayer.canMove() ? currentEnemy : currentPlayer
                 this.armies.remove(loser)
             }
 
+            //* Доп проверка необходима, так как на предыдущем шаге произошло удаление и теперь живых игроков может не хватать для продолжения игры
             if (this.hasTwoPlayers()) {
                 currentPlayer = this.getRandArmy()
                 currentEnemy = this.getRandArmy(currentPlayer)
@@ -53,7 +57,11 @@ class Game
             move_id++
         }
 
+        // Мы всегда знаем, что "0" это победитель, так как на предыдущих шагах
+        // все проигравшие армии были удалены из $this->armies и "0" - единственный виживший, т.е. победитель
         const winner = this.armies[0]
+        
+        // Логирование итогов
         let gameResult = `Победила армия ${winner.name}\n`
         const dead = winner.countDead()
         const deadCount = winner.countDead()
@@ -155,19 +163,10 @@ class Army
     }
 
     getUnitsHealth()
-    {
-
-    }
 
     getDead()
-    {
-
-    }
 
     getAlive()
-    {
-
-    }
 
     countDead()
 
