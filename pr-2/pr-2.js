@@ -77,13 +77,14 @@ class Game
     getRandArmy(exclude) 
     {
         let randId = Math.floor(Math.random() * this.armies.length)
-        let randUnit = this.armies[randId]
+        let randArmy = this.armies[randId]
 
         while (randUnit === exclude) {
             randId = Math.floor(Math.random() * this.armies.length)
-            randUnit = this.armies[randId]
+            randArmy = this.armies[randId]
         }
 
+        return randArmy
     }
 
     hasTwoPlayers() 
@@ -162,15 +163,15 @@ class Army
         Game.log(message)
     }
 
-    getUnitsHealth()
+    getUnitsHealth() {}
 
-    getDead()
+    getDead() {}
 
-    getAlive()
+    getAlive() {}
 
-    countDead()
+    countDead() {}
 
-    countAlive()
+    countAlive() {}
 }
 
 class Unit
@@ -215,6 +216,10 @@ function getRandomInt(min, max)
 // const game = new Game(armies)
 // console.log(game)
 
-const army = new Army('aboba', 2)
+const armies = [
+    new Army("Дружба", 3),
+    new Army("Коррупция", 6),
+    new Army("Деменция", 4)
+]
 
-console.log(army.units)
+console.log(armies)
