@@ -8,8 +8,10 @@ class Game
         for (let i = 1; i <= this.rounds; i++) {
             Game.log(`Раунд ${i}`)
             this.armies = [...armies]
-            this.play()
             this.resetUnits()
+            
+            console.log(this.armies)
+            this.play()
 
             if (i != this.rounds) {
                 Game.log("\n\n\n")
