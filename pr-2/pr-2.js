@@ -1,14 +1,13 @@
 class Game 
 {
     armies = []
-    rounds = 3
+    rounds = 2
 
     constructor(armies) 
     {
-        this.armies = armies
-
         for (let i = 1; i <= this.rounds; i++) {
             Game.log(`Раунд ${i}`)
+            this.armies = [...armies]
             this.play()
             this.resetUnits()
 
@@ -94,7 +93,7 @@ class Game
 
     resetUnits()
     {
-        this.armies.forEach( (val) => {val.resetUnits(val.maxUnits)} )
+        this.armies.map( (val) => {val.resetUnits(val.maxUnits); console.log(val.units)} )
     }
 
     static log(message)
@@ -123,7 +122,7 @@ class Army
     resetUnits()
     {
         this.units = []
-        this.makeUnits(this.makeUnits)
+        this.makeUnits(this.maxUnits)
     }
 
     makeMove(enemyArmy, attacker, target)
@@ -224,8 +223,8 @@ function getRandomElement(from)
 // console.log(game)
 
 const armies = [
-    new Army("Дружба", 3),
-    new Army("Коррупция", 6),
+    new Army("Паранойя", 3),
+    new Army("Амнезия", 6),
     new Army("Деменция", 4)
 ]
 
