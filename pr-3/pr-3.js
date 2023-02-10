@@ -9,6 +9,7 @@ class TurtleRunner
 {
     runH = 4
     speedKpH = 2
+    initSpeedKpH = this.speedKpH
 
     runDistanceK = 40
     hourSimulationMilSeconds = 320
@@ -37,6 +38,10 @@ class TurtleRunner
         this.runH--
         this.totalRunH++
 
+        if (this.sleepH > this.initSpeedKpH)
+        {
+            this.sleepH--
+        } 
         
         //#region Логирование
         let runMessage = ''
@@ -71,6 +76,10 @@ class TurtleRunner
     {
         if (this.runH < 4) {
             this.runH++
+        }
+        else
+        {
+            this.speedKpH++
         }
 
         this.sleepH--
