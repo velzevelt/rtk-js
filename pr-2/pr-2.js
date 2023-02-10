@@ -1,16 +1,17 @@
 class Game 
 {
     armies = []
-    rounds = 2
+    rounds = 5
 
     constructor(armies) 
     {
         for (let i = 1; i <= this.rounds; i++) {
             Game.log(`Раунд ${i}`)
+            this.armies = []
             this.armies = [...armies]
             this.resetUnits()
-            
-            console.log(this.armies)
+
+
             this.play()
 
             if (i != this.rounds) {
@@ -26,22 +27,20 @@ class Game
         let currentPlayer = this.getRandArmy()
         let currentEnemy = this.getRandArmy(currentPlayer) // get exclude currentPlayer 
         
-        let move_id = 1
+        let moveId = 1
 
         // Игра продолжается, пока есть хотя бы две живые армии
         while (this.hasTwoPlayers()) {
             if (currentPlayer.canMove() && currentEnemy.canMove()) {
-                Game.log(`Ход ${move_id}:`)
                 
                 let attacker = currentPlayer.getActiveUnit()
                 let target = currentEnemy.getActiveUnit()
-                currentPlayer.makeMove(currentEnemy, attacker, target)
+                currentPlayer.makeMove(currentEnemy, attacker, target, moveId)
 
                 // Месть. Смена ролей
                 if (target.active) {
-                    move_id++
-                    Game.log(`Ход ${move_id}: Ответная атака!`)
-                    currentEnemy.makeMove(currentPlayer, target, attacker)
+                    moveId++
+                    currentEnemy.makeMove(currentPlayer, target, attacker, moveId)
                 }
             } else {
                 // Какая-то из армий выбыла, находим и удаляем её
@@ -57,7 +56,7 @@ class Game
                 currentEnemy = this.getRandArmy(currentPlayer)
             }
 
-            move_id++
+            moveId++
         }
 
         // Мы всегда знаем, что "0" это победитель, так как на предыдущих шагах
@@ -66,7 +65,7 @@ class Game
         
         // Логирование итогов
         let gameResult = `Победила армия ${winner.name}\n`
-        const dead = winner.countDead()
+        const dead = winner.getDead()
         const deadCount = winner.countDead()
         gameResult += `Выбыло ${deadCount} (${dead})\n`
 
@@ -95,7 +94,7 @@ class Game
 
     resetUnits()
     {
-        this.armies.map( (val) => val.resetUnits(val.maxUnits) )
+        this.armies.forEach( (val) => val.resetUnits(val.maxUnits) )
     }
 
     static log(message)
@@ -106,6 +105,8 @@ class Game
 
 class Army
 {
+    units = []
+
     constructor(name, maxUnits)
     {
         this.units = []
@@ -127,10 +128,10 @@ class Army
         this.makeUnits(this.maxUnits)
     }
 
-    makeMove(enemyArmy, attacker, target)
+    makeMove(enemyArmy, attacker, target, moveId)
     {
         attacker.attack(target)
-        this.attackLog(attacker, target, enemyArmy)
+        this.attackLog(attacker, target, enemyArmy, moveId)
     }
 
     canMove()
@@ -156,21 +157,57 @@ class Army
         return randUnit
     }
 
-    attackLog(attacker, target, enemyArmy)
+    attackLog(attacker, target, enemyArmy, moveId)
     {
-        const message = `Армия '${this.name}': Юнит '${attacker.name}' атакует (урон ${attacker.damage}) юнита '${target.name}' из Армии '${enemyArmy.name}' у вражеского юнита '${target.name}' осталось ${target.health} здоровья`
+        const message = `Ход ${moveId}: Армия '${this.name}': Юнит '${attacker.name}' атакует (урон ${attacker.damage}) юнита '${target.name}' из Армии '${enemyArmy.name}' у вражеского юнита '${target.name}' осталось ${target.health} здоровья`
         Game.log(message)
     }
 
     getUnitsHealth() {}
 
-    getDead() {}
+    getDead() 
+    {
+        const res = []
+        this.units.forEach( (unit) => {
+            if (unit.destroyed) {
+              res.push(unit.name)  
+            }} )
+        
+        return res
+    }
 
-    getAlive() {}
+    getAlive() 
+    {
+        const res = []
+        this.units.forEach( (unit) => {
+            if (unit.active) {
+              res.push(unit.name)  
+            }} )
+        
+        return res
+    }
 
-    countDead() {}
+    countDead() 
+    {
+        let res = 0
+        this.units.forEach( (unit) => {
+            if (unit.destroyed) {
+              res++  
+            }} )
+        
+        return res
+    }
 
-    countAlive() {}
+    countAlive() 
+    {
+        let res = 0
+        this.units.forEach( (unit) => {
+            if (unit.active) {
+              res++  
+            }} )
+        
+        return res
+    }
 }
 
 class Unit
@@ -225,9 +262,9 @@ function getRandomElement(from)
 // console.log(game)
 
 const armies = [
-    new Army("Паранойя", 3),
-    new Army("Амнезия", 6),
-    new Army("Деменция", 4)
+    new Army("G", 4),
+    new Army("F", 4),
+    new Army("X", 4)
 ]
 
 const game = new Game(armies)
