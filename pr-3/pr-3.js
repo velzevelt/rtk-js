@@ -4,15 +4,25 @@
 дополнительно пробежать 250м к «дневной» дистанции. Произвести симуляцию забега с
 логированием всех событий в консоль. Результаты забега вывести на страницу через alert. */
 
-const turtle_1 = new TurtleRunner()
-const turtle_2 = new TurtleRunner()
-
 
 class TurtleRunner 
 {
     runTimeMinutes = 4 * 60
     speedMetrPerSecond = 2 / 3.6
-    constructor(runDistanceMetrs = 40000) {
+
+    hourSimulationMilSeconds = 320
+
+    constructor(runDistanceMetrs = 40000) 
+    {
         this.runDistanceMetrs = runDistanceMetrs
     }
+
+    run()
+    {
+        
+    }
 }
+
+
+const turtle_1 = new TurtleRunner()
+const turtle_2 = new TurtleRunner()
