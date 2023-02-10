@@ -87,9 +87,11 @@ class TurtleRunner
         if (this.sleepH > 0) 
         {
             setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
+        } else
+        {
+            setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
         }
 
-        this.#run()
     }
 
 
