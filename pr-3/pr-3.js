@@ -65,7 +65,16 @@ class TurtleRunner
         this.sleepH--
         this.totalSleepH++
         
-        if (this.runH < 5) {
+        //#region Логирование
+        let sleepMessage = ''
+        if (this.name !== undefined) {
+            sleepMessage += `Черепаха "${this.name}": `
+        }
+        sleepMessage += `Осталось спать: ${this.sleepH}`
+        console.log(sleepMessage)
+        //#endregion LOG
+
+        if (this.runH < 4) {
             this.runH++
         }
 
@@ -86,7 +95,7 @@ function getRandomInt(min, max)
 }
 
 
-const turtle_1 = new TurtleRunner()
-const turtle_2 = new TurtleRunner()
+const turtle_1 = new TurtleRunner('Снежанна')
+// const turtle_2 = new TurtleRunner()
 
 turtle_1.startRace()
