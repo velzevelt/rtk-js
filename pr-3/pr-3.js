@@ -13,24 +13,70 @@ class TurtleRunner
     runDistanceK = 40
     hourSimulationMilSeconds = 320
 
+    sleepH = 0
+
+    totalRunH = 0
+    totalSleepH = 0
+    finished = false
+
+    constructor(name)
+    {
+        this.name = name
+    }
+
     startRace()
     {
-        setTimeout(this.run, hourSimulationMilSeconds)
+        setTimeout(this.#run, this.hourSimulationMilSeconds)
     }
 
-    run()
+    #run()
     {
         this.runDistanceK -= this.speedKpH
-        while (this.runH > 0) {
-            
+        this.runH--
+        this.totalRunH++
+
+        let runMessage = ''
+
+        //#region LOG
+        if (this.name !== undefined) {
+            runMessage += `Черепаха "${this.name}": `
         }
 
-        this.sleep()
+        runMessage += `Осталось бежать: ${this.runDistanceK} км. Могу бежать еще ${this.runH} ч`
+
+        console.log(runMessage)
+        //#endregion LOG
+
+        if (this.runDistanceK <= 0) 
+        {
+            this.finished = true
+            return
+        } 
+
+        while (this.runH > 0) 
+        {
+            setTimeout(this.#run, this.hourSimulationMilSeconds)
+        }
+
+        this.sleepH = getRandomInt(3, 5)
+        this.#sleep()
     }
 
-    sleep()
+    #sleep()
     {
-        const sleepHours = getRandomInt(3, 5)
+        this.sleepH--
+        this.totalSleepH++
+        
+        if (this.runH < 5) {
+            this.runH++
+        }
+
+        while(this.sleepH > 0) 
+        {
+            setTimeout(this.#sleep, this.hourSimulationMilSeconds)
+        }
+
+        this.#run()
     }
 }
 
@@ -45,3 +91,4 @@ function getRandomInt(min, max)
 const turtle_1 = new TurtleRunner()
 const turtle_2 = new TurtleRunner()
 
+turtle_1.startRace()
