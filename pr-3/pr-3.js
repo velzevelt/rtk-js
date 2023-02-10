@@ -57,7 +57,7 @@ class TurtleRunner
         }
 
         this.sleepH = getRandomInt(3, 5)
-        this.#sleep()
+        // this.#sleep()
     }
 
     #sleep()
