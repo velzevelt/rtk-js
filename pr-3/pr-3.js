@@ -7,8 +7,8 @@
 
 class TurtleRunner 
 {
-    runMinutes = 4 * 60
-    speedMetrPerSecond = 2 / 3.6
+    runH = 4
+    speedKpH = 2
 
     hourSimulationMilSeconds = 320
 
@@ -17,14 +17,20 @@ class TurtleRunner
         this.runDistanceMetrs = runDistanceMetrs
     }
 
+
+    startRace()
+    {
+        setInterval(this.run, hourSimulationMilSeconds)
+    }
+
     run()
     {
-        
+
     }
 
     sleep()
     {
-
+        const sleepHours = getRandomInt(3, 5)
     }
 }
 
