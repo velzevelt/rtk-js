@@ -1,6 +1,5 @@
 class Game 
 {
-    armies = []
     rounds = 5
 
     constructor(armies) 
@@ -71,7 +70,9 @@ class Game
 
         const alive = winner.getAlive()
         const aliveCount = winner.countAlive()
-        gameResult += `Остались ${aliveCount} (${alive})`
+        const sumHealth = winner.getUnitsHealth()
+        gameResult += `Остались ${aliveCount} (${alive}) `
+        gameResult += `суммарное здоровье ${sumHealth}`
 
         Game.log(gameResult)
     }
@@ -105,8 +106,6 @@ class Game
 
 class Army
 {
-    units = []
-
     constructor(name, maxUnits)
     {
         this.units = []
@@ -163,7 +162,16 @@ class Army
         Game.log(message)
     }
 
-    getUnitsHealth() {}
+    getUnitsHealth() 
+    {
+        let res = 0
+        this.units.forEach( (unit) => {
+            if (unit.active) {
+              res += unit.health
+            }} )
+        
+        return res
+    }
 
     getDead() 
     {
