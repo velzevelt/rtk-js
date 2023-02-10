@@ -24,9 +24,11 @@ class TurtleRunner
         this.name = name
     }
 
+
     startRace()
     {
-        setTimeout(this.#run, this.hourSimulationMilSeconds)
+        // Из-за потери контекста, неободимо передавать функцию как () => this.funcName()
+        setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
     }
 
     #run()
@@ -53,7 +55,7 @@ class TurtleRunner
 
         while (this.runH > 0) 
         {
-            setTimeout(this.#run, this.hourSimulationMilSeconds)
+            setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
         }
 
         this.sleepH = getRandomInt(3, 5)
@@ -80,11 +82,14 @@ class TurtleRunner
 
         while(this.sleepH > 0) 
         {
-            setTimeout(this.#sleep, this.hourSimulationMilSeconds)
+            setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
         }
 
         this.#run()
     }
+
+
+    
 }
 
 function getRandomInt(min, max) 
