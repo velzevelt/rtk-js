@@ -1,5 +1,6 @@
 class Game 
 {
+    armies = []
     rounds = 5
 
     constructor(armies) 
@@ -106,6 +107,8 @@ class Game
 
 class Army
 {
+    units = []
+    
     constructor(name, maxUnits)
     {
         this.units = []
