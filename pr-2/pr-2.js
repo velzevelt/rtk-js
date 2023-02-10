@@ -95,7 +95,7 @@ class Game
 
     resetUnits()
     {
-        this.armies.map( (val) => {val.resetUnits(val.maxUnits); console.log(val.units)} )
+        this.armies.map( (val) => val.resetUnits(val.maxUnits) )
     }
 
     static log(message)
