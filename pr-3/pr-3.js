@@ -45,7 +45,7 @@ class TurtleRunner
         
         //#region Логирование
         let runMessage = ''
-        if (this.name !== undefined) {
+        if (this?.name) {
             runMessage += `Черепаха "${this.name}": `
         }
         runMessage += `Осталось бежать: ${this.runDistanceK} км. Могу бежать еще ${this.runH} ч`
@@ -128,6 +128,7 @@ function getRandomInt(min, max)
 
 
 const turtle_1 = new TurtleRunner('Снежанна')
-// const turtle_2 = new TurtleRunner()
+const turtle_2 = new TurtleRunner('Анжелина')
 
 turtle_1.startRace()
+turtle_2.startRace()
