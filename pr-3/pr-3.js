@@ -69,6 +69,10 @@ class TurtleRunner
 
     #sleep()
     {
+        if (this.runH < 4) {
+            this.runH++
+        }
+
         this.sleepH--
         this.totalSleepH++
         
@@ -81,14 +85,11 @@ class TurtleRunner
         console.log(sleepMessage)
         //#endregion LOG
 
-        if (this.runH < 4) {
-            this.runH++
-        }
-
         if (this.sleepH > 0) 
         {
             setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
-        } else
+        } 
+        else
         {
             setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
         }
