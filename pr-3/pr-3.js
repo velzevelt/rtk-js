@@ -7,7 +7,7 @@
 
 class TurtleRunner 
 {
-    runTimeMinutes = 4 * 60
+    runMinutes = 4 * 60
     speedMetrPerSecond = 2 / 3.6
 
     hourSimulationMilSeconds = 320
@@ -21,8 +21,21 @@ class TurtleRunner
     {
         
     }
+
+    sleep()
+    {
+
+    }
+}
+
+function getRandomInt(min, max) 
+{
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 
 const turtle_1 = new TurtleRunner()
 const turtle_2 = new TurtleRunner()
+
