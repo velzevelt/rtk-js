@@ -53,9 +53,10 @@ class TurtleRunner
             return
         } 
 
-        while (this.runH > 0) 
+        if (this.runH > 0) 
         {
             setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
+            return
         }
 
         this.sleepH = getRandomInt(3, 5)
@@ -80,7 +81,7 @@ class TurtleRunner
             this.runH++
         }
 
-        while(this.sleepH > 0) 
+        if (this.sleepH > 0) 
         {
             setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
         }
