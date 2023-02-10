@@ -50,6 +50,7 @@ class TurtleRunner
         if (this.runDistanceK <= 0) 
         {
             this.finished = true
+            this.#showRaceTotal()
         } 
         else 
         {
@@ -95,6 +96,16 @@ class TurtleRunner
     }
 
 
+    #showRaceTotal()
+    {
+        let totalMessage = ''
+        if (this?.name) 
+        {
+            totalMessage += `Черепаха "${this.name}": Финиш! `
+        }
+        totalMessage += `Часов пробега: ${this.totalRunH}. Часов сна: ${this.totalSleepH}`
+        console.log(totalMessage)
+    }
     
 }
 
