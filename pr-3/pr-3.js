@@ -10,22 +10,22 @@ class TurtleRunner
     runH = 4
     speedKpH = 2
 
+    runDistanceK = 40
     hourSimulationMilSeconds = 320
-
-    constructor(runDistanceMetrs = 40000) 
-    {
-        this.runDistanceMetrs = runDistanceMetrs
-    }
-
 
     startRace()
     {
-        setInterval(this.run, hourSimulationMilSeconds)
+        setTimeout(this.run, hourSimulationMilSeconds)
     }
 
     run()
     {
+        this.runDistanceK -= this.speedKpH
+        while (this.runH > 0) {
+            
+        }
 
+        this.sleep()
     }
 
     sleep()
