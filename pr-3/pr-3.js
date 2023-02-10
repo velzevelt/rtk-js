@@ -50,17 +50,20 @@ class TurtleRunner
         if (this.runDistanceK <= 0) 
         {
             this.finished = true
-            return
         } 
-
-        if (this.runH > 0) 
+        else 
         {
-            setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
-            return
+            if (this.runH > 0) 
+            {
+                setTimeout(() => this.#run(), this.hourSimulationMilSeconds)
+            }
+            else 
+            {
+                this.sleepH = getRandomInt(3, 5)
+                setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
+            }
         }
 
-        this.sleepH = getRandomInt(3, 5)
-        // this.#sleep()
     }
 
     #sleep()
