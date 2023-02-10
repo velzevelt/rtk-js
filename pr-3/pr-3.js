@@ -35,15 +35,13 @@ class TurtleRunner
         this.runH--
         this.totalRunH++
 
+        
+        //#region Логирование
         let runMessage = ''
-
-        //#region LOG
         if (this.name !== undefined) {
             runMessage += `Черепаха "${this.name}": `
         }
-
         runMessage += `Осталось бежать: ${this.runDistanceK} км. Могу бежать еще ${this.runH} ч`
-
         console.log(runMessage)
         //#endregion LOG
 
