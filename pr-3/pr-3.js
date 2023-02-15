@@ -145,17 +145,20 @@ function getRandomElement(from)
 // turtle_1.startRace()
 // turtle_2.startRace()
 
-const train = new Train(new Route('N', 'M'))
 
 
 class Train
 {
     hourSimulationMilSeconds = 1200
+    currentTrainStop
 
     // Маршрут
     constructor(route)
     {
-        
+        if (route)
+        {
+            this.currentTrainStop = route.stops[0]
+        }
     }
 
     startMoving()
@@ -175,7 +178,25 @@ class Train
 // Маршрут. Точка отбытия. Точка назначения. Остановки
 class Route
 {
+    departureCity
+    destinationCity
+    stops
+
     constructor(departureCity, destinationCity)
+    {
+        this.departureCity = departureCity
+        this.destinationCity = destinationCity
+
+        const initTrainStop = new TrainStop()
+        this.stops = [initTrainStop]
+
+        for (let i = 1; i < getRandomInt(2, 5); i++)
+        {
+            const nextTrainStop = new TrainStop()
+            this.stops[i - 1].nextStop = nextTrainStop
+            this.stops.push(nextTrainStop)
+        } 
+    }
 }
 
 
@@ -183,16 +204,22 @@ class Route
 class TrainStop
 {
     stopName
-    stopTime // Длительность остановки
-    travelTime // Время движения к следующей остановке
+    stopTimeH // Длительность остановки
+    travelTimeH // Время движения к следующей остановке
     nextStop //* Следующая остановка. Задавать вне конструктора
 
-    alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
 
     constructor()
     {
-        this.stopName = getRandomElement(this.alphabet)
-        this.stopTime = getRandomInt(1, 2)
-        this.travelTime = getRandomInt(1, 8)
+        this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
+        this.stopTimeH = getRandomInt(1, 2)
+        this.travelTimeH = getRandomInt(1, 8)
     }
 }
+
+
+// const train = new Train(new Route('N', 'M'))
+
+const test = new Route('N', 'M')
+console.log(test)
