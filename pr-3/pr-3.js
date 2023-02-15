@@ -38,19 +38,23 @@ class TurtleRunner
         this.runH--
         this.totalRunH++
 
-        if (this.sleepH > this.initSpeedKpH)
-        {
-            this.sleepH--
-        } 
+
         
         //#region Логирование
         let runMessage = ''
         if (this?.name) {
             runMessage += `Черепаха "${this.name}": `
         }
-        runMessage += `Осталось бежать: ${this.runDistanceK} км. Могу бежать еще ${this.runH} ч`
+        runMessage += `Осталось бежать: ${this.runDistanceK} км. Скорость: ${this.speedKpH}. Могу бежать еще ${this.runH} ч`
         console.log(runMessage)
-        //#endregion LOG
+        //#endregion
+
+        
+        if (this.speedKpH > this.initSpeedKpH)
+        {
+            this.speedKpH--
+        } 
+
 
         if (this.runDistanceK <= 0) 
         {
@@ -65,6 +69,7 @@ class TurtleRunner
             }
             else 
             {
+                // this.sleepH = 5
                 this.sleepH = getRandomInt(3, 5)
                 setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds)
             }
@@ -74,7 +79,8 @@ class TurtleRunner
 
     #sleep()
     {
-        if (this.runH < 4) {
+        if (this.runH < 4) 
+        {
             this.runH++
         }
         else
@@ -115,6 +121,7 @@ class TurtleRunner
         }
         totalMessage += `Часов пробега: ${this.totalRunH}. Часов сна: ${this.totalSleepH}`
         console.log(totalMessage)
+        alert(totalMessage)
     }
     
 }
