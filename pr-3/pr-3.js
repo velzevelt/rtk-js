@@ -152,6 +152,7 @@ class Train
 {
     hourSimulationMilSeconds = 1200
 
+    // Маршрут
     constructor(route)
     {
         
@@ -170,14 +171,18 @@ class Train
     
 }
 
+
 // Маршрут. Точка отбытия. Точка назначения. Остановки
 class Route
 {
     constructor(departureCity, destinationCity)
 }
 
-// Остановка. Название остановки. Длительность остановки. Длительность движения к следующей остановке
-class Stop
+
+// Остановка. Название остановки. Длительность остановки. Длительность движения к следующей остановке. Следующая остановка
+class TrainStop
 {
+    isFinalStop = false
+    nextStop
 
 }
