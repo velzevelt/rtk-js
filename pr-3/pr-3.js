@@ -151,6 +151,8 @@ class Train
 {
     hourSimulationMilSeconds = 1200
     currentTrainStop
+    stopTimeH
+    travelTimeH
 
     // Маршрут
     constructor(route)
@@ -158,22 +160,26 @@ class Train
         if (route)
         {
             this.currentTrainStop = route.stops[0]
+            this.stopTimeH = this.currentTrainStop.stopTimeH
+            this.travelTimeH = this.currentTrainStop.travelTimeH
+        }        
+        else
+        {
+            console.error('Train init error. Check passed route')
         }
     }
 
     startMoving()
     {
-        setTimeout(() => this.#start(), this.hourSimulationMilSeconds)
-    }
-
-    #start()
-    {
-
+        setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
     }
 
     #move()
     {
-        
+        if (this.stopTimeH > 0)
+        {
+            this.tempTimeH--
+        }
     }
 
     
@@ -224,7 +230,8 @@ class TrainStop
 }
 
 
-// const train = new Train(new Route('N', 'M'))
+const train = new Train(new Route('N', 'M'))
+console.log(train)
 
-const test = new Route('N', 'M')
-console.log(test)
+// const test = new Route('N', 'M')
+// console.log(test)
