@@ -163,12 +163,17 @@ class Train
 
     startMoving()
     {
-        setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+        setTimeout(() => this.#start(), this.hourSimulationMilSeconds)
+    }
+
+    #start()
+    {
+
     }
 
     #move()
     {
-
+        
     }
 
     
