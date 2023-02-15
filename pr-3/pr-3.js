@@ -133,9 +133,51 @@ function getRandomInt(min, max)
     return Math.floor(Math.random() * (max - min) + min);
 }
 
+function getRandomElement(from)
+{
+    return from[Math.floor(Math.random() * from.length)]
+}
 
-const turtle_1 = new TurtleRunner('Снежанна')
-const turtle_2 = new TurtleRunner('Анжелина')
 
-turtle_1.startRace()
-turtle_2.startRace()
+// const turtle_1 = new TurtleRunner('Снежанна')
+// const turtle_2 = new TurtleRunner('Анжелина')
+
+// turtle_1.startRace()
+// turtle_2.startRace()
+
+const train = new Train(new Route('N', 'M'))
+
+
+class Train
+{
+    hourSimulationMilSeconds = 1200
+
+    constructor(route)
+    {
+        
+    }
+
+    startMoving()
+    {
+        setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+    }
+
+    #move()
+    {
+
+    }
+
+    
+}
+
+// Маршрут. Точка отбытия. Точка назначения. Остановки
+class Route
+{
+    constructor(departureCity, destinationCity)
+}
+
+// Остановка. Название остановки. Длительность остановки. Длительность движения к следующей остановке
+class Stop
+{
+
+}
