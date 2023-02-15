@@ -182,7 +182,17 @@ class Route
 // Остановка. Название остановки. Длительность остановки. Длительность движения к следующей остановке. Следующая остановка
 class TrainStop
 {
-    isFinalStop = false
-    nextStop
+    stopName
+    stopTime // Длительность остановки
+    travelTime // Время движения к следующей остановке
+    nextStop //* Следующая остановка. Задавать вне конструктора
 
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+    constructor()
+    {
+        this.stopName = getRandomElement(this.alphabet)
+        this.stopTime = getRandomInt(1, 2)
+        this.travelTime = getRandomInt(1, 8)
+    }
 }
