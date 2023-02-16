@@ -155,6 +155,7 @@ class Train
     currentTrainStop
     stopTimeH
     travelTimeH
+    travelStatus = 'По расписанию'
 
     // Маршрут
     constructor(route)
@@ -257,6 +258,7 @@ class TrainStop
     stopName
     stopTimeH // Длительность остановки
     travelTimeH // Время движения к следующей остановке
+    maxStopTimeH // Служит для
     nextStop //* Следующая остановка. Задавать вне конструктора
 
     alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
