@@ -1,14 +1,27 @@
 // OOP
 
-class Pet
+class Animal
+{
+    static #countAnimal = 0
+    type
+
+    constructor(type)
+    {
+        this.type = type
+    }
+}
+
+class Pet extends Animal
 {
     static #countPet = 0
-    type
     #nickname
     age
 
+    
     constructor(type, nickname, age)
     {
+        super(type)
+        
         if (Pet.#countPet < 2)
         {
             this.type = type
@@ -46,4 +59,5 @@ class Pet
 
 const cat = new Pet('cat', 'vasya', 1)
 const dog = new Pet('dog', 'barbos', 2)
+
 
