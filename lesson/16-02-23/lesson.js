@@ -9,6 +9,21 @@ class Animal
     {
         this.type = type
     }
+
+    getSomeshit()
+    {
+        return '1'
+    }
+
+    get type()
+    {
+        return this.type
+    }
+
+    getType()
+    {
+        return this.type
+    }
 }
 
 class Pet extends Animal
@@ -24,7 +39,6 @@ class Pet extends Animal
         {
             super(type)
 
-            this.type = type
             this.#nickname = nickname
             this.age = age
             Pet.#countPet++
@@ -54,6 +68,21 @@ class Pet extends Animal
     static get countPet()
     {
         return Pet.#countPet
+    }
+
+    getSomeshit()
+    {
+        return super.getSomeshit() + '0'
+    }
+
+    getType()
+    {
+        return `type pet -> ${super.getType()}`
+    }
+
+    get type()
+    {
+        return super.getType()
     }
 }
 
