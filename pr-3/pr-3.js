@@ -150,6 +150,8 @@ function getRandomElement(from)
 class Train
 {
     hourSimulationMilSeconds = 1200
+    
+    // [Temp]
     currentTrainStop
     stopTimeH
     travelTimeH
@@ -159,9 +161,7 @@ class Train
     {
         if (route)
         {
-            this.currentTrainStop = route.stops[0]
-            this.stopTimeH = this.currentTrainStop.stopTimeH
-            this.travelTimeH = this.currentTrainStop.travelTimeH
+            this.#updateTemp(route.stops[0])
         }        
         else
         {
@@ -178,11 +178,43 @@ class Train
     {
         if (this.stopTimeH > 0)
         {
-            this.tempTimeH--
+            this.stopTimeH--
+            console.log(`Идет смена локомотива, осталось ждать ${this.stopTimeH} ч`)
+            setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+        }
+        else if (this.travelTimeH > 0)
+        {
+            this.travelTimeH--
+            console.log(`Едем, осталось ехать: ${this.travelTimeH} ч`)
+            setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+        }
+        else
+        {
+            const nextStop = this.currentTrainStop.nextStop
+            if (nextStop)
+            {
+                this.#updateTemp(nextStop)
+                setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+            }
+            else
+            {
+                console.log(`Приехали`)
+                this.#showTotal()
+            }
         }
     }
 
+    #updateTemp(stop)
+    {
+        this.currentTrainStop = stop
+        this.stopTimeH = this.currentTrainStop.stopTimeH
+        this.travelTimeH = this.currentTrainStop.travelTimeH
+    }
     
+    #showTotal()
+    {
+        return "123"
+    }
 }
 
 
@@ -231,7 +263,8 @@ class TrainStop
 
 
 const train = new Train(new Route('N', 'M'))
-console.log(train)
+train.startMoving()
+// console.log(train)
 
 // const test = new Route('N', 'M')
 // console.log(test)
