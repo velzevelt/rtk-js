@@ -18,8 +18,7 @@ class Pet
         }
         else
         {
-            console.error('Max pet count is 2')
-            return {}
+            return {status: 'error', message: 'Max pet count is 2'}
         }
         
     }
