@@ -149,7 +149,7 @@ function getRandomElement(from)
 
 class Train
 {
-    hourSimulationMilSeconds = 1200
+    hourSimulationMilSeconds = 300
     
     // [Temp]
     currentTrainStop
@@ -178,14 +178,22 @@ class Train
     {
         if (this.stopTimeH > 0)
         {
+            console.log(`Остановка ${this.currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${this.stopTimeH} ч`)
             this.stopTimeH--
-            console.log(`Идет смена локомотива, осталось ждать ${this.stopTimeH} ч`)
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
         else if (this.travelTimeH > 0)
         {
+            if (this?.currentTrainStop?.nextStop?.stopName)
+            {
+                console.log(`Едем, следующая остановка ${this.currentTrainStop.nextStop.stopName}, осталось ехать: ${this.travelTimeH} ч`)
+            }
+            else
+            {
+                console.log(`Едем, осталось ехать: ${this.travelTimeH} ч`)
+            }
+            
             this.travelTimeH--
-            console.log(`Едем, осталось ехать: ${this.travelTimeH} ч`)
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
         else
@@ -256,7 +264,7 @@ class TrainStop
     constructor()
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
-        this.stopTimeH = getRandomInt(1, 2)
+        this.stopTimeH = getRandomInt(1, 3)
         this.travelTimeH = getRandomInt(1, 8)
     }
 }
