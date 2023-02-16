@@ -155,6 +155,7 @@ class Train
     currentTrainStop
     stopTimeH
     travelTimeH
+    plannedStopTimeH
     travelStatus = 'По расписанию'
 
     // Маршрут
@@ -203,6 +204,20 @@ class Train
             if (nextStop)
             {
                 this.#updateTemp(nextStop)
+                
+                if (this.stopTimeH > this.plannedStopTimeH)
+                {
+                    this.travelStatus = "С опозданием"
+                }
+                else if (this.stopTimeH == this.plannedStopTimeH)
+                {
+                    this.travelStatus = "По расписанию"
+                }
+                else
+                {
+                    this.travelStatus = "С опережением"
+                }
+                
                 setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
             }
             else
@@ -218,6 +233,7 @@ class Train
         this.currentTrainStop = stop
         this.stopTimeH = this.currentTrainStop.stopTimeH
         this.travelTimeH = this.currentTrainStop.travelTimeH
+        this.plannedStopTimeH = this.currentTrainStop.plannedStopTimeH
     }
     
     #showTotal()
@@ -258,7 +274,7 @@ class TrainStop
     stopName
     stopTimeH // Длительность остановки
     travelTimeH // Время движения к следующей остановке
-    maxStopTimeH // Служит для
+    plannedStopTimeH // Служит для определения оставания от расписания
     nextStop //* Следующая остановка. Задавать вне конструктора
 
     alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
@@ -266,7 +282,8 @@ class TrainStop
     constructor()
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
-        this.stopTimeH = getRandomInt(1, 3)
+        this.stopTimeH = getRandomInt(1, 5)
+        this.plannedStopTimeH = getRandomInt(1, 5)
         this.travelTimeH = getRandomInt(1, 8)
     }
 }
