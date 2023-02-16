@@ -20,10 +20,10 @@ class Pet extends Animal
     
     constructor(type, nickname, age)
     {
-        super(type)
-        
         if (Pet.#countPet < 2)
         {
+            super(type)
+
             this.type = type
             this.#nickname = nickname
             this.age = age
