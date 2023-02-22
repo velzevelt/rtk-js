@@ -40,8 +40,9 @@ function createArmy(unitsAmount) {
 const list = toDoList()
 for(;;)
 {
-    let input = prompt(list['Help'] + "Что нужно сделать?", 'Make Task; 1; "new task"').split("; ")
-    const command = input[0]
+    let input = prompt(list['Help'] + "Что нужно сделать?").split("; ")
+    const command = input[0].toLowerCase()
+    alert(command)
     const argumets = input
     argumets.shift()
 
@@ -143,13 +144,13 @@ function toDoList() {
     }
 
     const res = {
-        "Make Task": makeTask,
-        "Mark Task As Deleted": markTaskAsDeleted,
-        "Mark Task As Completed": markTaskAsCompleted,
-        "Get Task Status": getTaskStatus,
-        "Get Active Tasks": getActiveTasks,
-        "Get Deleted Tasks": getDeletedTasks,
-        "Get All Tasks": getAllTasks,
+        "make task": makeTask,
+        "mark task as deleted": markTaskAsDeleted,
+        "mark task as completed": markTaskAsCompleted,
+        "get task status": getTaskStatus,
+        "get active tasks": getActiveTasks,
+        "get deleted tasks": getDeletedTasks,
+        "get all tasks": getAllTasks,
     }
     res["Help"] = toDoListOverlay(res);
 
