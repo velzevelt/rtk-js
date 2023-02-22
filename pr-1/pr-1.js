@@ -38,7 +38,30 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-prompt(list['Help'] + "Что нужно сделать?", 'Make Task n=1 text="new task"')
+while (true)
+{
+    let input = prompt(list['Help'] + "Что нужно сделать?", 'Make Task; 1; "new task"').split("; ")
+    const command = input[0]
+    const argumets = input
+    argumets.shift()
+
+    console.log(list[command])
+
+    try {
+        const commandOut = list[command](...argumets)
+        if (typeof(commandOut) === 'string')
+        {
+            alert(commandOut)
+        }
+
+    } catch (error) {
+        alert(error)       
+    }
+    
+    // console.log(command, argumets)
+    // break
+}
+
 
 
 
@@ -51,6 +74,7 @@ function toDoList() {
             tasks.push( {n, text, status: "active" } )
         } else {
             console.warn("Task with this number already exists!")
+            throw new Error("Task with this number already exists!")
         }
 
         return tasks
@@ -100,12 +124,12 @@ function toDoList() {
 
     const res = {
         "Make Task": makeTask,
-        "Mark Task as deleted": markTaskAsDeleted,
-        "Mark Task as completed": markTaskAsCompleted,
-        "Get Task status": getTaskStatus,
-        "Get active Tasks": getActiveTasks,
-        "Get deleted Tasks": getDeletedTasks,
-        "Gel all Tasks": getAllTasks,
+        "Mark Task As Deleted": markTaskAsDeleted,
+        "Mark Task As Completed": markTaskAsCompleted,
+        "Get Task Status": getTaskStatus,
+        "Get Active Tasks": getActiveTasks,
+        "Get Deleted Tasks": getDeletedTasks,
+        "Gel All Tasks": getAllTasks,
     }
     res["Help"] = toDoListOverlay(res);
 
