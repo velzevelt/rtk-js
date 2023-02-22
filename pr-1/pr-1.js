@@ -38,17 +38,8 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-alert(toDoListOverlay(list))
+// alert(list['Справка']())
 
-
-function toDoListOverlay(list) {
-    let res = ''
-    const keys = Object.entries(list)
-    keys.forEach((element, key) => {
-        res += `${key + 1})  ${element[0]}\n`
-    });
-    return res
-}
 
 
 function toDoList() {
@@ -98,17 +89,27 @@ function toDoList() {
         return tasks
     }
 
-    return {
-        "makeTask": makeTask,
-        "addTask": makeTask,
-        "markTaskAsDeleted": markTaskAsDeleted,
-        "markTaskAsCompleted": markTaskAsCompleted,
-        "getTaskStatus": getTaskStatus,
-        "getActiveTasks": getActiveTasks,
-        "getDeletedTasks": getDeletedTasks,
-        "getAllTasks": getAllTasks,
-
+    const toDoListOverlay = function(list) {
+        let res = 'Возможности списка:\n'
+        const keys = Object.entries(list)
+        keys.forEach((element, key) => {
+            res += `${key + 1})  ${element[0]}\n`
+        });
+        return res
     }
+
+    const res = {
+        "Make Task": makeTask,
+        "Mark Task as deleted": markTaskAsDeleted,
+        "Mark Task as completed": markTaskAsCompleted,
+        "Get Task status": getTaskStatus,
+        "Get active Tasks": getActiveTasks,
+        "Get deleted Tasks": getDeletedTasks,
+        "Gel all Tasks": getAllTasks,
+    }
+    res["Help"] = toDoListOverlay(res);
+
+    return res
     // return [makeTask, getStatus, removeCompletedTask, getActiveTasks]
 }
 
