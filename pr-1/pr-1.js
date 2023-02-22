@@ -34,10 +34,21 @@ function createArmy(unitsAmount) {
 }
 
 
-const army = createArmy(5)
+// const army = createArmy(5)
 // console.log(army)
 
 const list = toDoList()
+alert(toDoListOverlay(list))
+
+
+function toDoListOverlay(list) {
+    let res = ''
+    const keys = Object.entries(list)
+    keys.forEach((element, key) => {
+        res += `${key + 1})  ${element[0]}\n`
+    });
+    return res
+}
 
 
 function toDoList() {
@@ -100,3 +111,4 @@ function toDoList() {
     }
     // return [makeTask, getStatus, removeCompletedTask, getActiveTasks]
 }
+
