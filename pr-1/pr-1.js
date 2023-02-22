@@ -38,7 +38,7 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-while (true)
+for(;;)
 {
     let input = prompt(list['Help'] + "Что нужно сделать?", 'Make Task; 1; "new task"').split("; ")
     const command = input[0]
@@ -52,6 +52,22 @@ while (true)
         if (typeof(commandOut) === 'string')
         {
             alert(commandOut)
+        }
+        else if (Array.isArray(commandOut))
+        {
+            let parsedVals = ''
+            commandOut.forEach(element => {
+                entries = Object.entries(element)
+                entries.forEach((v) => {parsedVals += `${v[0]}: ${v[1]}\n`})
+                parsedVals += '\n'
+                })
+            
+            // commandOut.forEach((element, key) => {
+            //     out += `${key + 1}) ${
+            //         t = ''
+            //     }\n`
+            // })
+            alert(parsedVals)
         }
 
     } catch (error) {
@@ -77,7 +93,7 @@ function toDoList() {
             throw new Error("Task with this number already exists!")
         }
 
-        return tasks
+        // return tasks
     }
 
     const getTaskStatus = function(n) {
@@ -95,6 +111,10 @@ function toDoList() {
         const r = tasks.find(obj => {return obj?.n === n})
         if (r?.status === "completed") {
             r.status = "deleted"
+        } 
+        else
+        {
+            throw new Error('Cannot delete active task, you shoud complete it first')
         }
         return r
     }
@@ -129,7 +149,7 @@ function toDoList() {
         "Get Task Status": getTaskStatus,
         "Get Active Tasks": getActiveTasks,
         "Get Deleted Tasks": getDeletedTasks,
-        "Gel All Tasks": getAllTasks,
+        "Get All Tasks": getAllTasks,
     }
     res["Help"] = toDoListOverlay(res);
 
