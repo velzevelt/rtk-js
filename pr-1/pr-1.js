@@ -38,7 +38,7 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-// alert(list['Справка']())
+prompt(list['Help'] + "Что нужно сделать?", 'Make Task n=1 text="new task"')
 
 
 
