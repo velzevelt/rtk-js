@@ -219,7 +219,12 @@ class Train
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
                     this.travelStatus = "Скоростной режим"
-                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
+
+                    //!!!!
+                    console.log(this.currentTrainStop.plannedStopTimeH, this.currentTrainStop.stopTimeH)
+                    this.speedKpH = (this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
+                    this.speedKpH += this.speedKpH * (this.currentTrainStop.stopTimeH - this.currentTrainStop.plannedStopTimeH)
+                    this.speedKpH = Math.round(this.speedKpH)
                 }
                 else
                 {
