@@ -152,7 +152,7 @@ class Train
     hourSimulationMilSeconds = 300
     speedKpH = 0
     travelStatus = 'По расписанию'
-    
+
     // [Temp]
     currentTrainStop
 
@@ -240,8 +240,10 @@ class Route
 
         const initTrainStop = new TrainStop()
         this.stops = [initTrainStop]
+        this.totalTravelTimeH += initTrainStop.plannedStopTimeH
+        this.totalTravelDistanceK += initTrainStop.nextStopDistanceK
         
-        let stopCount = getRandomInt(5, 15)
+        let stopCount = getRandomInt(1, 5)
         for (let i = 1; i < stopCount; i++)
         {
             const nextTrainStop = new TrainStop()
@@ -249,13 +251,13 @@ class Route
             this.stops[i - 1].nextStop = nextTrainStop
             this.stops.push(nextTrainStop)
             
-            this.totalTravelTimeH += nextTrainStop.stopTimeH
+            this.totalTravelTimeH += nextTrainStop.plannedStopTimeH
             this.totalTravelDistanceK += nextTrainStop.nextStopDistanceK
         }
         stopCount++
 
         this.averageSpeedKpH = this.totalTravelDistanceK / this.totalTravelTimeH
-        // console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
+        console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
 
         this.stops.forEach(element => {
             element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH + element.plannedStopTimeH
@@ -281,7 +283,7 @@ class TrainStop
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
         this.plannedStopTimeH = getRandomInt(1, 2)
-        this.nextStopDistanceK = getRandomInt(10, 200)
+        this.nextStopDistanceK = getRandomInt(80, 500)
         this.plannedStopTimeH = getRandomInt(1, 2)
     }
 }
