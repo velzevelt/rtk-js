@@ -261,6 +261,7 @@ class Route
 
         this.stops.forEach(element => {
             element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH + element.plannedStopTimeH
+            console.log(element)
             element.stopTimeH = element.plannedStopTimeH + getRandomInt(0, 1)
         });
     }
@@ -275,16 +276,15 @@ class TrainStop
     stopTimeH // Длительность остановки
     nextStop //* Следующая остановка. Задавать вне конструктора
     nextStopDistanceK // Расстояние до следующей остановки
-    plannedTravelTimeH = 1 // Планируемая длительность движения до следующей остановки
+    plannedTravelTimeH // Планируемая длительность движения до следующей остановки
 
     alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
 
     constructor()
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
-        this.plannedStopTimeH = getRandomInt(1, 2)
         this.nextStopDistanceK = getRandomInt(80, 500)
-        this.plannedStopTimeH = getRandomInt(1, 2)
+        this.plannedStopTimeH = getRandomInt(1, 3)
     }
 }
 
