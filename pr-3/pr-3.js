@@ -208,6 +208,7 @@ class Train
 
             this.totalTimeH++
             this.currentTrainStop.nextStopDistanceK -= this.speedKpH
+            this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.Time
 
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
