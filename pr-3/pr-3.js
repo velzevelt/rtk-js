@@ -149,7 +149,7 @@ function getRandomElement(from)
 
 class Train
 {
-    hourSimulationMilSeconds = 300
+    hourSimulationMilSeconds = 50
     speedKpH = 0
     travelStatus = 'По расписанию'
     route
@@ -212,7 +212,7 @@ class Train
                     if (getRandomInt(0, 2) === 0)
                     {
                         this.travelStatus = "Скоростной режим"
-                        this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH) * this.currentTrainStop.stopTimeH - this.currentTrainStop.plannedStopTimeH
+                        this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH)
                     }
                     else
                     {
