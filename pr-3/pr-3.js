@@ -98,7 +98,7 @@ class TurtleRunner
         }
         sleepMessage += `Осталось спать: ${this.sleepH}`
         console.log(sleepMessage)
-        //#endregion LOG
+        //#endregion
 
         if (this.sleepH > 0) 
         {
@@ -150,20 +150,19 @@ function getRandomElement(from)
 class Train
 {
     hourSimulationMilSeconds = 300
+    speedKpH = 25
+    travelStatus = 'По расписанию'
     
     // [Temp]
     currentTrainStop
-    stopTimeH
-    travelTimeH
-    plannedStopTimeH
-    travelStatus = 'По расписанию'
+
 
     // Маршрут
     constructor(route)
     {
         if (route)
         {
-            this.#updateTemp(route.stops[0])
+            this.currentTrainStop =  {...route.stops[0]}
         }        
         else
         {
@@ -178,46 +177,32 @@ class Train
 
     #move()
     {
-        if (this.stopTimeH > 0)
+        if (currentTrainStop.stopTimeH > 0)
         {
-            console.log(`Остановка ${this.currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${this.stopTimeH} ч`)
-            this.stopTimeH--
+            console.log(`Остановка ${currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${currentTrainStop.stopTimeH} ч`)
+            currentTrainStop.stopTimeH--
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
-        else if (this.travelTimeH > 0)
+        else if (currentTrainStop.travelTimeH > 0)
         {
-            if (this?.currentTrainStop?.nextStop?.stopName)
+            if (currentTrainStop?.nextStop?.stopName)
             {
-                console.log(`Едем, следующая остановка ${this.currentTrainStop.nextStop.stopName}, осталось ехать: ${this.travelTimeH} ч`)
+                console.log(`Едем (${this.speedKpH} км/ч), следующая остановка ${currentTrainStop.nextStop.stopName}, осталось ехать: ${travelTimeH} ч`)
             }
             else
             {
-                console.log(`Едем, осталось ехать: ${this.travelTimeH} ч`)
+                console.log(`Едем (${this.speedKpH} км/ч), осталось ехать: ${currentTrainStop.travelTimeH} ч`)
             }
             
-            this.travelTimeH--
-            setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+            currentTrainStop.travelTimeH--
+            setTimeout(() => this.#move(), currentTrainStop.hourSimulationMilSeconds)
         }
         else
         {
-            const nextStop = this.currentTrainStop.nextStop
+            const nextStop = currentTrainStop.nextStop
             if (nextStop)
             {
-                this.#updateTemp(nextStop)
-                
-                if (this.stopTimeH > this.plannedStopTimeH)
-                {
-                    this.travelStatus = "С опозданием"
-                }
-                else if (this.stopTimeH == this.plannedStopTimeH)
-                {
-                    this.travelStatus = "По расписанию"
-                }
-                else
-                {
-                    this.travelStatus = "С опережением"
-                }
-                
+                this.currentTrainStop = {...nextStop}
                 setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
             }
             else
@@ -228,14 +213,6 @@ class Train
         }
     }
 
-    #updateTemp(stop)
-    {
-        this.currentTrainStop = stop
-        this.stopTimeH = this.currentTrainStop.stopTimeH
-        this.travelTimeH = this.currentTrainStop.travelTimeH
-        this.plannedStopTimeH = this.currentTrainStop.plannedStopTimeH
-    }
-    
     #showTotal()
     {
         return "123"
@@ -273,9 +250,9 @@ class TrainStop
 {
     stopName
     stopTimeH // Длительность остановки
-    travelTimeH // Время движения к следующей остановке
-    plannedStopTimeH // Служит для определения оставания от расписания
     nextStop //* Следующая остановка. Задавать вне конструктора
+    nextStopDistanceK // Расстояние до следующей остановки
+    plannedTravelTime // Планируемая длительность движения до прибытия
 
     alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
 
@@ -284,7 +261,7 @@ class TrainStop
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
         this.stopTimeH = getRandomInt(1, 5)
         this.plannedStopTimeH = getRandomInt(1, 5)
-        this.travelTimeH = getRandomInt(1, 8)
+        this.nextStopDistanceK = getRandomInt(10, 200)
     }
 }
 
