@@ -217,7 +217,7 @@ class Train
 
     #showTotal()
     {
-        console.log(this.route)
+        
     }
 }
 
@@ -270,7 +270,7 @@ class TrainStop
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
         this.stopTimeH = getRandomInt(1, 3)
         this.nextStopDistanceK = getRandomInt(10, 200)
-        this.plannedTravelTimeH = getRandomInt(1, 4)
+        this.plannedTravelTimeH = (this.nextStopDistanceK % 10) + this.stopTimeH
     }
 }
 
