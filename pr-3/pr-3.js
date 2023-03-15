@@ -180,7 +180,16 @@ class Train
     {
         if (this.currentTrainStop.stopTimeH > 0)
         {
-            console.log(`Остановка ${this.currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${this.currentTrainStop.stopTimeH} ч`)
+            const delay = this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH
+            if (delay)
+            {
+                console.log(`Остановка ${this.currentTrainStop.stopName} (Возникла задержка): идет смена локомотива, осталось ждать ${this.currentTrainStop.stopTimeH} ч`)
+            }
+            else
+            {
+                console.log(`Остановка ${this.currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${this.currentTrainStop.stopTimeH} ч`)
+            }
+
             this.currentTrainStop.stopTimeH--
             this.totalTimeH++
 
@@ -209,18 +218,10 @@ class Train
                 this.currentTrainStop = {...this.currentTrainStop.nextStop}
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
-                    if (getRandomInt(0, 2) === 0)
-                    {
-                        this.travelStatus = "Скоростной режим"
-                        this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH)
-                    }
-                    else
-                    {
-                        this.travelStatus = "С задержкой"
-                        this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
-                    }
+                    this.travelStatus = "Скоростной режим"
+                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH)
                 }
-                else
+                else if (this.currentTrainStop.stopTimeH === this.currentTrainStop.plannedStopTimeH)
                 {
                     this.travelStatus = "По расписанию"
                     this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
@@ -289,7 +290,14 @@ class Route
 
         this.stops.forEach(element => {
             element.plannedTravelTimeH = Math.round(element.nextStopDistanceK / this.averageSpeedKpH) + element.plannedStopTimeH
-            element.stopTimeH = element.plannedStopTimeH + getRandomInt(0, 2)
+
+            let offset = 0
+            if (Math.random() * 100 > 15)
+            {
+                offset++
+            }
+
+            element.stopTimeH = element.plannedStopTimeH + offset
             this.totalTimeH += element.plannedTravelTimeH + element.stopTimeH
         });
     }
