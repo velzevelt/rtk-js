@@ -150,7 +150,7 @@ function getRandomElement(from)
 class Train
 {
     hourSimulationMilSeconds = 300
-    speedKpH = 25
+    speedKpH = 0
     travelStatus = 'По расписанию'
     
     // [Temp]
@@ -164,6 +164,7 @@ class Train
         if (route)
         {
             this.currentTrainStop =  {...route.stops[0]} //* Нельзя менять исходные данные остановки, можно использовать только копии
+            this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
         }        
         else
         {
@@ -257,7 +258,8 @@ class Route
         // console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
 
         this.stops.forEach(element => {
-            element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH 
+            element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH + element.plannedStopTimeH
+            element.stopTimeH = element.plannedStopTimeH + getRandomInt(0, 1)
         });
     }
 }
@@ -267,6 +269,7 @@ class Route
 class TrainStop
 {
     stopName
+    plannedStopTimeH // Планируемая длительность остановки
     stopTimeH // Длительность остановки
     nextStop //* Следующая остановка. Задавать вне конструктора
     nextStopDistanceK // Расстояние до следующей остановки
@@ -277,8 +280,9 @@ class TrainStop
     constructor()
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
-        this.stopTimeH = getRandomInt(1, 3)
+        this.plannedStopTimeH = getRandomInt(1, 2)
         this.nextStopDistanceK = getRandomInt(10, 200)
+        this.plannedStopTimeH = getRandomInt(1, 2)
     }
 }
 
