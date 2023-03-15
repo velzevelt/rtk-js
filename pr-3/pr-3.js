@@ -238,7 +238,16 @@ class Train
 
     #showTotal()
     {
-        const message = `Маршрут занял ${this.totalTimeH} ч, Преодолено: ${this.route.totalTravelDistanceK} км, Средняя скорость: ${this.route.averageSpeedKpH} км/ч`
+        let abberation = this.route.totalTimeH - this.totalTimeH
+        if (abberation > 0) {
+            abberation = `Поезд прибыл раньше на ${abberation} ч`
+        } else if (abberation == 0) {
+            abberation = `Поезд прибыл согласно расписанию`
+        } else {
+            abberation = `Поезд опоздал на ${Math.abs(abberation)} ч`
+        }
+
+        const message = `Маршрут занял ${this.totalTimeH} ч, Преодолено: ${this.route.totalTravelDistanceK} км, Ожидаемое время пути: ${this.route.totalTimeH} ч, ${abberation}`
         console.log(message)
     }
 }
@@ -250,7 +259,8 @@ class Route
     departureCity
     destinationCity
     stops
-    totalTravelTimeH = 0 // Итоговое время движения (по расписанию)
+    totalTravelTimeH = 0 // Итоговое время движения между остановками (по расписанию)
+    totalTimeH = 0
     totalTravelDistanceK = 0 // Итоговое расстояние движения
     averageSpeedKpH = 0
 
@@ -264,7 +274,7 @@ class Route
         this.totalTravelTimeH += initTrainStop.plannedStopTimeH
         this.totalTravelDistanceK += initTrainStop.nextStopDistanceK
         
-        for (let i = 1; i < getRandomInt(3, 5); i++)
+        for (let i = 1; i < getRandomInt(3, 15); i++)
         {
             const nextTrainStop = new TrainStop()
 
@@ -275,12 +285,12 @@ class Route
             this.totalTravelDistanceK += nextTrainStop.nextStopDistanceK
         }
 
-        this.averageSpeedKpH = Math.floor(this.totalTravelDistanceK / this.totalTravelTimeH)
-//        console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
+        this.averageSpeedKpH = Math.round(this.totalTravelDistanceK / this.totalTravelTimeH)
 
         this.stops.forEach(element => {
-            element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH + element.plannedStopTimeH
+            element.plannedTravelTimeH = Math.round(element.nextStopDistanceK / this.averageSpeedKpH) + element.plannedStopTimeH
             element.stopTimeH = element.plannedStopTimeH + getRandomInt(0, 2)
+            this.totalTimeH += element.plannedTravelTimeH + element.stopTimeH
         });
     }
 
