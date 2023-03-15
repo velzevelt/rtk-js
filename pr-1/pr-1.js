@@ -62,12 +62,6 @@ for(;;)
                 entries.forEach((v) => {parsedVals += `${v[0]}: ${v[1]}\n`})
                 parsedVals += '\n'
                 })
-            
-            // commandOut.forEach((element, key) => {
-            //     out += `${key + 1}) ${
-            //         t = ''
-            //     }\n`
-            // })
             alert(parsedVals)
         }
 
