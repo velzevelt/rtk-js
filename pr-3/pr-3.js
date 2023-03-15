@@ -160,9 +160,10 @@ class Train
     // Маршрут
     constructor(route)
     {
+        this.route = route
         if (route)
         {
-            this.currentTrainStop =  {...route.stops[0]}
+            this.currentTrainStop =  {...route.stops[0]} //* Нельзя менять исходные данные остановки, можно использовать только копии
         }        
         else
         {
@@ -177,33 +178,34 @@ class Train
 
     #move()
     {
-        if (currentTrainStop.stopTimeH > 0)
+        if (this.currentTrainStop.stopTimeH > 0)
         {
-            console.log(`Остановка ${currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${currentTrainStop.stopTimeH} ч`)
-            currentTrainStop.stopTimeH--
+            console.log(`Остановка ${this.currentTrainStop.stopName}: идет смена локомотива, осталось ждать ${this.currentTrainStop.stopTimeH} ч`)
+            this.currentTrainStop.stopTimeH--
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
-        else if (currentTrainStop.travelTimeH > 0)
+        else if (this.currentTrainStop.nextStopDistanceK > 0)
         {
-            if (currentTrainStop?.nextStop?.stopName)
+            if (this.currentTrainStop?.nextStop?.stopName)
             {
-                console.log(`Едем (${this.speedKpH} км/ч), следующая остановка ${currentTrainStop.nextStop.stopName}, осталось ехать: ${travelTimeH} ч`)
+                console.log(`Едем (${this.speedKpH} км/ч), следующая остановка ${this.currentTrainStop.nextStop.stopName}, осталось ехать: ${this.currentTrainStop.nextStopDistanceK} км`)
             }
             else
             {
-                console.log(`Едем (${this.speedKpH} км/ч), осталось ехать: ${currentTrainStop.travelTimeH} ч`)
+                console.log(`Едем (${this.speedKpH} км/ч), осталось ехать: ${this.currentTrainStop.nextStopDistanceK} км`)
             }
             
-            currentTrainStop.travelTimeH--
-            setTimeout(() => this.#move(), currentTrainStop.hourSimulationMilSeconds)
+            this.currentTrainStop.nextStopDistanceK -= this.speedKpH
+            setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
         else
         {
-            const nextStop = currentTrainStop.nextStop
-            if (nextStop)
+            if (this.currentTrainStop?.nextStop)
             {
-                this.currentTrainStop = {...nextStop}
-                setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+                this.currentTrainStop = {...this.currentTrainStop.nextStop}
+                this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
+                // setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
+                this.#move()
             }
             else
             {
@@ -215,7 +217,7 @@ class Train
 
     #showTotal()
     {
-        return "123"
+        console.log(this.route)
     }
 }
 
@@ -226,6 +228,8 @@ class Route
     departureCity
     destinationCity
     stops
+    totalTravelTimeH // Итоговое время движения (по расписанию)
+    totalTravelDistanceK // Итоговое расстояние движения
 
     constructor(departureCity, destinationCity)
     {
@@ -235,33 +239,38 @@ class Route
         const initTrainStop = new TrainStop()
         this.stops = [initTrainStop]
 
-        for (let i = 1; i < getRandomInt(2, 5); i++)
+        for (let i = 1; i < getRandomInt(5, 15); i++)
         {
             const nextTrainStop = new TrainStop()
             this.stops[i - 1].nextStop = nextTrainStop
             this.stops.push(nextTrainStop)
-        } 
+            
+            this.totalTravelTimeH += nextTrainStop.stopTimeH + nextTrainStop.plannedTravelTimeH
+            this.totalTravelDistanceK += nextTrainStop.nextStopDistanceK
+        }
+
+
     }
 }
 
 
-// Остановка. Название остановки. Длительность остановки. Длительность движения к следующей остановке. Следующая остановка
+// Остановка/Станция
 class TrainStop
 {
     stopName
     stopTimeH // Длительность остановки
     nextStop //* Следующая остановка. Задавать вне конструктора
     nextStopDistanceK // Расстояние до следующей остановки
-    plannedTravelTime // Планируемая длительность движения до прибытия
+    plannedTravelTimeH // Планируемая длительность движения до следующей остановки
 
     alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')
 
     constructor()
     {
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
-        this.stopTimeH = getRandomInt(1, 5)
-        this.plannedStopTimeH = getRandomInt(1, 5)
+        this.stopTimeH = getRandomInt(1, 3)
         this.nextStopDistanceK = getRandomInt(10, 200)
+        this.plannedTravelTimeH = getRandomInt(1, 4)
     }
 }
 
