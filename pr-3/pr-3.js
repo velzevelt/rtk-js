@@ -152,12 +152,11 @@ class Train
     hourSimulationMilSeconds = 300
     speedKpH = 0
     travelStatus = 'По расписанию'
+    totalTravelTimeH = 0
 
-    // [Temp]
     currentTrainStop
 
 
-    // Маршрут
     constructor(route)
     {
         this.route = route
@@ -195,8 +194,11 @@ class Train
             {
                 console.log(`Едем ${this.travelStatus} (${this.speedKpH} км/ч), осталось ехать: ${this.currentTrainStop.nextStopDistanceK} км`)
             }
-            
+
+            this.totalTravelTimeH += (this.currentTrainStop.nextStopDistanceK > this.speedKpH) ? this.speedKpH : this.currentTrainStop.nextStopDistanceK
+
             this.currentTrainStop.nextStopDistanceK -= this.speedKpH
+
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
         else
@@ -235,6 +237,7 @@ class Train
 
     #showTotal()
     {
+        console.log(this.totalTravelTimeH)
     }
 }
 
@@ -270,12 +273,11 @@ class Route
             this.totalTravelDistanceK += nextTrainStop.nextStopDistanceK
         }
 
-        this.averageSpeedKpH = this.totalTravelDistanceK / this.totalTravelTimeH
+        this.averageSpeedKpH = Math.floor(this.totalTravelDistanceK / this.totalTravelTimeH)
         console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
 
         this.stops.forEach(element => {
             element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH + element.plannedStopTimeH
-            console.log(element)
             element.stopTimeH = element.plannedStopTimeH + getRandomInt(0, 2)
         });
     }
