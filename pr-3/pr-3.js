@@ -216,7 +216,7 @@ class Train
                     }
                     else
                     {
-                        this.travelStatus = "С опозданием"
+                        this.travelStatus = "С задержкой"
                         this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
                     }
                 }
