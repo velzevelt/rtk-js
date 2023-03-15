@@ -208,7 +208,6 @@ class Train
 
             this.totalTimeH++
             this.currentTrainStop.nextStopDistanceK -= this.speedKpH
-            this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.Time
 
             setTimeout(() => this.#move(), this.hourSimulationMilSeconds)
         }
@@ -227,6 +226,7 @@ class Train
                     this.travelStatus = "По расписанию"
                     this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
                 }
+
 
                 this.#move()
             }
@@ -293,7 +293,7 @@ class Route
             element.plannedTravelTimeH = Math.round(element.nextStopDistanceK / this.averageSpeedKpH) + element.plannedStopTimeH
 
             let offset = 0
-            if (Math.random() * 100 > 15)
+            if (Math.random() * 100 > 75)
             {
                 offset++
             }
