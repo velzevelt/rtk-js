@@ -242,6 +242,7 @@ class Route
         for (let i = 1; i < getRandomInt(5, 15); i++)
         {
             const nextTrainStop = new TrainStop()
+
             this.stops[i - 1].nextStop = nextTrainStop
             this.stops.push(nextTrainStop)
             
@@ -270,7 +271,7 @@ class TrainStop
         this.stopName = getRandomElement(this.alphabet) + getRandomInt(1, 100)
         this.stopTimeH = getRandomInt(1, 3)
         this.nextStopDistanceK = getRandomInt(10, 200)
-        this.plannedTravelTimeH = (this.nextStopDistanceK % 10) + this.stopTimeH
+        this.plannedTravelTimeH = 4
     }
 }
 
