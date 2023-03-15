@@ -93,7 +93,7 @@ class TurtleRunner
         
         //#region Логирование
         let sleepMessage = ''
-        if (this.name !== undefined) {
+        if (this?.name) {
             sleepMessage += `Черепаха "${this.name}": `
         }
         sleepMessage += `Осталось спать: ${this.sleepH}`
@@ -206,8 +206,7 @@ class Train
                 this.currentTrainStop = {...this.currentTrainStop.nextStop}
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
-                    const fate = getRandomInt(0, 2)
-                    if (fate === 0)
+                    if (getRandomInt(0, 2) === 0)
                     {
                         this.travelStatus = "Скоростной режим"
                         this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH) * this.currentTrainStop.stopTimeH - this.currentTrainStop.plannedStopTimeH
@@ -240,7 +239,7 @@ class Train
 }
 
 
-// Маршрут. Точка отбытия. Точка назначения. Остановки
+// Маршрут
 class Route
 {
     departureCity
