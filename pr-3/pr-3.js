@@ -219,13 +219,14 @@ class Train
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
                     this.travelStatus = "Скоростной режим"
-                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH)
+                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
                 }
-                else if (this.currentTrainStop.stopTimeH === this.currentTrainStop.plannedStopTimeH)
+                else
                 {
                     this.travelStatus = "По расписанию"
                     this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
                 }
+                
 
 
                 this.#move()
@@ -276,7 +277,7 @@ class Route
         this.totalTravelTimeH += initTrainStop.plannedStopTimeH
         this.totalTravelDistanceK += initTrainStop.nextStopDistanceK
         
-        for (let i = 1; i < getRandomInt(3, 15); i++)
+        for (let i = 1; i < getRandomInt(30, 45); i++)
         {
             const nextTrainStop = new TrainStop()
 
