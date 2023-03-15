@@ -228,9 +228,9 @@ class Route
     departureCity
     destinationCity
     stops
-    totalTravelTimeH // Итоговое время движения (по расписанию)
-    totalTravelDistanceK // Итоговое расстояние движения
-    averageSpeedKpH
+    totalTravelTimeH = 0 // Итоговое время движения (по расписанию)
+    totalTravelDistanceK = 0 // Итоговое расстояние движения
+    averageSpeedKpH = 0
 
     constructor(departureCity, destinationCity)
     {
@@ -248,13 +248,13 @@ class Route
             this.stops[i - 1].nextStop = nextTrainStop
             this.stops.push(nextTrainStop)
             
-            this.totalTravelTimeH += nextTrainStop.stopTimeH + nextTrainStop.plannedTravelTimeH
+            this.totalTravelTimeH += nextTrainStop.stopTimeH
             this.totalTravelDistanceK += nextTrainStop.nextStopDistanceK
         }
         stopCount++
 
         this.averageSpeedKpH = this.totalTravelDistanceK / this.totalTravelTimeH
-        console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
+        // console.log(this.averageSpeedKpH, this.totalTravelDistanceK, this.totalTravelTimeH)
 
         this.stops.forEach(element => {
             element.plannedTravelTimeH = element.nextStopDistanceK / this.averageSpeedKpH 
