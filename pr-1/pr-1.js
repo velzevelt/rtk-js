@@ -38,9 +38,9 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-for(;;)
+while(true)
 {
-    const input = prompt(list['help'].execute(list) + "Что нужно сделать?").split(', ')
+    const input = prompt(list['help'].execute() + "Что нужно сделать?").split(', ')
     const command = input[0].toLowerCase()
     const argumets = input
     argumets.shift()
@@ -126,13 +126,15 @@ function toDoList() {
         return tasks
     }
 
-    const toDoListOverlay = function(list) {
-        let res = 'Возможности списка:\n'
-        const keys = Object.entries(list)
+    const toDoListOverlay = function() {
+        let r = 'Возможности списка:\n'
+        const keys = Object.entries(res)
         keys.forEach((element, key) => {
-            res += `${key + 1})  ${element[1].name} ${element[1].args} ${element[1].description}\n`
+            r += `${key + 1})  ${element[1].name} ${element[1].args} ${element[1].description}\n`
         });
-        return res
+
+        
+        return r
     }
 
     // const res = {
@@ -147,7 +149,7 @@ function toDoList() {
     // res["help"] = toDoListOverlay(res);
 
     const temp = [
-        Command("help", toDoListOverlay),
+        Command('help', toDoListOverlay),
         Command("make task", makeTask, '[Номер задачи], [Текст]'),
         Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
         Command("mark task as deleted", markTaskAsDeleted, '[Номер задачи], [Текст]'),
@@ -156,6 +158,7 @@ function toDoList() {
         Command("get deleted tasks", getDeletedTasks),
         Command("get all tasks", getAllTasks),
     ]
+
     const res = {}
     for(let i = 0; i < temp.length; i++)
     {
