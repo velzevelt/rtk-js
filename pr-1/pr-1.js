@@ -40,16 +40,15 @@ function createArmy(unitsAmount) {
 const list = toDoList()
 for(;;)
 {
-    let input = prompt(list['help'] + "Что нужно сделать?").split("; ")
+    const input = prompt(list['help'].execute(list) + "Что нужно сделать?").split(', ')
     const command = input[0].toLowerCase()
-    alert(command)
     const argumets = input
     argumets.shift()
 
-    console.log(list[command])
+    console.log(command, argumets)
 
     try {
-        const commandOut = list[command](...argumets)
+        const commandOut = list[command].execute(...argumets)
         if (typeof(commandOut) === 'string')
         {
             alert(commandOut)
@@ -69,8 +68,7 @@ for(;;)
         alert(error)       
     }
     
-    // console.log(command, argumets)
-    // break
+   
 }
 
 
@@ -132,39 +130,44 @@ function toDoList() {
         let res = 'Возможности списка:\n'
         const keys = Object.entries(list)
         keys.forEach((element, key) => {
-            res += `${key + 1})  ${element[0]}\n`
+            res += `${key + 1})  ${element[1].name} ${element[1].args} ${element[1].description}\n`
         });
         return res
     }
 
-    const res = {
-        "make task": makeTask,
-        "mark task as deleted": markTaskAsDeleted,
-        "mark task as completed": markTaskAsCompleted,
-        "get task status": getTaskStatus,
-        "get active tasks": getActiveTasks,
-        "get deleted tasks": getDeletedTasks,
-        "get all tasks": getAllTasks,
-    }
-    res["help"] = toDoListOverlay(res);
-
-    // const res = [
-    //     Command("help", '', toDoListOverlay),
-    //     Command("make task", '[Номер задачи], [Текст]', makeTask),
-    //     Command("mark task as completed", '[Номер задачи], [Текст]', markTaskAsCompleted),
-    //     Command("mark task as deleted", '[Номер задачи], [Текст]', markTaskAsDeleted),
-    //     Command("get active tasks", '', getActiveTasks),
-    //     Command("get task status", '[Номер задачи]', getTaskStatus),
-    //     Command("get deleted tasks", '', getDeletedTasks),
-    //     Command("get all tasks", '', getAllTasks),
-    // ]
-
-    // function Command(name, args, execute)
-    // {
-    //     return {name, args, execute}
+    // const res = {
+    //     "make task": makeTask,
+    //     "mark task as deleted": markTaskAsDeleted,
+    //     "mark task as completed": markTaskAsCompleted,
+    //     "get task status": getTaskStatus,
+    //     "get active tasks": getActiveTasks,
+    //     "get deleted tasks": getDeletedTasks,
+    //     "get all tasks": getAllTasks,
     // }
+    // res["help"] = toDoListOverlay(res);
+
+    const temp = [
+        Command("help", toDoListOverlay),
+        Command("make task", makeTask, '[Номер задачи], [Текст]'),
+        Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
+        Command("mark task as deleted", markTaskAsDeleted, '[Номер задачи], [Текст]'),
+        Command("get active tasks", getActiveTasks),
+        Command("get task status", getTaskStatus, '[Номер задачи]'),
+        Command("get deleted tasks", getDeletedTasks),
+        Command("get all tasks", getAllTasks),
+    ]
+    const res = {}
+    for(let i = 0; i < temp.length; i++)
+    {
+        res[temp[i].name] = temp[i]
+    }
+
+
+    function Command(name, execute, args = '', description = '')
+    {
+        return {name, args, execute, description}
+    }
 
     return res
-    // return [makeTask, getStatus, removeCompletedTask, getActiveTasks]
 }
 
