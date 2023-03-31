@@ -40,15 +40,25 @@ function createArmy(unitsAmount) {
 const list = toDoList()
 while(true)
 {
-    const input = prompt(list['help'].execute() + "Что нужно сделать?").split(', ')
+    const input = prompt(list.find(c => c.name === 'help').execute() + "Что нужно сделать?").split(', ')
     const command = input[0].toLowerCase()
     const argumets = input
     argumets.shift()
 
-    console.log(command, argumets)
+    // console.log(command, argumets)
 
     try {
-        const commandOut = list[command].execute(...argumets)
+        let commandOut = undefined
+        if (isNaN(command))
+        {
+            commandOut = list.find(c => c.name === command).execute(...argumets)
+        }
+        else
+        {
+            commandOut = list[command - 1].execute(...argumets)
+        }
+        
+        
         if (typeof(commandOut) === 'string')
         {
             alert(commandOut)
@@ -148,7 +158,7 @@ function toDoList() {
     // }
     // res["help"] = toDoListOverlay(res);
 
-    const temp = [
+    const res = [
         Command('help', toDoListOverlay),
         Command("make task", makeTask, '[Номер задачи], [Текст]'),
         Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
@@ -158,13 +168,6 @@ function toDoList() {
         Command("get deleted tasks", getDeletedTasks),
         Command("get all tasks", getAllTasks),
     ]
-
-    const res = {}
-    for(let i = 0; i < temp.length; i++)
-    {
-        res[temp[i].name] = temp[i]
-    }
-
 
     function Command(name, execute, args = '', description = '')
     {
