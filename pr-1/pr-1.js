@@ -48,14 +48,15 @@ while(true)
     // console.log(command, argumets)
 
     try {
+        
         let commandOut = undefined
         if (isNaN(command))
         {
-            commandOut = list.find(c => c.name === command).execute(...argumets)
+            commandOut = list.find(c => c.name === command)?.execute(...argumets)
         }
         else
         {
-            commandOut = list[command - 1].execute(...argumets)
+            commandOut = list[command - 1]?.execute(...argumets)
         }
         
         
@@ -87,9 +88,20 @@ function toDoList() {
     const tasks = []
 
     const makeTask = function (n, text) {
-        const r = tasks.find(obj => {return obj?.n === n})
+        n = n.trim()
+        text = text.trim()
+        
+        const r = tasks.find(obj => {return obj.n === n})
         if (r === undefined) {
-            tasks.push( {n, text, status: "active" } )
+            if (n === undefined || text === undefined)
+            {
+                console.warn("Cannot create task. Need more data")
+                throw new Error("Cannot create task. Need more data")
+            }
+            else
+            {
+                tasks.push( {n, text, status: "active" } )
+            }
         } else {
             console.warn("Task with this number already exists!")
             throw new Error("Task with this number already exists!")
