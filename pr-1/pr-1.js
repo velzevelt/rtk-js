@@ -90,10 +90,10 @@ function toDoList() {
     const makeTask = function (n, text) {
         n = n.trim()
         text = text.trim()
-        
+
         const r = tasks.find(obj => {return obj.n === n})
         if (r === undefined) {
-            if (n === undefined || text === undefined)
+            if (n === undefined || text === undefined || n === '' || text === '')
             {
                 console.warn("Cannot create task. Need more data")
                 throw new Error("Cannot create task. Need more data")
