@@ -73,6 +73,7 @@ while(true)
                 })
             alert(parsedVals)
         }
+        
 
     } catch (error) {
         alert(error)       
@@ -80,8 +81,6 @@ while(true)
     
    
 }
-
-
 
 
 function toDoList() {
