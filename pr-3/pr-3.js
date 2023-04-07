@@ -271,6 +271,7 @@ class Route
     totalTimeH = 0
     totalTravelDistanceK = 0 // Итоговое расстояние движения
     averageSpeedKpH = 0
+    temp = 0
 
     constructor(departureCity, destinationCity)
     {
@@ -302,6 +303,7 @@ class Route
             if (Math.random() * 100 > 75)
             {
                 offset++
+                this.temp++
             }
 
             element.stopTimeH = element.plannedStopTimeH + offset
