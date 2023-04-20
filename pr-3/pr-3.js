@@ -337,7 +337,3 @@ class TrainStop
 
 const train = new Train(new Route('N', 'M'))
 train.startMoving()
-// console.log(train)
-
-// const test = new Route('N', 'M')
-// console.log(test)
