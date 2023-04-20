@@ -2,10 +2,10 @@ class Factorial {
     constructor(n) {
         this.n = n
     }
-    
+
     calculate() {
         let res = NaN;
-        
+
         try {
             if (Number.isInteger(this.n) && this.n > 0) {
                 if (this.n === 0 || this.n === 1) {
@@ -18,15 +18,20 @@ class Factorial {
             }
         } catch (error) {
             console.error(error)
+            throw new Error(error)
         }
-        
-        
-        return res; 
+
+
+        return res;
     }
-    
+
     calculatePrompt() {
-        this.n = Number.parseInt(prompt('Посчитать факториал для n') )
-        alert(this.calculate()) 
+        this.n = Number.parseInt(prompt('Посчитать факториал для n'))
+        try {
+            alert(this.calculate())
+        } catch (error) {
+            alert(error)
+        }
     }
 }
 
