@@ -45,22 +45,27 @@ class QuadEquation {
 
     solveEquation() {
         // Проверяем, полное ли это квадратное уравнение
-        const full = [this.a, this.b, this.c].every( (val) => Number.isInteger(val) && val !== 0 )
+        const full = [this.a, this.b, this.c].every( (val) => val !== 0 )
 
         if (full) {
             const d = this.b ** 2 - 4 * this.a * this.c
             
             if (d <= 0) {
                 return (d === 0 && this.a !== 0) ? [-this.b / 2 * this.a] : NaN;
-            }
-            else {
+            } else {
                 const d_root = sqrt(d);
                 const t = 2 * this.a;
                 return [(-this.b + d_root) / t, (-this.b - d_root) / t];
             }
 
         } else {
-            console.log(123123)
+            if (this.b === 0 && -this.c/a > 0) {
+                return [-sqrt(this.c / a), sqrt(this.c / a)]
+            } else if (this.c === 0) {
+                return [0, -this.b/a]
+            } else if (this.b === 0 && this.c === 0) {
+                return [0]
+            }
         }
 
         
