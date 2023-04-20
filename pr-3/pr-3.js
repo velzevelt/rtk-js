@@ -152,22 +152,22 @@ class Train
     hourSimulationMilSeconds = 10
     speedKpH = 0
     travelStatus = 'По расписанию'
-    route
+    TrainRoute
     currentTrainStop
 
     totalTimeH = 0
 
-    constructor(route)
+    constructor(TrainRoute)
     {
-        this.route = route
-        if (route)
+        this.TrainRoute = TrainRoute
+        if (TrainRoute)
         {
-            this.currentTrainStop =  {...route.stops[0]} //* Нельзя менять исходные данные остановки, можно использовать только копии
+            this.currentTrainStop =  {...TrainRoute.stops[0]} //* Нельзя менять исходные данные остановки, можно использовать только копии
             this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
         }        
         else
         {
-            console.error('Train init error. Check passed route')
+            console.error('Train init error. Check passed TrainRoute')
         }
     }
 
@@ -219,13 +219,12 @@ class Train
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
                     this.travelStatus = "Скоростной режим"
-                    //console.log([this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH, this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH])
-                    this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH
+                    this.speedKpH = Math.ceil(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH)
                 }
                 else
                 {
                     this.travelStatus = "По расписанию"
-                    this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH
+                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
                 }
 
                 this.#move()
@@ -240,7 +239,7 @@ class Train
 
     #showTotal()
     {
-        let abberation = this.route.totalTimeH - this.totalTimeH
+        let abberation = this.TrainRoute.totalTimeH - this.totalTimeH
         if (abberation > 0) {
             abberation = `Поезд прибыл раньше на ${abberation} ч`
         } else if (abberation == 0) {
@@ -249,14 +248,14 @@ class Train
             abberation = `Поезд опоздал на ${Math.abs(abberation)} ч`
         }
 
-        const message = `Маршрут занял ${this.totalTimeH} ч, Преодолено: ${this.route.totalTravelDistanceK} км, Ожидаемое время пути: ${this.route.totalTimeH} ч, ${abberation}`
+        const message = `Маршрут занял ${this.totalTimeH} ч, Преодолено: ${this.TrainRoute.totalTravelDistanceK} км, Ожидаемое время пути: ${this.TrainRoute.totalTimeH} ч, ${abberation}`
         console.log(message)
     }
 }
 
 
 // Маршрут
-class Route
+class TrainRoute
 {
     departureCity
     destinationCity
@@ -293,7 +292,7 @@ class Route
             element.plannedTravelTimeH = Math.round(element.nextStopDistanceK / this.averageSpeedKpH) + element.plannedStopTimeH
 
             let offset = 0
-            if (Math.random() * 100 > 75)
+            if (Math.random() * 100 > 75) // 25% -> Вероятность задержки на 1 час
             {
                 offset++
             }
@@ -312,7 +311,7 @@ class TrainStop
     stopName
     plannedStopTimeH // Планируемая длительность остановки
     stopTimeH // Длительность остановки
-    nextStop //* Следующая остановка. Задавать вне конструктора
+    nextStop //* Следующая остановка
     nextStopDistanceK // Расстояние до следующей остановки
     plannedTravelTimeH // Планируемая длительность движения до следующей остановки
 
@@ -327,5 +326,5 @@ class TrainStop
 }
 
 
-const train = new Train(new Route('N', 'M'))
+const train = new Train(new TrainRoute('N', 'M'))
 train.startMoving()
