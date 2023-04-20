@@ -149,7 +149,7 @@ function getRandomElement(from)
 
 class Train
 {
-    hourSimulationMilSeconds = 50
+    hourSimulationMilSeconds = 10
     speedKpH = 0
     travelStatus = 'По расписанию'
     route
@@ -219,20 +219,14 @@ class Train
                 if (this.currentTrainStop.stopTimeH > this.currentTrainStop.plannedStopTimeH)
                 {
                     this.travelStatus = "Скоростной режим"
-
-                    //!!!!
-                    console.log(this.currentTrainStop.plannedStopTimeH, this.currentTrainStop.stopTimeH)
-                    this.speedKpH = (this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
-                    this.speedKpH += this.speedKpH * (this.currentTrainStop.stopTimeH - this.currentTrainStop.plannedStopTimeH)
-                    this.speedKpH = Math.round(this.speedKpH)
+                    //console.log([this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH, this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH])
+                    this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.stopTimeH
                 }
                 else
                 {
                     this.travelStatus = "По расписанию"
-                    this.speedKpH = Math.round(this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH)
+                    this.speedKpH = this.currentTrainStop.nextStopDistanceK / this.currentTrainStop.plannedTravelTimeH
                 }
-                
-
 
                 this.#move()
             }
@@ -271,7 +265,6 @@ class Route
     totalTimeH = 0
     totalTravelDistanceK = 0 // Итоговое расстояние движения
     averageSpeedKpH = 0
-    temp = 0
 
     constructor(departureCity, destinationCity)
     {
@@ -303,7 +296,6 @@ class Route
             if (Math.random() * 100 > 75)
             {
                 offset++
-                this.temp++
             }
 
             element.stopTimeH = element.plannedStopTimeH + offset
