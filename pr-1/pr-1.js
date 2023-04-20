@@ -40,7 +40,7 @@ function createArmy(unitsAmount) {
 const list = toDoList()
 while(true)
 {
-    const input = prompt(list.find(c => c.name === 'help').execute() + "Что нужно сделать?").split(', ')
+    const input = prompt(list[0].execute() + "Что нужно сделать?").split(', ')
     const command = input[0].toLowerCase()
     const argumets = input
     argumets.shift()
@@ -158,26 +158,26 @@ function toDoList() {
         return r
     }
 
-    // const res = {
-    //     "make task": makeTask,
-    //     "mark task as deleted": markTaskAsDeleted,
-    //     "mark task as completed": markTaskAsCompleted,
-    //     "get task status": getTaskStatus,
-    //     "get active tasks": getActiveTasks,
-    //     "get deleted tasks": getDeletedTasks,
-    //     "get all tasks": getAllTasks,
-    // }
-    // res["help"] = toDoListOverlay(res);
+    // const res = [
+    //     Command('help', toDoListOverlay),
+    //     Command("make task", makeTask, '[Номер задачи], [Текст]'),
+    //     Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
+    //     Command("mark task as deleted", markTaskAsDeleted, '[Номер задачи], [Текст]'),
+    //     Command("get active tasks", getActiveTasks),
+    //     Command("get task status", getTaskStatus, '[Номер задачи]'),
+    //     Command("get deleted tasks", getDeletedTasks),
+    //     Command("get all tasks", getAllTasks),
+    // ]
 
     const res = [
-        Command('help', toDoListOverlay),
-        Command("make task", makeTask, '[Номер задачи], [Текст]'),
-        Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
-        Command("mark task as deleted", markTaskAsDeleted, '[Номер задачи], [Текст]'),
-        Command("get active tasks", getActiveTasks),
-        Command("get task status", getTaskStatus, '[Номер задачи]'),
-        Command("get deleted tasks", getDeletedTasks),
-        Command("get all tasks", getAllTasks),
+        Command("справка", toDoListOverlay),
+        Command("создать задачу", makeTask, '[Номер задачи], [Текст]'),
+        Command("отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи], [Текст]'),
+        Command("отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи], [Текст]'),
+        Command("посмотреть активные задачи", getActiveTasks),
+        Command("посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
+        Command("посмотреть удаленные задачи", getDeletedTasks),
+        Command("посмотреть все задачи", getAllTasks),
     ]
 
     function Command(name, execute, args = '', description = '')
