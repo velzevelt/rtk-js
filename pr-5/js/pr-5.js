@@ -62,15 +62,6 @@ class QuadEquation {
         } else {
             console.log('not full')
             
-            if (this.b === 0 && (-this.c / this.a) > 0) {
-                return [-Math.sqrt(-this.c / this.a), Math.sqrt(-this.c / this.a)]
-            } else if (this.c === 0) {
-                return [0, -this.b/a]
-            } else if (this.b === 0 && this.c === 0) {
-                return [0]
-            }
-
-            return NaN
         }
 
         
