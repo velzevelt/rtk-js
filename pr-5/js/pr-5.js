@@ -14,7 +14,7 @@ class Factorial {
                     res = this.n * new Factorial(this.n - 1).calculate()
                 }
             } else {
-                throw new Error('Invalid factorial')
+                throw new Error(`Invalid input ${this.n}. Factorial does not exist`)
             }
         } catch (error) {
             console.error(error)
@@ -25,6 +25,7 @@ class Factorial {
     } 
 }
 
-const fac = new Factorial(3)
+const fac = new Factorial( Number.parseInt(prompt('Посчитать факториал для x')) )
+alert(fac.calculate())
 
 // class QuadEquation { }
