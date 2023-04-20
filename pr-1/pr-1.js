@@ -33,12 +33,14 @@ function createArmy(unitsAmount) {
     return res
 }
 
+// Задание 1
+const army = createArmy(5)
+console.log(army)
 
-// const army = createArmy(5)
-// console.log(army)
 
-const list = toDoList()
-wrapList(list)
+// Задание 2
+// const list = toDoList()
+// wrapList(list)
 
 
 function wrapList(list){
