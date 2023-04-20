@@ -22,10 +22,13 @@ class Factorial {
         
         
         return res; 
-    } 
+    }
+    
+    calculatePrompt() {
+        this.n = Number.parseInt(prompt('Посчитать факториал для n') )
+        alert(this.calculate()) 
+    }
 }
 
-const fac = new Factorial( Number.parseInt(prompt('Посчитать факториал для x')) )
-alert(fac.calculate())
 
 // class QuadEquation { }
