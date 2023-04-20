@@ -38,50 +38,54 @@ function createArmy(unitsAmount) {
 // console.log(army)
 
 const list = toDoList()
-while(true)
-{
-    const input = prompt(list[0].execute() + "Что нужно сделать?").split(', ')
-    const command = input[0].toLowerCase()
-    const argumets = input
-    argumets.shift()
+wrapList(list)
 
-    // console.log(command, argumets)
 
-    try {
-        
-        let commandOut = undefined
-        if (isNaN(command))
-        {
-            commandOut = list.find(c => c.name === command)?.execute(...argumets)
-        }
-        else
-        {
-            commandOut = list[command - 1]?.execute(...argumets)
-        }
-        
-        
-        if (typeof(commandOut) === 'string')
-        {
-            alert(commandOut)
-        }
-        else if (Array.isArray(commandOut))
-        {
-            let parsedVals = ''
-            commandOut.forEach(element => {
-                entries = Object.entries(element)
-                entries.forEach((v) => {parsedVals += `${v[0]}: ${v[1]}\n`})
-                parsedVals += '\n'
-                })
-            alert(parsedVals)
-        }
-        
-
-    } catch (error) {
-        alert(error)       
-    }
+function wrapList(list){
+    while(true)
+    {
+        const input = prompt(list[0].execute() + "Что нужно сделать?").split(', ')
+        const command = input[0] //.toLowerCase()
+        const argumets = input
+        argumets.shift()
     
-   
+        // console.log(command, argumets)
+    
+        try {
+            
+            let commandOut = undefined
+            if (isNaN(command))
+            {
+                commandOut = list.find(c => c.name === command)?.execute(...argumets)
+            }
+            else
+            {
+                commandOut = list[command - 1]?.execute(...argumets)
+            }
+            
+            
+            if (typeof(commandOut) === 'string')
+            {
+                alert(commandOut)
+            }
+            else if (Array.isArray(commandOut))
+            {
+                let parsedVals = ''
+                commandOut.forEach(element => {
+                    entries = Object.entries(element)
+                    entries.forEach((v) => {parsedVals += `${v[0]}: ${v[1]}\n`})
+                    parsedVals += '\n'
+                    })
+                alert(parsedVals)
+            }
+            
+    
+        } catch (error) {
+            alert(error)       
+        }
+    }
 }
+
 
 
 function toDoList() {
@@ -170,14 +174,14 @@ function toDoList() {
     // ]
 
     const res = [
-        Command("справка", toDoListOverlay),
-        Command("создать задачу", makeTask, '[Номер задачи], [Текст]'),
-        Command("отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи], [Текст]'),
-        Command("отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи], [Текст]'),
-        Command("посмотреть активные задачи", getActiveTasks),
-        Command("посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
-        Command("посмотреть удаленные задачи", getDeletedTasks),
-        Command("посмотреть все задачи", getAllTasks),
+        Command("Справка", toDoListOverlay),
+        Command("Создать задачу", makeTask, '[Номер задачи], [Текст]'),
+        Command("Отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи], [Текст]'),
+        Command("Отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи], [Текст]'),
+        Command("Посмотреть активные задачи", getActiveTasks),
+        Command("Посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
+        Command("Посмотреть удаленные задачи", getDeletedTasks),
+        Command("Посмотреть все задачи", getAllTasks),
     ]
 
     function Command(name, execute, args = '', description = '')
