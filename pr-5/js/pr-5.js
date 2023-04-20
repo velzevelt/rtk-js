@@ -14,7 +14,7 @@ class Factorial {
                     res = this.n * new Factorial(this.n - 1).calculate()
                 }
             } else {
-                throw new Error(`Invalid input ${this.n}. Factorial does not exist`)
+                throw new Error(`Неверное число ${this.n}. Факториал не существует`)
             }
         } catch (error) {
             console.error(error)
