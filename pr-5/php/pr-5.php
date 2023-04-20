@@ -1,5 +1,9 @@
 <?php
 
+class CalculateError extends ErrorException {
+
+}
+
 class Factorial
 {
     public $n = 1;
@@ -23,7 +27,7 @@ class Factorial
                     $res = $this->n * $fac->calculate();
                 }
             } else {
-                throw new ErrorException("Invalid Factorial");
+                throw new CalculateError("Invalid Factorial");
             }
         }
         catch (ErrorException $e) {
