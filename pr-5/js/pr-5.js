@@ -1,41 +1,30 @@
 class Factorial {
     constructor(n) {
-        return this.calculate(n)
+        this.n = n
     }
     
-    calculate(n) {
-        res = NaN;
-        if (Number.isInteger(n) && n > 0) {
-            if (n === 0 || n === 1) {
-                res = 1;
+    calculate() {
+        let res = NaN;
+        
+        try {
+            if (Number.isInteger(this.n) && this.n > 0) {
+                if (this.n === 0 || this.n === 1) {
+                    res = 1;
+                } else {
+                    res = this.n * new Factorial(this.n - 1).calculate()
+                }
             } else {
-                res = n * Factorial(n - 1)
+                throw new Error('Invalid factorial')
             }
-        } else {
-            throw new Error('Invalid factorial')
+        } catch (error) {
+            console.error(error)
         }
+        
         
         return res; 
     } 
 }
 
-const fac = Factorial(3)
+const fac = new Factorial(3)
 
-class QuadEquation { }
-
-
-
-// function factrorial($n)
-// {
-//     res = false;
-//     if (is_int($n) and $n > 0) {
-
-//         if ($n == 0 or $n == 1) {
-//             res = 1;
-//         } else {
-//             res = $n * factrorial($n - 1);
-//         }
-//     }
-
-//     return res;
-// }
+// class QuadEquation { }
