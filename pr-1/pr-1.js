@@ -15,13 +15,13 @@ function createArmy(unitsAmount) {
 
             const entries = Object.entries(unit)
             const stats = entries.filter((val) => typeof val[1] !== "function")
-            let res = ""
-            stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
+            let info = ""
+            stats.forEach((val) => { info += `${val[0]}: ${val[1]}, ` })
 
             // Убрать ", " с конца строки
-            res = res.slice(0, -2)
+            info = info.slice(0, -2)
 
-            return res
+            return info
         }
     }
 
@@ -140,7 +140,7 @@ function toDoList() {
         const r = tasks.filter((obj) => obj?.status === "deleted")
         return r
     }
-   
+
     const getCompletedTasks = function () {
         const r = tasks.filter((obj) => obj?.status === "completed")
         return r
