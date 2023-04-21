@@ -79,11 +79,8 @@ class QuadEquation {
                 res = [0]
             }
 
-
         }
 
         return res
-
-
     }
 }
