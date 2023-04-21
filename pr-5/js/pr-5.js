@@ -1,3 +1,6 @@
+class InvalidFactorialError extends Error {}
+
+
 class Factorial {
     constructor(n) {
         this.n = n
@@ -14,11 +17,12 @@ class Factorial {
                     res = this.n * new Factorial(this.n - 1).calculate()
                 }
             } else {
-                throw new Error(`Неверное число ${this.n}. Факториал не существует`)
+                throw new InvalidFactorialError(`Неверное число ${this.n}. Факториал не существует`)
             }
         } catch (error) {
             console.error(error)
-            throw new Error(error)
+            //res = error
+            //throw new InvalidFactorialError(error)
         }
 
 
@@ -27,11 +31,7 @@ class Factorial {
 
     calculatePrompt() {
         this.n = Number.parseInt(prompt('Посчитать факториал для n'))
-        try {
-            alert(this.calculate())
-        } catch (error) {
-            alert(error)
-        }
+        alert(this.calculate())
     }
 }
 
