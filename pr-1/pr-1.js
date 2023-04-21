@@ -39,8 +39,8 @@ console.log(army)
 
 
 // Задание 2
-// const list = toDoList()
-// wrapList(list)
+const list = toDoList()
+wrapList(list)
 
 
 function wrapList(list) {
@@ -169,8 +169,8 @@ function toDoList() {
     const res = [
         Command("Справка", toDoListOverlay),
         Command("Создать задачу", makeTask, '[Номер задачи], [Текст]'),
-        Command("Отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи], [Текст]'),
-        Command("Отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи], [Текст]'),
+        Command("Отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи]'),
+        Command("Отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи]'),
         Command("Посмотреть активные задачи", getActiveTasks),
         Command("Посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
         Command("Посмотреть удаленные задачи", getDeletedTasks),
