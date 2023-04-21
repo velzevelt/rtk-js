@@ -1,11 +1,6 @@
 function createArmy(unitsAmount) {
     const res = []
 
-    const units = []
-    for (let i = 0; i < unitsAmount; i++) {
-        units.push(new Unit(i))
-    }
-
     function Unit(n) {
         this.n = n + 1
         this.hp = Math.floor(Math.random() * 100)
@@ -27,8 +22,9 @@ function createArmy(unitsAmount) {
     }
 
     for (let i = 0; i < unitsAmount; i++) {
-        res.push(units[i].getUnitInfo)
+        res[i] = new Unit(i).getUnitInfo
     }
+
 
     return res
 }
