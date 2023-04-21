@@ -52,7 +52,6 @@ class QuadEquation {
         // Проверяем, полное ли это квадратное уравнение
         const full = [this.a, this.b, this.c].every((val) => Number.isInteger(val) && val !== 0)
         if (full) {
-            console.log('full')
 
             const d = this.b ** 2 - 4 * this.a * this.c
 
@@ -65,7 +64,6 @@ class QuadEquation {
             }
 
         } else {
-            console.log('not full')
 
             const caseC = this.c === 0 && this.a !== 0 && this.b !== 0
             const caseBC = this.b === 0 && this.c === 0 && this.a !== 0
