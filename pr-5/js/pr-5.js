@@ -1,4 +1,4 @@
-class InvalidFactorialError extends Error {}
+class InvalidFactorialError extends Error { }
 
 
 class Factorial {
@@ -39,7 +39,7 @@ class Factorial {
 }
 
 
-class QuadEquation { 
+class QuadEquation {
     constructor(a, b, c) {
         this.a = a
         this.b = b
@@ -47,27 +47,44 @@ class QuadEquation {
     }
 
     solveEquation() {
+        let res = NaN
+
         // Проверяем, полное ли это квадратное уравнение
-        const full = [this.a, this.b, this.c].every( (val) => Number.isInteger(val) && val !== 0 )
+        const full = [this.a, this.b, this.c].every((val) => Number.isInteger(val) && val !== 0)
         if (full) {
             console.log('full')
 
             const d = this.b ** 2 - 4 * this.a * this.c
-            
+
             if (d <= 0) {
-                return (d === 0 && this.a !== 0) ? [-this.b / 2 * this.a] : NaN;
+                res = (d === 0 && this.a !== 0) ? [-this.b / 2 * this.a] : NaN;
             } else {
                 const d_root = Math.sqrt(d);
                 const t = 2 * this.a;
-                return [(-this.b + d_root) / t, (-this.b - d_root) / t];
+                res = [(-this.b + d_root) / t, (-this.b - d_root) / t];
             }
 
         } else {
             console.log('not full')
+
+            const caseC = this.c === 0 && this.a !== 0 && this.b !== 0
+            const caseBC = this.b === 0 && this.c === 0 && this.a !== 0
             
+            const t = -this.c / this.a
+            const caseB = this.b === 0 && this.a !== 0 && this.c !== 0 && t > 0
+
+            if (caseB) {
+                res = [-Math.sqrt(t), Math.sqrt(t)]
+            } else if (caseC) {
+                res = [0, -this.b / this.a]
+            } else if (caseBC) {
+                res = [0]
+            }
+
+
         }
 
-        
+        return res
 
 
     }
