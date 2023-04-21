@@ -10,7 +10,7 @@ class Factorial {
         let res = NaN;
 
         try {
-            if (Number.isInteger(this.n) && this.n > 0) {
+            if (Number.isInteger(this.n) && this.n >= 0) {
                 if (this.n === 0 || this.n === 1) {
                     res = 1;
                 } else {
@@ -21,8 +21,6 @@ class Factorial {
             }
         } catch (error) {
             console.error(error)
-            //res = error
-            //throw new InvalidFactorialError(error)
         }
 
 
@@ -31,7 +29,12 @@ class Factorial {
 
     calculatePrompt() {
         this.n = Number.parseInt(prompt('Посчитать факториал для n'))
-        alert(this.calculate())
+        let out = this.calculate()
+        if (Number.isNaN(out)) {
+            out = 'Факториал не существует'
+        }
+
+        alert(out)
     }
 }
 
