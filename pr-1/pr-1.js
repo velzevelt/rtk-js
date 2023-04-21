@@ -7,22 +7,37 @@ function createArmy(unitsAmount) {
         this.armor = Math.floor(Math.random() * 100)
         this.attack = Math.floor(Math.random() * 100)
 
-        this.getUnitInfo = () => {
+        // this.getUnitInfo = () => {
 
-            const entries = Object.entries(this)
+        //     const entries = Object.entries(this)
+        //     const stats = entries.filter((val) => typeof val[1] !== "function")
+        //     let res = ""
+        //     stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
+
+        //     // Убрать ", " с конца строки
+        //     res = res.slice(0, -2)
+
+        //     return res
+        // }
+    }
+
+
+    for (let i = 0; i < unitsAmount; i++) {
+        const unit = new Unit(i)
+        const func = () => {
+
+            const entries = Object.entries(unit)
             const stats = entries.filter((val) => typeof val[1] !== "function")
             let res = ""
             stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
-
+    
             // Убрать ", " с конца строки
             res = res.slice(0, -2)
-
+    
             return res
         }
-    }
 
-    for (let i = 0; i < unitsAmount; i++) {
-        res[i] = new Unit(i).getUnitInfo
+        res[i] = func
     }
 
 
