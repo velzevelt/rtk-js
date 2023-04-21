@@ -67,7 +67,7 @@ class QuadEquation {
 
             const caseC = this.c === 0 && this.a !== 0 && this.b !== 0
             const caseBC = this.b === 0 && this.c === 0 && this.a !== 0
-            
+
             const t = -this.c / this.a
             const caseB = this.b === 0 && this.a !== 0 && this.c !== 0 && t > 0
 

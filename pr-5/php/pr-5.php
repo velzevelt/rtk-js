@@ -1,6 +1,7 @@
 <?php
 
-class CalculateError extends ErrorException {
+class CalculateError extends ErrorException
+{
 
 }
 
@@ -16,7 +17,7 @@ class Factorial
     public function calculate()
     {
         $res = false;
-        
+
         try {
             if (is_int($this->n) and $this->n > 0) {
 
@@ -29,11 +30,10 @@ class Factorial
             } else {
                 throw new CalculateError("Invalid Factorial");
             }
-        }
-        catch (ErrorException $e) {
+        } catch (ErrorException $e) {
             var_dump($e->getMessage());
         }
-        
+
 
         return $res;
     }
