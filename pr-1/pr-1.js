@@ -2,7 +2,7 @@ function createArmy(unitsAmount) {
     const res = []
 
     const units = []
-    for(let i = 0; i < unitsAmount; i++) {
+    for (let i = 0; i < unitsAmount; i++) {
         units.push(new Unit(i))
     }
 
@@ -15,19 +15,19 @@ function createArmy(unitsAmount) {
         this.getUnitInfo = () => {
 
             const entries = Object.entries(this)
-            const stats = entries.filter( (val) => typeof val[1] !== "function" )
+            const stats = entries.filter((val) => typeof val[1] !== "function")
             let res = ""
-            stats.forEach( (val) => { res += `${val[0]}: ${val[1]}, ` } )
+            stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
 
             // Убрать ", " с конца строки
             res = res.slice(0, -2)
 
             return res
         }
-    } 
+    }
 
-    for(let i = 0; i < unitsAmount; i++) {
-        res.push( units[i].getUnitInfo )
+    for (let i = 0; i < unitsAmount; i++) {
+        res.push(units[i].getUnitInfo)
     }
 
     return res
@@ -43,47 +43,42 @@ console.log(army)
 // wrapList(list)
 
 
-function wrapList(list){
-    while(true)
-    {
+function wrapList(list) {
+    while (true) {
         const input = prompt(list[0].execute() + "Что нужно сделать?").split(', ')
         const command = input[0] //.toLowerCase()
         const argumets = input
         argumets.shift()
-    
+
         // console.log(command, argumets)
-    
+
         try {
-            
+
             let commandOut = undefined
-            if (isNaN(command))
-            {
+            if (isNaN(command)) {
                 commandOut = list.find(c => c.name === command)?.execute(...argumets)
             }
-            else
-            {
+            else {
                 commandOut = list[command - 1]?.execute(...argumets)
             }
-            
-            
-            if (typeof(commandOut) === 'string')
-            {
+
+
+            if (typeof (commandOut) === 'string') {
                 alert(commandOut)
             }
-            else if (Array.isArray(commandOut))
-            {
+            else if (Array.isArray(commandOut)) {
                 let parsedVals = ''
                 commandOut.forEach(element => {
                     entries = Object.entries(element)
-                    entries.forEach((v) => {parsedVals += `${v[0]}: ${v[1]}\n`})
+                    entries.forEach((v) => { parsedVals += `${v[0]}: ${v[1]}\n` })
                     parsedVals += '\n'
-                    })
+                })
                 alert(parsedVals)
             }
-            
-    
+
+
         } catch (error) {
-            alert(error)       
+            alert(error)
         }
     }
 }
@@ -97,16 +92,13 @@ function toDoList() {
         n = n.trim()
         text = text.trim()
 
-        const r = tasks.find(obj => {return obj.n === n})
+        const r = tasks.find(obj => { return obj.n === n })
         if (r === undefined) {
-            if (n === undefined || text === undefined || n === '' || text === '')
-            {
+            if (n === undefined || text === undefined || n === '' || text === '') {
                 console.warn("Cannot create task. Need more data")
                 throw new Error("Cannot create task. Need more data")
-            }
-            else
-            {
-                tasks.push( {n, text, status: "active" } )
+            } else {
+                tasks.push({ n, text, status: "active" })
             }
         } else {
             console.warn("Task with this number already exists!")
@@ -116,51 +108,50 @@ function toDoList() {
         // return tasks
     }
 
-    const getTaskStatus = function(n) {
-        const r = tasks.find(obj => {return obj?.n === n})
+    const getTaskStatus = function (n) {
+        const r = tasks.find(obj => { return obj?.n === n })
         return r?.status
-    } 
+    }
 
-    const markTaskAsCompleted = function(n) {
-        const r = tasks.find(obj => {return obj?.n === n})
+    const markTaskAsCompleted = function (n) {
+        const r = tasks.find(obj => { return obj?.n === n })
         r.status = "completed"
         return r
     }
 
-    const markTaskAsDeleted = function(n) {
-        const r = tasks.find(obj => {return obj?.n === n})
+    const markTaskAsDeleted = function (n) {
+        const r = tasks.find(obj => { return obj?.n === n })
         if (r?.status === "completed") {
             r.status = "deleted"
-        } 
-        else
-        {
+        }
+        else {
             throw new Error('Cannot delete active task, you shoud complete it first')
         }
         return r
     }
 
-    const getActiveTasks = function() {
+    const getActiveTasks = function () {
         const r = tasks.filter((obj) => obj?.status === "active")
         return r
     }
 
-    const getDeletedTasks = function() {
+    const getDeletedTasks = function () {
         const r = tasks.filter((obj) => obj?.status === "deleted")
         return r
     }
 
-    const getAllTasks = function() {
+    const getAllTasks = function () {
         return tasks
     }
 
-    const toDoListOverlay = function() {
+    const toDoListOverlay = function () {
         let r = 'Возможности списка:\n'
         const keys = Object.entries(res)
         keys.forEach((element, key) => {
             r += `${key + 1})  ${element[1].name} ${element[1].args} ${element[1].description}\n`
         });
 
-        
+
         return r
     }
 
@@ -186,9 +177,8 @@ function toDoList() {
         Command("Посмотреть все задачи", getAllTasks),
     ]
 
-    function Command(name, execute, args = '', description = '')
-    {
-        return {name, args, execute, description}
+    function Command(name, execute, args = '', description = '') {
+        return { name, args, execute, description }
     }
 
     return res
