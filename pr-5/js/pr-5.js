@@ -40,7 +40,7 @@ class Factorial {
 
 
 class QuadEquation {
-    constructor(a, b, c) {
+    constructor(a=0, b=0, c=0) {
         this.a = a
         this.b = b
         this.c = c
@@ -50,7 +50,8 @@ class QuadEquation {
         let res = NaN
 
         // Проверяем, полное ли это квадратное уравнение
-        const full = [this.a, this.b, this.c].every((val) => Number.isInteger(val) && val !== 0)
+        const args = [this.a, this.b, this.c]
+        const full = args.every((val) => Number.isFinite(val) && val !== 0)
         if (full) {
 
             const d = this.b ** 2 - 4 * this.a * this.c
@@ -63,7 +64,7 @@ class QuadEquation {
                 res = [(-this.b + d_root) / t, (-this.b - d_root) / t];
             }
 
-        } else {
+        } else if (args.every((val) => Number.isFinite(val))) {
 
             const caseC = this.c === 0 && this.a !== 0 && this.b !== 0
             const caseBC = this.b === 0 && this.c === 0 && this.a !== 0
