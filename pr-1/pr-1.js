@@ -6,38 +6,23 @@ function createArmy(unitsAmount) {
         this.hp = Math.floor(Math.random() * 100)
         this.armor = Math.floor(Math.random() * 100)
         this.attack = Math.floor(Math.random() * 100)
-
-        // this.getUnitInfo = () => {
-
-        //     const entries = Object.entries(this)
-        //     const stats = entries.filter((val) => typeof val[1] !== "function")
-        //     let res = ""
-        //     stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
-
-        //     // Убрать ", " с конца строки
-        //     res = res.slice(0, -2)
-
-        //     return res
-        // }
     }
 
 
     for (let i = 0; i < unitsAmount; i++) {
         const unit = new Unit(i)
-        const func = () => {
+        res[i] = () => {
 
             const entries = Object.entries(unit)
             const stats = entries.filter((val) => typeof val[1] !== "function")
             let res = ""
             stats.forEach((val) => { res += `${val[0]}: ${val[1]}, ` })
-    
+
             // Убрать ", " с конца строки
             res = res.slice(0, -2)
-    
+
             return res
         }
-
-        res[i] = func
     }
 
 
@@ -57,8 +42,7 @@ wrapList(list)
 function wrapList(list) {
     while (list) {
         const promptInput = prompt(list[0].execute() + "Что нужно сделать?")
-        if (promptInput === null)
-        {
+        if (promptInput === null) {
             break
         }
 
