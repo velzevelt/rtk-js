@@ -140,6 +140,11 @@ function toDoList() {
         const r = tasks.filter((obj) => obj?.status === "deleted")
         return r
     }
+   
+    const getCompletedTasks = function () {
+        const r = tasks.filter((obj) => obj?.status === "completed")
+        return r
+    }
 
     const getAllTasks = function () {
         return tasks
@@ -175,6 +180,7 @@ function toDoList() {
         Command("Посмотреть активные задачи", getActiveTasks),
         Command("Посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
         Command("Посмотреть удаленные задачи", getDeletedTasks),
+        Command("Посмотреть завершенные задачи", getCompletedTasks),
         Command("Посмотреть все задачи", getAllTasks),
     ]
 
