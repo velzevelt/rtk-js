@@ -44,8 +44,14 @@ wrapList(list)
 
 
 function wrapList(list) {
-    while (true) {
-        const input = prompt(list[0].execute() + "Что нужно сделать?").split(', ')
+    while (list) {
+        const promptInput = prompt(list[0].execute() + "Что нужно сделать?")
+        if (promptInput === null)
+        {
+            break
+        }
+
+        const input = promptInput.split(', ')
         const command = input[0] //.toLowerCase()
         const argumets = input
         argumets.shift()
