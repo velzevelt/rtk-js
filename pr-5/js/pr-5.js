@@ -37,8 +37,6 @@ class Factorial {
 }
 
 
-
-
 class QuadEquation {
     constructor(a = 0, b = 0, c = 0) {
         this.a = a
