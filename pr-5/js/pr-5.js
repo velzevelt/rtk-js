@@ -9,38 +9,38 @@ class Factorial {
     calculate() {
         let res = NaN;
 
-        try {
-            if (Number.isInteger(this.n) && this.n >= 0) {
-                if (this.n === 0 || this.n === 1) {
-                    res = 1;
-                } else {
-                    res = this.n * new Factorial(this.n - 1).calculate()
-                }
+        if (Number.isInteger(this.n) && this.n >= 0) {
+            if (this.n === 0 || this.n === 1) {
+                res = 1;
             } else {
-                throw new InvalidFactorialError(`Неверное число ${this.n}. Факториал не существует`)
+                res = this.n * new Factorial(this.n - 1).calculate()
             }
-        } catch (error) {
-            console.error(error)
+        } else {
+            throw new InvalidFactorialError(`Неверное число ${this.n}. Факториал не существует`)
         }
-
 
         return res;
     }
 
     calculatePrompt() {
         this.n = Number.parseInt(prompt('Посчитать факториал для n'))
-        let out = this.calculate()
-        if (Number.isNaN(out)) {
-            out = 'Факториал не существует'
+        let out = NaN
+        try {
+            out = this.calculate()
+        } catch (error) {
+            out = error.message
         }
+       
 
         alert(out)
     }
 }
 
 
+
+
 class QuadEquation {
-    constructor(a=0, b=0, c=0) {
+    constructor(a = 0, b = 0, c = 0) {
         this.a = a
         this.b = b
         this.c = c

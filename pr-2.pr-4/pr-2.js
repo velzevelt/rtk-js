@@ -74,7 +74,7 @@ function Game(armies) {
         this.armies.forEach((val) => val.resetUnits(val.maxUnits));
     }
 
-    Game.log = function(message) {
+    this.log = function(message) {
         console.log(message);
     }
 
@@ -280,14 +280,12 @@ function getRandomElement(from) {
 }
 
 // const armies = []
-
 // for(let i = 0; i < 3; i++) {
 //     armies.push(new Army(i + 1, 3))
 // }
-
 // const game = new Game(armies)
 // console.log(game)
 
-const armies = [new Army("G", 4), new Army("F", 4), new Army("X", 4)];
 
+const armies = [new Army("G", 4), new Army("F", 4), new Army("X", 4)];
 const game = new Game(armies);
