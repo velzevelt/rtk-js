@@ -4,10 +4,6 @@
  * На выходе приложение выдает число вхождений второй строки в первую.
  */
 
-
-const str_1 = "Шла Саша по шоссе и сосала сушку"
-const str_2 = "ш"
-
 function strIntersect(string, subString) {
 
     // Преобразование в строку
@@ -23,11 +19,24 @@ function strIntersect(string, subString) {
     while (true) {
         pos = string.indexOf(subString, pos);
         if (pos >= 0) {
-            ++n;
+            n++;
             pos += step;
         } else break;
     }
     return n;
+}
+
+console.assert(strIntersect("Ш", "Ш") === 1)
+console.assert(strIntersect("", "") === 0)
+console.assert(strIntersect("Жили-были три китайца: Як, Як-цедрак, Як-цедрак-цедрак-цедрони", "Як") === 3)
+
+
+try{
+    const str_1 = prompt("Первая строка", "")
+    const str_2 = prompt("Строка для поиска", "")
+    alert(strIntersect(str_1, str_2))
+} catch(error) {
+    alert(error)
 }
 
 
