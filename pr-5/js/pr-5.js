@@ -64,6 +64,10 @@ class QuadEquation {
 
         } else if (args.every((val) => Number.isFinite(val))) {
 
+            // Неквадратное уравнение
+            const caseA = this.a === 0 && this.b !== 0 && this.c !== 0
+            
+            // см. guide.png
             const caseC = this.c === 0 && this.a !== 0 && this.b !== 0
             const caseBC = this.b === 0 && this.c === 0 && this.a !== 0
 
@@ -76,6 +80,8 @@ class QuadEquation {
                 res = [0, -this.b / this.a]
             } else if (caseBC) {
                 res = [0]
+            } else if (caseA) {
+                res = [-this.c/this.b];
             }
 
         }
