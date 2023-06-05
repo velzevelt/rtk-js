@@ -1,6 +1,5 @@
 <?php
 
-
 class QuadEquation
 {
     public $a = 1;
@@ -54,8 +53,9 @@ class QuadEquation
                 $caseC = $this->c === 0 && $this->a !== 0 && $this->b !== 0;
                 $caseBC = $this->b === 0 && $this->c === 0 && $this->a !== 0;
 
-                $t = -$this->c / $this->a;
+                $t = $this->a != 0 ? -$this->c / $this->a : 0;
                 $caseB = $this->b === 0 && $this->a !== 0 && $this->c !== 0 && $t > 0;
+                
 
                 if ($caseB) {
                     $res = [-sqrt($t), sqrt($t)];
@@ -72,6 +72,3 @@ class QuadEquation
         return $res;
     }
 }
-
-$e = new QuadEquation(-1, 7, 8);
-var_dump($e->solveEquation());

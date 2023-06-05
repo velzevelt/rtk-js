@@ -3,7 +3,7 @@ class QuadEquation
 {
     public $a, $b, $c;
 
-    public function __construct($a=1, $b=1, $c=1) {
+    public function __construct($a = 0, $b = 0, $c = 0) {
         $this->a = $a;
         $this->b = $b;
         $this->c = $c;
@@ -26,6 +26,7 @@ class QuadEquation
                 $res = [(-$this->b + $d_root) / $t, (-$this->b - $d_root) / $t];
             }
         } else if (empty( array_filter( $args, fn($x) => is_int($x) ) )) {
+            $caseA = $this->a == 0 && $this->b != 0 && $this->c != 0;
             $caseC = $this->c == 0 && $this->a != 0 && $this->b != 0;
             $caseBC = $this->b == 0 && $this->c == 0 && $this->a != 0;
 
@@ -38,9 +39,14 @@ class QuadEquation
                 $res = [0, -$this->b / $this->a];
             } else if ($caseBC) {
                 $res = [0];
+            } else if ($caseA) {
+                $res = [-$this->c / $this->b];
             }
         }
 
         return $res;
     }
 }
+
+$e = new QuadEquation(0, 1, 1);
+var_dump($e->solveEquation());
