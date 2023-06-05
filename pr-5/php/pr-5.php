@@ -1,8 +1,11 @@
 <?php
 
+
 class QuadEquation
 {
-    public $a, $b, $c;
+    public $a = 1;
+    public $b = 1;
+    public $c = 1;
 
     public function __construct($a = 1, $b = 1, $c = 1)
     {
@@ -15,11 +18,18 @@ class QuadEquation
     {
         $res = false;
         $args = [$this->a, $this->b, $this->c];
+        $full = true;
 
-        $full = empty(array_filter($args, fn ($x) => $x == 0));
+        foreach ($args as $arg) {
+            if (!(is_finite($arg) && $arg != 0)) {
+                $full = false;
+                break;
+            }
+        }
 
         if ($full) {
             $d = $this->b ** 2 - 4 * $this->a * $this->c;
+
             if ($d <= 0) {
                 $res = ($d === 0 && $this->a !== 0) ? [-$this->b / 2 * $this->a] : false;
             } else {
@@ -27,19 +37,35 @@ class QuadEquation
                 $t = 2 * $this->a;
                 $res = [(-$this->b + $d_root) / $t, (-$this->b - $d_root) / $t];
             }
-        } else if (empty(array_filter($args, fn ($x) => is_int($x)))) {
-            $caseC = $this->c == 0 && $this->a != 0 && $this->b != 0;
-            $caseBC = $this->b == 0 && $this->c == 0 && $this->a != 0;
+        } else {
+            $isValidEquation = true;
+            foreach ($args as $arg) {
+                if (!(is_finite($arg))) {
+                    $isValidEquation = false;
+                    break;
+                }
+            }
 
-            $t = -$this->c / $this->a;
-            $caseB = $this->b == 0 && $this->a != 0 && $this->c != 0 && $t > 0;
+            if ($isValidEquation) {
+                // Неквадратное уравнение
+                $caseA = $this->a === 0 && $this->b !== 0 && $this->c !== 0;
 
-            if ($caseB) {
-                $res = [-sqrt($t), sqrt($t)];
-            } else if ($caseC) {
-                $res = [0, -$this->b / $this->a];
-            } else if ($caseBC) {
-                $res = [0];
+                // см. guide.png
+                $caseC = $this->c === 0 && $this->a !== 0 && $this->b !== 0;
+                $caseBC = $this->b === 0 && $this->c === 0 && $this->a !== 0;
+
+                $t = -$this->c / $this->a;
+                $caseB = $this->b === 0 && $this->a !== 0 && $this->c !== 0 && $t > 0;
+
+                if ($caseB) {
+                    $res = [-sqrt($t), sqrt($t)];
+                } else if ($caseC) {
+                    $res = [0, -$this->b / $this->a];
+                } else if ($caseBC) {
+                    $res = [0];
+                } else if ($caseA) {
+                    $res = [-$this->c / $this->b];
+                }
             }
         }
 
@@ -47,9 +73,5 @@ class QuadEquation
     }
 }
 
-
-$eq = new QuadEquation(1, -8, 12);
-var_dump($eq->solveEquation());
-
-$eq = new QuadEquation(1, -8, 12);
-var_dump($eq->solveEquation());
+$e = new QuadEquation(-1, 7, 8);
+var_dump($e->solveEquation());
