@@ -1,12 +1,17 @@
 <?php
 
+use function PHPSTORM_META\type;
+
+class InvalidArgumentTypeError extends Error {};
+
+
 class QuadEquation
 {
-    public $a = 1;
-    public $b = 1;
-    public $c = 1;
+    public $a = 0;
+    public $b = 0;
+    public $c = 0;
 
-    public function __construct($a = 1, $b = 1, $c = 1)
+    public function __construct($a = 0, $b = 0, $c = 0)
     {
         $this->a = $a;
         $this->b = $b;
@@ -20,7 +25,7 @@ class QuadEquation
         $full = true;
 
         foreach ($args as $arg) {
-            if (!(is_finite($arg) && $arg != 0)) {
+            if (!(is_numeric($arg) && is_finite($arg) && $arg != 0)) {
                 $full = false;
                 break;
             }
@@ -39,7 +44,7 @@ class QuadEquation
         } else {
             $isValidEquation = true;
             foreach ($args as $arg) {
-                if (!(is_finite($arg))) {
+                if (!(is_numeric($arg) && is_finite($arg))) {
                     $isValidEquation = false;
                     break;
                 }
@@ -66,6 +71,15 @@ class QuadEquation
                 } else if ($caseA) {
                     $res = [-$this->c / $this->b];
                 }
+            } else {
+                $imposters = '';
+                foreach($args as $arg) {
+                    if (!(is_numeric($arg) && is_finite($arg))) {
+                        $imposters .= gettype($arg) . ": $arg";
+                    }
+                }
+
+                throw new InvalidArgumentTypeError("Аргумент этого типа не поддерживается $imposters");
             }
         }
 

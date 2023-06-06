@@ -1,4 +1,5 @@
-class InvalidFactorialError extends Error { }
+class InvalidFactorialError extends Error {}
+class InvalidArgumentTypeError extends Error {}
 
 
 class Factorial {
@@ -84,6 +85,17 @@ class QuadEquation {
                 res = [-this.c/this.b];
             }
 
+        } else {
+            const imposters = [] 
+            args.forEach( function(arg) {
+                if (!Number.isFinite(arg)) {
+                    imposters.push( `"${typeof arg}": ${arg}` )
+                }
+            });
+            
+            throw new InvalidArgumentTypeError(
+                `Аргумент этого типа не поддерживается ${imposters}`
+            );
         }
 
         return res

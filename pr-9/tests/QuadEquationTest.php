@@ -56,8 +56,16 @@ final class QuadEquationTest extends TestCase
 
   public function testInvalidInputAllStringZero() {
     $e = new QuadEquation('0', '0', '0');
+    
     $res = $e->solveEquation();
+    $this->assertFalse($res, 'Ошибка при работе с некорректными данными');
+  }
 
+  public function testInvalidInputStrings() {
+    $e = new QuadEquation('dr', 'gd0', '0yy');
+    
+    $this->expectException(InvalidArgumentTypeError::class);    
+    $res = $e->solveEquation();
     $this->assertFalse($res, 'Ошибка при работе с некорректными данными');
   }
 
