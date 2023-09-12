@@ -9,14 +9,14 @@ function createArmy(unitsAmount) {
             attack: Math.floor(Math.random() * 100)
         }
 
-        const info = function() {
+        const info = function () {
             const entries = Object.entries(unit)
             let info = ""
             entries.forEach((val) => { info += `${val[0]}: ${val[1]}, ` })
             info = info.slice(0, -2)
             return info
         }
-       
+
         res[i] = info
     }
 
@@ -36,27 +36,21 @@ wrapList(list)
 
 function wrapList(list) {
     while (list) {
-        const promptInput = prompt(list[0].execute() + "Что нужно сделать?")
+        const promptInput = prompt(list.find(c => c.name === "Справка").execute() + "Что нужно сделать?")
         if (promptInput === null) {
             break
         }
 
-        const separator = ", "
-        const input = promptInput.split(separator)
-        const command = input[0] //.toLowerCase()
-        const argumets = input
-        argumets.shift()
-
-        // console.log(command, argumets)
+        const command = promptInput
 
         try {
 
             let commandOut = undefined
             if (isNaN(command)) {
-                commandOut = list.find(c => c.name === command)?.execute(...argumets)
+                commandOut = list.find(c => c.name === command)?.execute()
             }
             else {
-                commandOut = list[command - 1]?.execute(...argumets)
+                commandOut = list[command - 1]?.execute()
             }
 
 
@@ -85,45 +79,102 @@ function wrapList(list) {
 function toDoList() {
     const tasks = []
 
-    const makeTask = function (n, text) {
-        const r = tasks.find(obj => { return obj.n === n })
-        if (r === undefined) {
-            if (n === undefined || text === undefined || n === '' || text === '') {
-                console.warn("Не могу создать задачу, нужно больше данных")
-                throw new Error("Не могу создать задачу, нужно больше данных")
-            } else {
-                // n = n.trim()
-                // text = text.trim()
-                tasks.push({ n, text, status: "active" })
+    // Вспомогательная функция
+    const getTaskNumberPromt = function () {
+        while (true) {
+            try {
+                n = prompt("Введите номер задачи")
+                if (!isFinite(parseInt(n))) {
+                    throw new Error("Указан неверный тип данных для номера, ожидается число")
+                } else {
+                    break
+                }
+
+            }
+            catch (error) {
+                alert(error)
+            }
+        }
+
+        return n
+    }
+
+    // Вспомогательная функция
+    const getTaskNamePromt = function () {
+        while (true) {
+            try {
+                text = prompt("Введите название для задачи")
+                if (typeof (text) !== "string") {
+                    throw new Error("Указан неверный тип данных для названия задачи, ожидается строка")
+                } else {
+                    break
+                }
+            }
+            catch (error) {
+                alert(error)
+            }
+        }
+
+        return text
+    }
+
+
+    const makeTask = function () {
+        while (true) {
+            try {
+                n = getTaskNumberPromt()
+                if (tasks.find(obj => { return obj?.n === n })) {
+                    throw new Error("Задача с данным номером уже существует, используйте другой номер")
+                } else {
+                    break
+                }
+            }
+            catch (error) {
+                alert(error)
+            }
+        }
+
+        const text = getTaskNamePromt()
+        const task = { n, text, status: "active" }
+        tasks.push(task)
+
+        return "Задача успешно создана"
+    }
+
+    const getTaskStatus = function () {
+        const n = getTaskNumberPromt()
+        const r = tasks.find(obj => { return obj?.n === n })
+        return r?.status || "Задача с таким номером не найдена"
+    }
+
+    const markTaskAsCompleted = function () {
+        const n = getTaskNumberPromt()
+        const r = tasks.find(obj => { return obj?.n === n })
+        if (r !== undefined) {
+            r.status = "completed"
+        } else {
+            throw new Error('Задача с таким номером не найдена')
+        }
+
+        return `Статус задачи ${r.n} -> ${r.status}`
+    }
+
+    const markTaskAsDeleted = function () {
+        const n = getTaskNumberPromt()
+        const r = tasks.find(obj => { return obj?.n === n })
+
+        if (r !== undefined) {
+            if (r?.status === "completed") {
+                r.status = "deleted"
+            }
+            else {
+                throw new Error('Нельзя удалить активную задачу, сперва её нужно завершить')
             }
         } else {
-            console.warn("Задача с этим номером уже существует!")
-            throw new Error("Задача с этим номером уже существует!")
+            throw new Error("Задача с таким номером не найдена")
         }
-
-        // return tasks
-    }
-
-    const getTaskStatus = function (n) {
-        const r = tasks.find(obj => { return obj?.n === n })
-        return r?.status
-    }
-
-    const markTaskAsCompleted = function (n) {
-        const r = tasks.find(obj => { return obj?.n === n })
-        r.status = "completed"
-        return r
-    }
-
-    const markTaskAsDeleted = function (n) {
-        const r = tasks.find(obj => { return obj?.n === n })
-        if (r?.status === "completed") {
-            r.status = "deleted"
-        }
-        else {
-            throw new Error('Cannot delete active task, you shoud complete it first')
-        }
-        return r
+        
+        return `Статус задачи ${r.n} -> ${r.status}`
     }
 
     const getActiveTasks = function () {
@@ -149,38 +200,27 @@ function toDoList() {
         let r = 'Возможности списка:\n'
         const keys = Object.entries(res)
         keys.forEach((element, key) => {
-            r += `${key + 1})  ${element[1].name} ${element[1].args} ${element[1].description}\n`
+            r += `${key + 1})  ${element[1].name}\n`
         });
 
 
         return r
     }
 
-    // const res = [
-    //     Command('help', toDoListOverlay),
-    //     Command("make task", makeTask, '[Номер задачи], [Текст]'),
-    //     Command("mark task as completed", markTaskAsCompleted, '[Номер задачи], [Текст]'),
-    //     Command("mark task as deleted", markTaskAsDeleted, '[Номер задачи], [Текст]'),
-    //     Command("get active tasks", getActiveTasks),
-    //     Command("get task status", getTaskStatus, '[Номер задачи]'),
-    //     Command("get deleted tasks", getDeletedTasks),
-    //     Command("get all tasks", getAllTasks),
-    // ]
-
     const res = [
         Command("Справка", toDoListOverlay),
-        Command("Создать задачу", makeTask, '[Номер задачи], [Текст]'),
-        Command("Отметить задачу как завершенную", markTaskAsCompleted, '[Номер задачи]'),
-        Command("Отметить задачу как удаленную", markTaskAsDeleted, '[Номер задачи]'),
+        Command("Создать задачу", makeTask),
+        Command("Отметить задачу как завершенную", markTaskAsCompleted),
+        Command("Отметить задачу как удаленную", markTaskAsDeleted),
         Command("Посмотреть активные задачи", getActiveTasks),
-        Command("Посмотреть статус задачи", getTaskStatus, '[Номер задачи]'),
+        Command("Посмотреть статус задачи", getTaskStatus),
         Command("Посмотреть удаленные задачи", getDeletedTasks),
         Command("Посмотреть завершенные задачи", getCompletedTasks),
         Command("Посмотреть все задачи", getAllTasks),
     ]
 
-    function Command(name, execute, args = '', description = '') {
-        return { name, args, execute, description }
+    function Command(name, execute) {
+        return { name, execute }
     }
 
     return res
