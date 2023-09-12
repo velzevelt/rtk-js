@@ -134,10 +134,10 @@ function getRandomElement(from) {
 }
 
 // Задание 1
-// const turtle_1 = new TurtleRunner('Снежанна')
-// const turtle_2 = new TurtleRunner('Анжелина')
-// turtle_1.startRace()
-// turtle_2.startRace()
+const turtle_1 = new TurtleRunner('Снежанна')
+const turtle_2 = new TurtleRunner('Анжелина')
+turtle_1.startRace()
+turtle_2.startRace()
 
 
 
@@ -301,5 +301,5 @@ class TrainStop {
 
 
 // Задание 2
-const train = new Train(new TrainRoute('N', 'M'))
-train.startMoving()
+// const train = new Train(new TrainRoute('N', 'M'))
+// train.startMoving()

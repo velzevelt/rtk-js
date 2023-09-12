@@ -1,28 +1,23 @@
 function createArmy(unitsAmount) {
     const res = []
 
-    function Unit(n) {
-        this.n = n + 1
-        this.hp = Math.floor(Math.random() * 100)
-        this.armor = Math.floor(Math.random() * 100)
-        this.attack = Math.floor(Math.random() * 100)
-    }
-
-
     for (let i = 0; i < unitsAmount; i++) {
-        const unit = new Unit(i)
-        res[i] = () => {
+        const unit = {
+            n: i + 1,
+            hp: Math.floor(Math.random() * 100),
+            armor: Math.floor(Math.random() * 100),
+            attack: Math.floor(Math.random() * 100)
+        }
 
+        const info = function() {
             const entries = Object.entries(unit)
-            const stats = entries.filter((val) => typeof val[1] !== "function")
             let info = ""
-            stats.forEach((val) => { info += `${val[0]}: ${val[1]}, ` })
-
-            // Убрать ", " с конца строки
+            entries.forEach((val) => { info += `${val[0]}: ${val[1]}, ` })
             info = info.slice(0, -2)
-
             return info
         }
+       
+        res[i] = info
     }
 
 
@@ -46,7 +41,8 @@ function wrapList(list) {
             break
         }
 
-        const input = promptInput.split(', ')
+        const separator = ", "
+        const input = promptInput.split(separator)
         const command = input[0] //.toLowerCase()
         const argumets = input
         argumets.shift()
@@ -90,20 +86,19 @@ function toDoList() {
     const tasks = []
 
     const makeTask = function (n, text) {
-        n = n.trim()
-        text = text.trim()
-
         const r = tasks.find(obj => { return obj.n === n })
         if (r === undefined) {
             if (n === undefined || text === undefined || n === '' || text === '') {
-                console.warn("Cannot create task. Need more data")
-                throw new Error("Cannot create task. Need more data")
+                console.warn("Не могу создать задачу, нужно больше данных")
+                throw new Error("Не могу создать задачу, нужно больше данных")
             } else {
+                // n = n.trim()
+                // text = text.trim()
                 tasks.push({ n, text, status: "active" })
             }
         } else {
-            console.warn("Task with this number already exists!")
-            throw new Error("Task with this number already exists!")
+            console.warn("Задача с этим номером уже существует!")
+            throw new Error("Задача с этим номером уже существует!")
         }
 
         // return tasks

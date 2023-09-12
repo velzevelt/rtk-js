@@ -53,7 +53,7 @@ function Game(armies) {
         gameResult += `Остались ${aliveCount} (${alive}) `;
         gameResult += `суммарное здоровье ${sumHealth}`;
 
-        Game.log(gameResult);
+        console.log(gameResult);
     }
 
     this.getRandArmy = function(exclude) {
@@ -81,7 +81,7 @@ function Game(armies) {
 
     // constructor(armies) {
         for (let i = 1; i <= this.rounds; i++) {
-            Game.log(`Раунд ${i}`);
+            console.log(`Раунд ${i}`);
             this.armies = [];
             this.armies = [...armies];
             this.resetUnits();
@@ -89,9 +89,9 @@ function Game(armies) {
             this.play();
 
             if (i != this.rounds) {
-                Game.log("\n\n\n");
+                console.log("\n\n\n");
             } else {
-                Game.log("Все раунды были проведены!");
+                console.log("Все раунды были проведены!");
             }
         }
     // }
@@ -156,7 +156,7 @@ function Army(name, maxUnits) {
         const message = `Ход ${moveId}: Армия '${this.name}': Юнит '${attacker.name
             }' атакует (урон ${attacker.damage}) юнита '${target.name}' из Армии '${enemyArmy.name
             }' у вражеского юнита '${target.name}' осталось ${target.health} здоровья`;
-        Game.log(message);
+        console.log(message);
     }
 
     this.getUnitsHealth = function() {
