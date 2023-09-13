@@ -96,7 +96,7 @@ function toDoList() {
             }
         }
 
-        return n
+        return parseInt(n)
     }
 
     // Вспомогательная функция
@@ -123,7 +123,7 @@ function toDoList() {
         while (true) {
             try {
                 n = getTaskNumberPromt()
-                if (tasks.find(obj => { return obj?.n === n })) {
+                if (tasks.find(obj => { return obj?.n == n })) {
                     throw new Error("Задача с данным номером уже существует, используйте другой номер")
                 } else {
                     break
@@ -143,13 +143,13 @@ function toDoList() {
 
     const getTaskStatus = function () {
         const n = getTaskNumberPromt()
-        const r = tasks.find(obj => { return obj?.n === n })
+        const r = tasks.find(obj => { return obj?.n == n })
         return r?.status || "Задача с таким номером не найдена"
     }
 
     const markTaskAsCompleted = function () {
         const n = getTaskNumberPromt()
-        const r = tasks.find(obj => { return obj?.n === n })
+        const r = tasks.find(obj => { return obj?.n == n })
         if (r !== undefined) {
             r.status = "completed"
         } else {
@@ -161,7 +161,7 @@ function toDoList() {
 
     const markTaskAsDeleted = function () {
         const n = getTaskNumberPromt()
-        const r = tasks.find(obj => { return obj?.n === n })
+        const r = tasks.find(obj => { return obj?.n == n })
 
         if (r !== undefined) {
             if (r?.status === "completed") {
