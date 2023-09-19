@@ -52,8 +52,9 @@ function Game(armies) {
         const sumHealth = winner.getUnitsHealth();
         gameResult += `Остались ${aliveCount} (${alive}) `;
         gameResult += `суммарное здоровье ${sumHealth}`;
-
         console.log(gameResult);
+
+        return gameResult;
     }
 
     this.getRandArmy = function(exclude) {
@@ -86,12 +87,16 @@ function Game(armies) {
             this.armies = [...armies];
             this.resetUnits();
 
-            this.play();
+            let finaleResult = this.play();
 
             if (i != this.rounds) {
                 console.log("\n\n\n");
             } else {
                 console.log("Все раунды были проведены!");
+
+                if(typeof(finaleResult) === "string")
+                    alert(finaleResult);
+
             }
         }
     // }

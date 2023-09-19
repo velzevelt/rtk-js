@@ -9,12 +9,15 @@ class Game {
       this.#armies = [...armies];
       this.resetUnits();
 
-      this.play();
+      let finaleResult = this.play();
 
       if (i != this.#rounds) {
         Game.log("\n\n\n");
       } else {
         Game.log("Все раунды были проведены!");
+
+        if(typeof(finaleResult) === "string")
+            alert(finaleResult);
       }
     }
   }
@@ -71,6 +74,7 @@ class Game {
     gameResult += `суммарное здоровье ${sumHealth}`;
 
     Game.log(gameResult);
+    return gameResult;
   }
 
   getRandArmy(exclude) {
