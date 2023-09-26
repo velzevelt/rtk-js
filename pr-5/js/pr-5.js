@@ -81,10 +81,11 @@ class QuadEquation {
         res = [(-this.b + d_root) / t, (-this.b - d_root) / t];
       }
     } else if (args.every((val) => Number.isFinite(val))) {
-      // Неквадратное уравнение
+      
       if (args.every((val) => val === 0))
         throw new InvalidEquation("Неверное уравнение");
-
+    
+      // Неквадратное уравнение
       const caseA = this.a === 0 && this.b !== 0 && this.c !== 0;
 
       // см. guide.png

@@ -1,6 +1,7 @@
 <?php
 
 class InvalidArgumentTypeError extends Error {};
+class InvalidEquationException extends Error {};
 
 
 class QuadEquation
@@ -20,14 +21,7 @@ class QuadEquation
     {
         $res = false;
         $args = [$this->a, $this->b, $this->c];
-        $full = true;
-
-        foreach ($args as $arg) {
-            if (!(is_numeric($arg) && is_finite($arg) && $arg != 0)) {
-                $full = false;
-                break;
-            }
-        }
+        $full = empty(array_filter($args, fn($v) => !(is_numeric($v) && $arg != 0)));
 
         if ($full) {
             $d = $this->b ** 2 - 4 * $this->a * $this->c;
@@ -47,8 +41,13 @@ class QuadEquation
                     break;
                 }
             }
-
             if ($isValidEquation) {
+                
+                $case0 = array_filter([$this->a, $this->b, $this->c], fn($n) => $n !== 0 );
+                
+                if ($case0)
+                    throw new InvalidEquationException();
+
                 // Неквадратное уравнение
                 $caseA = $this->a === 0 && $this->b !== 0 && $this->c !== 0;
 
@@ -67,7 +66,8 @@ class QuadEquation
                 } else if ($caseBC) {
                     $res = [0];
                 } else if ($caseA) {
-                    $res = [-$this->c / $this->b];
+                    // $res = [-$this->c / $this->b];
+                    throw new InvalidEquationException();
                 }
             } else {
                 $imposters = '';
