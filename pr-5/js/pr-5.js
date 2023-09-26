@@ -45,6 +45,25 @@ class QuadEquation {
         this.c = c
     }
 
+    solveEquationPrompt() {
+        this.a = prompt("Введите a: ");
+        this.b = prompt("Введите b: ");
+        this.c = prompt("Введите c: ");
+
+        let out = NaN;
+        try {
+            this.a = parseInt(this.a);
+            this.b = parseInt(this.b);
+            this.c = parseInt(this.c);
+
+            out = this.solveEquation();
+        } catch (error) {
+            out = error.message;
+        }
+
+        alert(out)
+    }
+
     solveEquation() {
         let res = NaN
 
