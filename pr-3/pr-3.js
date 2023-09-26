@@ -134,17 +134,18 @@ function getRandomElement(from) {
 }
 
 // Задание 1
-const turtle_1 = new TurtleRunner('Снежанна')
-const turtle_2 = new TurtleRunner('Анжелина')
-turtle_1.startRace()
-turtle_2.startRace()
+// const turtle_1 = new TurtleRunner('Снежанна')
+// const turtle_2 = new TurtleRunner('Анжелина')
+// turtle_1.startRace()
+// turtle_2.startRace()
+
 
 
 
 
 
 class Train {
-    hourSimulationMilSeconds = 10
+    hourSimulationMilSeconds = 1200
     speedKpH = 0
     travelStatus = 'По расписанию'
     TrainRoute
@@ -252,7 +253,7 @@ class TrainRoute {
         this.totalTravelTimeH += initTrainStop.plannedStopTimeH
         this.totalTravelDistanceK += initTrainStop.nextStopDistanceK
 
-        for (let i = 1; i < getRandomInt(30, 45); i++) {
+        for (let i = 1; i < getRandomInt(1, 3); i++) {
             const nextTrainStop = new TrainStop()
 
             this.stops[i - 1].nextStop = nextTrainStop
@@ -300,6 +301,7 @@ class TrainStop {
 }
 
 
+
 // Задание 2
-// const train = new Train(new TrainRoute('N', 'M'))
-// train.startMoving()
+const train = new Train(new TrainRoute('N', 'M'))
+train.startMoving()
