@@ -40,27 +40,26 @@ function doNothing() { }
 
 
 
-class TurtleTimer {
-
-}
-
-
 class TurtleRunner {
+  active = true;
+  distanceK = 40;
+  // speedKpMin = 
+  onFinish = doNothing;
 
+  update(stepMin, totalTimeMin, trainId) {
+    this.active = false;
+  }
 }
 
 
-
-// Задание 1
 
 class TrainStop {
   constructor(travelTimeMin = undefined, idleTimeMin = undefined, allowedIdleTimeMin = undefined, name = undefined) {
     this.travelTimeMin = travelTimeMin ?? getRandomInt(20, 120);
     this.idleTimeMin = idleTimeMin ?? getRandomInt(5, 23);
+    this.allowedIdleTimeMin = allowedIdleTimeMin ?? getRandomInt(5, 15); // Допустимое время задержки
     this.name = name ?? getRandomElement('abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')) + getRandomInt(1, 100)
-    this.allowedIdleTimeMin = allowedIdleTimeMin ?? getRandomElement(5, 10); // Допустимое время задержки
   }
-
 }
 
 
@@ -70,6 +69,7 @@ class Train {
   #currentStop;
   #totalTravelMin = 0;
   #totalIdleMin = 0;
+  onFinish = doNothing;
 
   constructor(stops = undefined) {
     this.stops = stops ?? Train.generateStops();
@@ -78,7 +78,7 @@ class Train {
 
   update(stepMin, totalTimeMin, trainId) {
     const changeStop = (newId) => {
-      this.currentStop = structuredClone(this.stops.at(newId));
+      this.currentStop = structuredClone(this.stops.at(newId)); //.clone();
       return this.currentStop;
     }
 
@@ -104,13 +104,16 @@ class Train {
 
     const finish = () => {
       this.active = false;
-      console.log(this.logFinish(trainId));
+      const message = this.logFinish(trainId);
+      console.log(message);
+      this.onFinish = () => message;
     }
 
     const isLastStop = () => this.#currentStopId >= this.stops.length;
 
 
     tryAction(isReadyToTravel, travel, prepareToTravel);
+    // tryAction(isOutOfPlan, () => tryAction(isLate, accelerate, slowdown), doNothing);
     tryAction(isReachedStop, switchToNextStop, doNothing);
     tryAction(isLastStop, finish, doNothing);
   }
@@ -124,11 +127,13 @@ class Train {
   }
 
   logFinish(trainId) {
-    const plannedTime = this.stops.reduce( (prev, current) => prev + current.idleTimeMin + current.travelTimeMin, 0);
+    const plannedTime = this.stops.reduce( (prev, current) => prev + current.allowedIdleTimeMin + current.travelTimeMin, 0);
     const realTime = this.#totalIdleMin + this.#totalTravelMin;
-    const deviation = plannedTime - realTime; 
+    const deviation = plannedTime - realTime;
+    
+    const lateOrAhead = deviation < 0 ? "Опоздал" : "Прибыл раньше";
 
-    return `Поезд ${trainId}: финиш! Запланировано: ${plannedTime} мин; Фактически: ${realTime}; Отклонение: ${deviation} мин`;
+    return `Поезд ${trainId}: финиш! Запланировано: ${plannedTime} мин; Фактически: ${realTime} мин; ${lateOrAhead} на ${Math.abs(deviation)} мин`;
   }
 
   static generateStops(stopsAmount = 5) {
@@ -138,41 +143,50 @@ class Train {
 }
 
 
-class TrainTimer {
+class Timer {
   #tickStepMil = 20; // 20:1 <- 1200:60
   tickStepMin = 1;
   totalTimeMin = 0;
-  trains;
+  racers;
 
-  constructor(trains) {
-    this.trains = trains ?? [];
+  constructor(racers = undefined, tickStepMin = undefined) {
+    this.racers = racers ?? [];
+    this.#tickStepMil = tickStepMin;
   }
 
   startTimer() {
-    const isProcessing = () => this.trains.filter((train) => train.active === true).length !== 0;
-    const updateTrain = (train, trainId) => train.update(this.tickStepMin, this.totalTimeMin, trainId);
-    const updateTrains = () => this.trains.forEach((train, id) => { if (train.active) updateTrain(train, id) });
+    const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
+    
+    const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, this.totalTimeMin, racerId);
+    const updateRacers = () => this.racers.forEach((racer, id) => { if (racer.active) updateRacer(racer, id) });
+    
     const createTimeout = () => setTimeout(process, this.#tickStepMil);
-
+    
+    const getFinishMessage = () => this.racers.reduce( (prev, current) => prev + current.onFinish() + "\n\n", "" )
+    
     const process = () => {
-      if (isProcessing()) {
-        this.totalTimeMin += this.stepMin;
-        updateTrains();
-
-        const stillProcessing = isProcessing();
-        if (stillProcessing) {
-          createTimeout();
-        }
-
-      }
+      this.totalTimeMin += this.stepMin;
+      updateRacers();
+      tryAction(isProcessing, createTimeout, () => alert(getFinishMessage()));
     }
-
+    
     createTimeout();
   }
 
 
 
 }
+
+
+// Задание 1
+// const turtles = [
+//   new TurtleRunner(),
+//   new TurtleRunner(),
+//   new TurtleRunner(),
+// ]
+
+// const timer = new Timer(turtles, 320 / 60, );
+// timer.startTimer();
 
 // Задание 2
 const trains = [
@@ -181,12 +195,5 @@ const trains = [
   new Train(),
 ]
 
-const timer = new TrainTimer(trains);
+const timer = new Timer(trains, 1200 / 60);
 timer.startTimer();
-
-
-
-
-// 1200:1ч .. 1200:60 
-
-// 1:20
