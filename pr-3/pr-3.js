@@ -18,97 +18,6 @@
     опозданием, поезд пришел заранее, с указанием временных меток.
 */
 
-class TurtleRunner {
-  runH = 4;
-  speedKpH = 2;
-  initSpeedKpH = this.speedKpH;
-
-  runDistanceK = 40;
-  hourSimulationMilSeconds = 320;
-
-  sleepH = 0;
-
-  totalRunH = 0;
-  totalSleepH = 0;
-  finished = false;
-
-  constructor(name) {
-    this.name = name;
-  }
-
-  startRace() {
-    setTimeout(() => this.#run(), this.hourSimulationMilSeconds);
-  }
-
-  #run() {
-    this.runDistanceK -= this.speedKpH;
-    this.runH--;
-    this.totalRunH++;
-
-    //#region Логирование
-    let runMessage = "";
-    if (this?.name) {
-      runMessage += `Черепаха "${this.name}": `;
-    }
-    runMessage += `Осталось бежать: ${this.runDistanceK} км. Скорость: ${this.speedKpH}. Могу бежать еще ${this.runH} ч`;
-    console.log(runMessage);
-    //#endregion
-
-    if (this.speedKpH > this.initSpeedKpH) {
-      this.speedKpH--;
-    }
-
-    if (this.runDistanceK <= 0) {
-      this.finished = true;
-      this.#showRaceTotal();
-    } else {
-      if (this.runH > 0) {
-        setTimeout(() => this.#run(), this.hourSimulationMilSeconds);
-      } else {
-        // this.sleepH = 5
-        this.sleepH = getRandomInt(3, 5);
-        setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds);
-      }
-    }
-  }
-
-  #sleep() {
-    if (this.runH < 4) {
-      this.runH++;
-    } else {
-      this.speedKpH++;
-    }
-
-    this.sleepH--;
-    this.totalSleepH++;
-
-    //#region Логирование
-    let sleepMessage = "";
-    if (this?.name) {
-      sleepMessage += `Черепаха "${this.name}": `;
-    }
-    sleepMessage += `Осталось спать: ${this.sleepH}`;
-    console.log(sleepMessage);
-    //#endregion
-
-    if (this.sleepH > 0) {
-      setTimeout(() => this.#sleep(), this.hourSimulationMilSeconds);
-    } else {
-      setTimeout(() => this.#run(), this.hourSimulationMilSeconds);
-    }
-  }
-
-  #showRaceTotal() {
-    let totalMessage = "";
-    if (this?.name) {
-      totalMessage += `Черепаха "${this.name}": Финиш! `;
-    }
-    totalMessage += `Часов пробега: ${this.totalRunH}. Часов сна: ${this.totalSleepH}`;
-    console.log(totalMessage);
-    alert(totalMessage);
-  }
-}
-
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -119,30 +28,165 @@ function getRandomElement(from) {
   return from[Math.floor(Math.random() * from.length)];
 }
 
-// Задание 1
-const turtle_1 = new TurtleRunner("Снежанна");
-const turtle_2 = new TurtleRunner("Анжелина");
-turtle_1.startRace();
-turtle_2.startRace();
 
-class TrainTimer {
-    t
-    totalTimeMin = 0;
+function tryAction(condition, right, left) {
+  if (condition())
+    right()
+  else
+    left()
+}
 
-    constructor() {
-        
-    }
+function doNothing() { }
+
+
+
+class TurtleTimer {
 
 }
 
+
+class TurtleRunner {
+
+}
+
+
+
+// Задание 1
+
+class TrainStop {
+  constructor(travelTimeMin = undefined, idleTimeMin = undefined, allowedIdleTimeMin = undefined, name = undefined) {
+    this.travelTimeMin = travelTimeMin ?? getRandomInt(20, 120);
+    this.idleTimeMin = idleTimeMin ?? getRandomInt(5, 23);
+    this.name = name ?? getRandomElement('abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('')) + getRandomInt(1, 100)
+    this.allowedIdleTimeMin = allowedIdleTimeMin ?? getRandomElement(5, 10); // Допустимое время задержки
+  }
+
+}
+
+
 class Train {
+  active = true;
+  #currentStopId = 0;
+  #currentStop;
+  #totalTravelMin = 0;
+  #totalIdleMin = 0;
+
+  constructor(stops = undefined) {
+    this.stops = stops ?? Train.generateStops();
+  }
+
+
+  update(stepMin, totalTimeMin, trainId) {
+    const changeStop = (newId) => {
+      this.currentStop = structuredClone(this.stops.at(newId));
+      return this.currentStop;
+    }
+
+    const currentStop = this.currentStop ?? changeStop(this.#currentStopId);
+
+    const prepareToTravel = () => {
+      currentStop.idleTimeMin -= stepMin;
+      this.#totalIdleMin += stepMin;
+      console.log(this.logIdle(trainId, currentStop.name, currentStop.idleTimeMin));
+    };
+
+    const travel = () => {
+      currentStop.travelTimeMin -= stepMin;
+      this.#totalTravelMin += stepMin;
+      console.log(this.logMoving(trainId, currentStop.name, currentStop.travelTimeMin));
+    }
+
+    const switchToNextStop = () => (changeStop(++this.#currentStopId));
+
+    const isReadyToTravel = () => currentStop.idleTimeMin <= 0;
+
+    const isReachedStop = () => currentStop.travelTimeMin <= 0;
+
+    const finish = () => {
+      this.active = false;
+      console.log(this.logFinish(trainId));
+    }
+
+    const isLastStop = () => this.#currentStopId >= this.stops.length;
+
+
+    tryAction(isReadyToTravel, travel, prepareToTravel);
+    tryAction(isReachedStop, switchToNextStop, doNothing);
+    tryAction(isLastStop, finish, doNothing);
+  }
+
+  logIdle(trainId, currentStopName, tMin) {
+    return `Поезд ${trainId}: ведется смена локомотива, осталось ждать ${tMin} мин`;
+  }
+
+  logMoving(trainId, currentStopName, tMin) {
+    return `Поезд ${trainId}: едет к остановке ${currentStopName}, осталось ехать ${tMin} мин`;
+  }
+
+  logFinish(trainId) {
+    const plannedTime = this.stops.reduce( (prev, current) => prev + current.idleTimeMin + current.travelTimeMin, 0);
+    const realTime = this.#totalIdleMin + this.#totalTravelMin;
+    const deviation = plannedTime - realTime; 
+
+    return `Поезд ${trainId}: финиш! Запланировано: ${plannedTime} мин; Фактически: ${realTime}; Отклонение: ${deviation} мин`;
+  }
+
+  static generateStops(stopsAmount = 5) {
+    return (new Array(stopsAmount)).fill().map(() => new TrainStop());
+  }
+
+}
+
+
+class TrainTimer {
+  #tickStepMil = 20; // 20:1 <- 1200:60
+  tickStepMin = 1;
+  totalTimeMin = 0;
+  trains;
+
+  constructor(trains) {
+    this.trains = trains ?? [];
+  }
+
+  startTimer() {
+    const isProcessing = () => this.trains.filter((train) => train.active === true).length !== 0;
+    const updateTrain = (train, trainId) => train.update(this.tickStepMin, this.totalTimeMin, trainId);
+    const updateTrains = () => this.trains.forEach((train, id) => { if (train.active) updateTrain(train, id) });
+    const createTimeout = () => setTimeout(process, this.#tickStepMil);
+
+    const process = () => {
+      if (isProcessing()) {
+        this.totalTimeMin += this.stepMin;
+        updateTrains();
+
+        const stillProcessing = isProcessing();
+        if (stillProcessing) {
+          createTimeout();
+        }
+
+      }
+    }
+
+    createTimeout();
+  }
+
 
 
 }
 
 // Задание 2
-// const train = new Train(new TrainRoute('N', 'M'))
-// train.startMoving()
+const trains = [
+  new Train(),
+  new Train(),
+  new Train(),
+]
+
+const timer = new TrainTimer(trains);
+timer.startTimer();
+
+
+
+
 // 1200:1ч .. 1200:60 
 
 // 1:20
