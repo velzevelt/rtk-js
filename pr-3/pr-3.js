@@ -53,7 +53,7 @@ class TurtleRunner {
 
   onFinish = doNothing;
 
-  update(stepMin, totalTimeMin, turtleId) {
+  update(stepMin, turtleId, globalTimeMin) {
     const canRun = () => this.runTimeMin > 0;
     
     const run = () => {
@@ -83,7 +83,7 @@ class TurtleRunner {
     const isFinished = () => this.distanceM <= 0;
     const finish = () => {
       this.active = false;
-      const message = this.logFinish(turtleId);
+      const message = this.logFinish(turtleId, globalTimeMin);
       console.log(message);
       this.onFinish = () => message;
     }
@@ -100,8 +100,8 @@ class TurtleRunner {
     return `Черепаха ${turtleId}: бежит, осталось бежать ${this.runTimeMin} мин; ${Math.round(this.distanceM)} м`;
   }
 
-  logFinish(turtleId) {
-    return `Черепаха ${turtleId}: финиш! Минут бега: ${this.totalRunMin} Минут сна: ${this.totalSleepMin}`;
+  logFinish(turtleId, finishTimeMin) {
+    return `Черепаха ${turtleId}: финиш в ${finishTimeMin} мин. Минут бега: ${this.totalRunMin} Минут сна: ${this.totalSleepMin}`;
   }
 }
 
@@ -120,7 +120,6 @@ class TrainStop {
 class Train {
   active = true;
   #currentStopId = 0;
-  #currentStop;
   #totalTravelMin = 0;
   #totalIdleMin = 0;
   onFinish = doNothing;
@@ -130,7 +129,7 @@ class Train {
   }
 
 
-  update(stepMin, totalTimeMin, trainId) {
+  update(stepMin, trainId, globalTimeMin) {
     const changeStop = (newId) => {
       this.currentStop = structuredClone(this.stops.at(newId)); //.clone();
       return this.currentStop;
@@ -158,7 +157,7 @@ class Train {
 
     const finish = () => {
       this.active = false;
-      const message = this.logFinish(trainId);
+      const message = this.logFinish(trainId, globalTimeMin);
       console.log(message);
       this.onFinish = () => message;
     }
@@ -180,14 +179,14 @@ class Train {
     return `Поезд ${trainId}: едет к остановке ${currentStopName}, осталось ехать ${tMin} мин`;
   }
 
-  logFinish(trainId) {
+  logFinish(trainId, finishTimeMin) {
     const plannedTime = this.stops.reduce((prev, current) => prev + current.allowedIdleTimeMin + current.travelTimeMin, 0);
     const realTime = this.#totalIdleMin + this.#totalTravelMin;
     const deviation = plannedTime - realTime;
 
     const lateOrAhead = deviation < 0 ? "Опоздал" : "Прибыл раньше";
 
-    return `Поезд ${trainId}: финиш! Запланировано: ${plannedTime} мин; Фактически: ${realTime} мин; ${lateOrAhead} на ${Math.abs(deviation)} мин`;
+    return `Поезд ${trainId}: финиш в ${finishTimeMin} мин! Запланировано: ${plannedTime} мин; Фактически: ${realTime} мин; ${lateOrAhead} на ${Math.abs(deviation)} мин`;
   }
 
   static generateStops(stopsAmount = 5) {
@@ -202,23 +201,30 @@ class Timer {
   tickStepMin = 1;
   totalTimeMin = 0;
   racers;
+  onDone = doNothing;
 
-  constructor(racers = undefined, tickStepMin = undefined) {
+  constructor(racers = undefined, tickStepMin = undefined, onDone = undefined) {
     this.racers = racers ?? [];
     this.#tickStepMil = tickStepMin ?? 20;
+    this.onDone = onDone ?? doNothing;
   }
 
   startTimer() {
     const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
-    const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, this.totalTimeMin, racerId);
+    const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, racerId, this.totalTimeMin);
     const updateRacers = () => this.racers.forEach((racer, id) => { if (racer.active) updateRacer(racer, id) });
     const createTimeout = () => setTimeout(process, this.#tickStepMil);
-    const getFinishMessage = () => this.racers.reduce((prev, current) => prev + current.onFinish() + "\n\n", "")
+    const getFinishMessage = () => this.racers.reduce((prev, current) => prev + current.onFinish() + "\n\n", "");
+    
+    const showFinishMessage = () => {
+      const m = getFinishMessage();  
+      tryAction(() => m !== "", () => alert(m), doNothing);
+    }
 
     const process = () => {
-      this.totalTimeMin += this.stepMin;
+      this.totalTimeMin += this.tickStepMin;
       updateRacers();
-      tryAction(isProcessing, createTimeout, () => alert(getFinishMessage()));
+      tryAction(isProcessing, createTimeout, () => {showFinishMessage(); this.onDone()});
     }
 
     createTimeout();
@@ -229,25 +235,33 @@ class Timer {
 }
 
 
-// Задание 1
+// Задание 2
+
 const turtles = [
+  new TurtleRunner(),
   new TurtleRunner(),
   new TurtleRunner(),
   new TurtleRunner(),
 ]
 
-const timer = new Timer(turtles, 320 / 60, );
-timer.startTimer();
+const turtleTimer = new Timer(turtles, 320 / 60);
+
+
+// Задание 1
+
+const trains = [
+  new Train(),
+  new Train(),
+  new Train(),
+]
+
+// const trainTimer = new Timer(trains, 1200 / 60);
+const trainTimer = new Timer(trains, 1200 / 60, () => turtleTimer.startTimer());
+trainTimer.startTimer();
 
 
 
 
-// Задание 2
-// const trains = [
-//   new Train(),
-//   new Train(),
-//   new Train(),
-// ]
 
-// const timer = new Timer(trains, 1200 / 60);
-// timer.startTimer();
+
+
