@@ -222,7 +222,6 @@ class Timer {
   }
 
   startTimer() {
-    const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
     
     const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, racerId, this.totalTimeMin);
     const updateRacers = () => this.racers.forEach( (racer, id) => { if (racer.active) updateRacer(racer, id) });
@@ -233,7 +232,8 @@ class Timer {
       const m = getFinishMessage();  
       tryAction(() => m !== "", () => alert(m), doNothing);
     }
-    
+
+    const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
     const createTimeout = () => setTimeout(process, this.#tickStepMil);
     const process = () => {
       this.totalTimeMin += this.tickStepMin;
