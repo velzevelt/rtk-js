@@ -213,29 +213,28 @@ class Timer {
   tickStepMin = 1;
   totalTimeMin = 0;
   racers;
-  onDone = doNothing;
+  onDone;
 
-  constructor(racers = undefined, tickStepMin = undefined, onDone = undefined) {
+  constructor(racers = undefined, tickStepMin = undefined, onDone = doNothing) {
     this.racers = racers ?? [];
     this.#tickStepMil = tickStepMin ?? 20;
-    this.onDone = onDone ?? doNothing;
+    this.onDone = onDone;
   }
 
   startTimer() {
     const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
     
     const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, racerId, this.totalTimeMin);
-    const updateRacers = () => this.racers.forEach((racer, id) => { if (racer.active) updateRacer(racer, id) });
-    const sortRacers = () => this.racers.sort( (r1, r2) => r1.finishTimeMin - r2.finishTimeMin );
+    const updateRacers = () => this.racers.forEach( (racer, id) => { if (racer.active) updateRacer(racer, id) });
+    const sortRacers = () => this.racers.sort( (r1, r2) => r1?.finishTimeMin - r2?.finishTimeMin );
     
-    const createTimeout = () => setTimeout(process, this.#tickStepMil);
     const getFinishMessage = () => this.racers.reduce((prev, current) => prev + current.onFinish() + "\n\n", "");
-    
     const showFinishMessage = () => {
       const m = getFinishMessage();  
       tryAction(() => m !== "", () => alert(m), doNothing);
     }
-
+    
+    const createTimeout = () => setTimeout(process, this.#tickStepMil);
     const process = () => {
       this.totalTimeMin += this.tickStepMin;
       updateRacers();
@@ -265,7 +264,11 @@ const turtleTimer = new Timer(turtles, 320 / 60);
 // Задание 1
 
 const trains = [
-  new Train(),
+  new Train(
+    [new TrainStop(20, 10, 15, "Начальная остановка")]
+    .concat( Train.generateStops(2), new TrainStop(20, 10, 15, "Конечная остановка") ) 
+    ),
+  
   new Train(),
   new Train(),
 ]
