@@ -29,15 +29,18 @@ function getRandomElement(from) {
 }
 
 
-function tryAction(condition, right, left) {
-  if (condition())
-    right()
+function tryAction(conditionfn, onTrue, onFalse) {
+  if (conditionfn())
+    onTrue()
   else
-    left()
+    onFalse()
 }
 
 function doNothing() { }
 
+function fold(...f) {
+  return () => {f.forEach( (fn) => fn() )}
+}
 
 
 class TurtleRunner {
@@ -53,42 +56,50 @@ class TurtleRunner {
 
   onFinish = doNothing;
 
+  finishTimeMin = 0;
+
   update(stepMin, turtleId, globalTimeMin) {
     const canRun = () => this.runTimeMin > 0;
+    const canSleep = () => this.needToSleepMin !== undefined;
     
     const run = () => {
       console.log(this.logRun(turtleId));
-
       this.runTimeMin -= stepMin;
       this.totalRunMin += stepMin;
-
       this.distanceM -= this.speedMpMin;
-
-      tryAction( () => !canRun(), 
-                 () => this.needToSleepMin = getRandomInt(3*60, 5*60), 
-                 doNothing);
     }
-    
+
+    const resetSleep = () => {
+      this.needToSleepMin = getRandomInt(3*60, 5*60);
+      this.sleepTimeMin = 0;
+    }
+
     const sleep = () => {
       console.log(this.logSleep(turtleId));
-
       this.sleepTimeMin += stepMin;
       this.totalSleepMin += stepMin;
+    }
 
+    const tryEndSleep = () => {
       tryAction( () => this.sleepTimeMin >= this.needToSleepMin, 
-                 () => this.runTimeMin = this.sleepTimeMin, 
+                 fold( () => this.runTimeMin = this.sleepTimeMin, resetSleep), 
                  doNothing);
     }
+
+    const manageSleep = fold(sleep, tryEndSleep);
+    const trySleep = () => tryAction(canSleep, manageSleep, fold(resetSleep, manageSleep));
 
     const isFinished = () => this.distanceM <= 0;
     const finish = () => {
+      this.finishTimeMin = globalTimeMin;
       this.active = false;
       const message = this.logFinish(turtleId, globalTimeMin);
       console.log(message);
       this.onFinish = () => message;
     }
 
-    tryAction(canRun, run, sleep);
+
+    tryAction(canRun, run, trySleep);
     tryAction(isFinished, finish, doNothing);
   }
 
@@ -123,6 +134,7 @@ class Train {
   #totalTravelMin = 0;
   #totalIdleMin = 0;
   onFinish = doNothing;
+  finishTimeMin = 0;
 
   constructor(stops = undefined) {
     this.stops = stops ?? Train.generateStops();
@@ -156,6 +168,7 @@ class Train {
     const isReachedStop = () => currentStop.travelTimeMin <= 0;
 
     const finish = () => {
+      this.finishTimeMin = globalTimeMin;
       this.active = false;
       const message = this.logFinish(trainId, globalTimeMin);
       console.log(message);
@@ -166,7 +179,6 @@ class Train {
 
 
     tryAction(isReadyToTravel, travel, prepareToTravel);
-    // tryAction(isOutOfPlan, () => tryAction(isLate, accelerate, slowdown), doNothing);
     tryAction(isReachedStop, switchToNextStop, doNothing);
     tryAction(isLastStop, finish, doNothing);
   }
@@ -211,8 +223,11 @@ class Timer {
 
   startTimer() {
     const isProcessing = () => this.racers.filter((racer) => racer.active === true).length !== 0;
+    
     const updateRacer = (racer, racerId) => racer.update(this.tickStepMin, racerId, this.totalTimeMin);
     const updateRacers = () => this.racers.forEach((racer, id) => { if (racer.active) updateRacer(racer, id) });
+    const sortRacers = () => this.racers.sort( (r1, r2) => r1.finishTimeMin - r2.finishTimeMin );
+    
     const createTimeout = () => setTimeout(process, this.#tickStepMil);
     const getFinishMessage = () => this.racers.reduce((prev, current) => prev + current.onFinish() + "\n\n", "");
     
@@ -224,7 +239,7 @@ class Timer {
     const process = () => {
       this.totalTimeMin += this.tickStepMin;
       updateRacers();
-      tryAction(isProcessing, createTimeout, () => {showFinishMessage(); this.onDone()});
+      tryAction(isProcessing, createTimeout, fold(sortRacers, showFinishMessage, this.onDone));
     }
 
     createTimeout();
