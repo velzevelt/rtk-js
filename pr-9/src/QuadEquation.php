@@ -1,7 +1,8 @@
 <?php
 
 class InvalidArgumentTypeError extends Error {}
-class InvalidEquationException extends Error {}
+
+class BadImplementationError extends Error {}
 
 
 // $fold = function($funcs) {
@@ -20,7 +21,7 @@ class QuadEquation
     public $b = 0;
     public $c = 0;
 
-    public function __construct(int $a = 0, int $b = 0, int $c = 0)
+    public function __construct($a = 0, $b = 0, $c = 0) //__construct(int $a = 0, int $b = 0, int $c = 0)
     {
         $this->a = $a;
         $this->b = $b;
@@ -45,7 +46,7 @@ class QuadEquation
         $case0 = fn() => count(array_filter($args, fn($v) => $v == 0)) == count($args);
 
         // a != 0; b != 0; c != 0
-        // $full = fn() => != case0 <- Это неверно, нужно учитывать все числа
+        // $full = fn() => !case0() <- Это неверно, так как нужно учитывать все числа
         $full = fn() => count(array_filter($args, fn($v) => $v != 0)) == count($args);
 
 
@@ -107,24 +108,25 @@ class QuadEquation
             ]
         );
 
+        $solution ?? throw new BadImplementationError();
         $res = $solution();
         return $res;
     }
 }
 
 
-function testEq($a, $b, $c) {
-    $t = new QuadEquation($a, $b, $c);
-    $out = $t->solveEquation();
-    var_dump($out);
-}
+// function testEq($a, $b, $c) {
+//     $t = new QuadEquation($a, $b, $c);
+//     $out = $t->solveEquation();
+//     var_dump($out);
+// }
 
-testEq(-1, 7, 8);
-testEq(3, 0, -27);
-testEq(1, 1, 0);
-testEq(1, 0, 0);
-testEq(0, 1, 1);
-testEq(0, 0, 0);
-testEq(1, 1, 1);
-testEq(-1, 7, 8);
-testEq([1], 7, 8);
+// testEq(-1, 7, 8);
+// testEq(3, 0, -27);
+// testEq(1, 1, 0);
+// testEq(1, 0, 0);
+// testEq(0, 1, 1);
+// testEq(0, 0, 0);
+// testEq(1, 1, 1);
+// testEq(-1, 7, 8);
+// testEq([1], 7, 8);
