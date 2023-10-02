@@ -14,9 +14,9 @@ function strIntersect(string, subString) {
             case "null":
             case "object": throw new TypeError(`${arg} is ${typeof arg} and cannot be properly casted to string`);
             case "string": break;
-            default: console.warn(`${arg} is not a string, but it was auto casted`);
         }
     } );
+
 
     // Преобазование аргументов в строку
     string += "";
@@ -39,7 +39,7 @@ function strIntersect(string, subString) {
 }
 
 
-function assertException(func, exception) {
+function expectException(func, exception) {
     try {
         func();
         console.error(`Expected exception "${exception}" was not raised`)
@@ -60,12 +60,14 @@ console.assert(strIntersect(111, '1') === 3);
 console.assert(strIntersect('111', 1) === 3);
 
 
-assertException( () => strIntersect(undefined, undefined), TypeError );
-assertException( () => strIntersect(null, null), TypeError );
-assertException( () => strIntersect(1, null), TypeError );
-assertException( () => strIntersect(null, 1), TypeError );
-assertException( () => strIntersect([], []), TypeError );
-assertException( () => strIntersect(['a', 'b', 'c'], ['a', 'b', 'c']), TypeError );
+expectException( () => strIntersect(undefined, undefined), TypeError );
+expectException( () => strIntersect(1, undefined), TypeError );
+expectException( () => strIntersect(undefined, 1), TypeError );
+expectException( () => strIntersect(null, null), TypeError );
+expectException( () => strIntersect(1, null), TypeError );
+expectException( () => strIntersect(null, 1), TypeError );
+expectException( () => strIntersect([], []), TypeError );
+expectException( () => strIntersect(['a', 'b', 'c'], ['a', 'b', 'c']), TypeError );
 
 
 // const str_1 = prompt("Первая строка", "")

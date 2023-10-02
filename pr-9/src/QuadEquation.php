@@ -1,7 +1,7 @@
 <?php
 
-class InvalidArgumentTypeError extends Error {};
-class InvalidEquationException extends Error {};
+class InvalidArgumentTypeError extends Error {}
+class InvalidEquationException extends Error {}
 
 
 class QuadEquation
@@ -20,67 +20,74 @@ class QuadEquation
     public function solveEquation()
     {
         $res = false;
-        $args = [$this->a, $this->b, $this->c];
-        $full = empty(array_filter($args, fn($v) => !(is_numeric($v) && $arg != 0)));
+        
+        // a = 0; b = 0; c = 0
+        $case0 = fn() => count(array_filter([$this->a, $this->b, $this->c], fn($v) => (is_numeric($v) && $arg == 0))) == count($args);
 
-        if ($full) {
-            $d = $this->b ** 2 - 4 * $this->a * $this->c;
+        // a != 0; b != 0; c != 0
+        $full = fn() => !$case0();
 
-            if ($d <= 0) {
-                $res = ($d === 0 && $this->a !== 0) ? [-$this->b / 2 * $this->a] : false;
-            } else {
+        // Каррирование функции
+        $curryArgs = fn($func) => fn() => $func($this->a, $this->b, $this->c);
+        
+        
+        // a = 0; b != 0; c != 0
+        $caseA = $curryArgs(fn($a, $b, $c) => $a == 0 && $b != 0 && $c != 0);
+        $caseASolution = $curryArgs( fn($a, $b, $c) => [-$c / $b] );
+
+        // c = 0; a != 0; b != 0
+        $caseC = $curryArgs(fn($a, $b, $c) => $c == 0 && $a != 0 && $b != 0);
+        $caseCSolution = $curryArgs( fn($a, $b, $c) => [0, -$b / $a] ); 
+
+        // b = 0; a != 0; c != 0
+        $caseB = $curryArgs(fn($a, $b, $c) => $b == 0 && $a != 0 && $c != 0);
+        $caseBSolution = $curryArgs(function($a, $b, $c) {
+            $t = $a != 0 ? -$c / $a : 0;
+            return -$t > 0 ? [-sqrt($t), sqrt($t)] : false;
+        });
+
+
+        // b = 0; c = 0; a != 0
+        $caseBC = $curryArgs(fn($a, $b, $c) => $b == 0 && $c == 0 && $a != 0);
+        $caseBCSolution = fn() => [0]; 
+        
+        $fullEqSolution = $curryArgs(function($a, $b, $c) {
+            $d = $b ** 2 - 4 * $a * $c;
+            if ($d <= 0) 
+            {
+                return ($d === 0 && $a !== 0) ? [-$b / 2 * $a] : false;
+            } 
+            else 
+            {
                 $d_root = sqrt($d);
-                $t = 2 * $this->a;
-                $res = [(-$this->b + $d_root) / $t, (-$this->b - $d_root) / $t];
+                $t = 2 * $a;
+                return [(-$b + $d_root) / $t, (-$b - $d_root) / $t];
             }
-        } else {
-            $isValidEquation = true;
-            foreach ($args as $arg) {
-                if (!(is_numeric($arg) && is_finite($arg))) {
-                    $isValidEquation = false;
-                    break;
-                }
+        });
+
+
+        $chooseSolution = function($solutionsSet) {
+            foreach ($solutionsSet as $solutionGroup) {
+                $condition = $solutionGroup[0];
+                $solution = $solutionGroup[1];
+                if ($condition())
+                    return $solution;
             }
-            if ($isValidEquation) {
-                
-                $case0 = array_filter([$this->a, $this->b, $this->c], fn($n) => $n !== 0 );
-                
-                if ($case0)
-                    throw new InvalidEquationException();
+        };
 
-                // Неквадратное уравнение
-                $caseA = $this->a === 0 && $this->b !== 0 && $this->c !== 0;
+        $solution = $chooseSolution(
+            [
+                [$case0, fn() => false],
+                [$full, $fullEqSolution],
+                [$caseA, $caseASolution],
+                [$caseB, $caseBSolution],
+                [$caseBC, $caseBCSolution],
+                [$caseC, $caseCSolution],
+            ]
+        );
 
-                // см. guide.png
-                $caseC = $this->c === 0 && $this->a !== 0 && $this->b !== 0;
-                $caseBC = $this->b === 0 && $this->c === 0 && $this->a !== 0;
-
-                $t = $this->a != 0 ? -$this->c / $this->a : 0;
-                $caseB = $this->b === 0 && $this->a !== 0 && $this->c !== 0 && $t > 0;
-                
-
-                if ($caseB) {
-                    $res = [-sqrt($t), sqrt($t)];
-                } else if ($caseC) {
-                    $res = [0, -$this->b / $this->a];
-                } else if ($caseBC) {
-                    $res = [0];
-                } else if ($caseA) {
-                    // $res = [-$this->c / $this->b];
-                    throw new InvalidEquationException();
-                }
-            } else {
-                $imposters = '';
-                foreach($args as $arg) {
-                    if (!(is_numeric($arg) && is_finite($arg))) {
-                        $imposters .= gettype($arg) . ": $arg";
-                    }
-                }
-
-                throw new InvalidArgumentTypeError("Аргумент этого типа не поддерживается $imposters");
-            }
-        }
-
+        $res = $solution();
         return $res;
     }
 }
+
