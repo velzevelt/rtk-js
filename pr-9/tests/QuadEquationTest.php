@@ -28,8 +28,8 @@ final class QuadEquationTest extends TestCase
   public static function solveProvider()
   {
       return [
-          [-1, 7, 8, [-1, 8]],
-          [3, 0, -27, [3, -3]],
+          [-1, 7, 8, [-1.0, 8.0]],
+          [3, 0, -27, [-3.0, 3.0]],
           [1, 1, 0, [0, -1]],
           [1, 0, 0, [0]],
           [1, 1, 1, false],
